@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://m2yuscq6rc82"]
+
+[ext_resource type="Texture2D" uid="uid://capkbmn7731xw" path="res://Sprites/33ef06c1-b601-4cc8-94bc-14f61025f667.png" id="1_icv2g"]
+
+[sub_resource type="SystemFont" id="SystemFont_icv2g"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Backgrouns" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.398
+anchor_right = 0.9
+anchor_bottom = 0.03
+offset_left = 440.496
+offset_top = -95.0
+offset_right = 126.2
+offset_bottom = 909.56
+texture = ExtResource("1_icv2g")
+
+[node name="Label" type="Label" parent="Backgrouns"]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 73.0
+offset_right = 807.0
+offset_bottom = 223.0
+theme_override_fonts/font = SubResource("SystemFont_icv2g")
+theme_override_font_sizes/font_size = 100
+text = "Settings"

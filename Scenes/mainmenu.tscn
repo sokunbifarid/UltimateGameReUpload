@@ -1,0 +1,95 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4fb4p3vy34yp"]
+
+[ext_resource type="Script" uid="uid://bvakangcxiqp4" path="res://Scripts/menu.gd" id="1_web8u"]
+[ext_resource type="Texture2D" uid="uid://capkbmn7731xw" path="res://Sprites/33ef06c1-b601-4cc8-94bc-14f61025f667.png" id="2_web8u"]
+
+[sub_resource type="SystemFont" id="SystemFont_web8u"]
+font_names = PackedStringArray("Fantasy")
+font_italic = true
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_1rerr"]
+font = SubResource("SystemFont_web8u")
+font_size = 173
+font_color = Color(0.627451, 0.494118, 1, 0.611765)
+shadow_size = 5
+shadow_color = Color(0, 0, 0, 0.65098)
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_web8u")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_web8u")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -405.0
+offset_top = -319.0
+offset_right = 409.0
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ultimatum
+"
+label_settings = SubResource("LabelSettings_1rerr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -492.0
+offset_top = -88.0
+offset_right = -325.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Play"
+
+[node name="QuitButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -494.0
+offset_top = 96.0
+offset_right = -327.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit"
+
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 326.0
+offset_right = 242.0
+offset_bottom = 393.0
+text = "Settings"
+
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
