@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://fipqc70kew4o"]
+[gd_scene load_steps=28 format=3 uid="uid://fipqc70kew4o"]
 
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platformer/block-grass-low-large.obj" id="1_vk57k"]
 [ext_resource type="ArrayMesh" uid="uid://co8da657s8jod" path="res://Models/Platformer/block-grass-narrow.obj" id="2_6444e"]
@@ -6,10 +6,12 @@
 [ext_resource type="ArrayMesh" uid="uid://sfpkxlk61sjg" path="res://Models/Platformer/block-grass-large.obj" id="4_lsmp6"]
 [ext_resource type="ArrayMesh" uid="uid://cc5gyq8lwp7hh" path="res://Models/Platformer/block-grass-overhang-low.obj" id="5_xrdnt"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="6_evi0p"]
+[ext_resource type="PackedScene" uid="uid://cjuqudhfasqgm" path="res://Scenes/shark.tscn" id="6_uy8f0"]
 [ext_resource type="PackedScene" uid="uid://d1n3slt2234do" path="res://Scenes/enemy.tscn" id="7_lsmp6"]
 [ext_resource type="PackedScene" uid="uid://btxebr50qp1hf" path="res://Scenes/coin.tscn" id="8_xrdnt"]
 [ext_resource type="PackedScene" uid="uid://ynj416avw04q" path="res://Scenes/end_flag.tscn" id="9_wrinw"]
 [ext_resource type="PackedScene" uid="uid://sg8envxv2q4c" path="res://Scenes/level_2.tscn" id="10_chwpn"]
+[ext_resource type="Script" uid="uid://c18s40xpp2swj" path="res://Scripts/GOScn.gd" id="11_af3po"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6444e"]
 
@@ -51,6 +53,76 @@ points = PackedVector3Array(0.263662, 0.397407, 0.52753, -0.25403, 0.29668, -0.5
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6r07y"]
 points = PackedVector3Array(0.263662, 0.397407, 0.52753, -0.25403, 0.29668, -0.50806, 0.429472, 0.00123072, -0.396452, -0.429501, 0.00127392, 0.396383, -0.493303, 0.495768, 0.246652, 0.430266, 0.497383, -0.397185, 0.429472, 0.00123072, 0.396452, -0.497538, 0.000269713, -0.232143, -0.430306, 0.497346, -0.397126, 0.493303, 0.495768, 0.246652, -0.246652, 0.495768, 0.493304, -0.23223, 0.000287752, 0.497502, 0.232143, 0.000269713, -0.497538, 0.263662, 0.397407, -0.527531, 0.527498, 0.397398, -0.263749, 0.497538, 0.000269713, 0.232143, -0.396383, 0.00127392, -0.429501, -0.527498, 0.397398, -0.263749, -0.481221, 0.133002, 0.398158, 0.397126, 0.497346, 0.430306, 0.232143, 0.000269713, 0.497538, -0.246652, 0.495768, -0.493303, 0.527498, 0.397398, 0.263749, -0.314455, 0.381505, 0.513167, -0.527498, 0.397398, 0.263749, 0.481194, 0.132984, -0.398223, -0.398158, 0.133002, -0.481221, 0.398158, 0.133002, 0.481221, -0.445317, 0.414027, 0.445317, -0.23223, 0.000287752, -0.497502, -0.497538, 0.000269713, 0.232143, 0.497538, 0.000269713, -0.232143)
 
+[sub_resource type="Animation" id="Animation_af3po"]
+resource_name = "Fade_in"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.46667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 1, 1, 0), Color(0.00351917, 0.00351917, 0.00351917, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GameOver:text")
+tracks/1/interp = 2
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.266667, 0.366667, 0.7, 0.74, 0.833333, 0.99, 1.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": ["Game Over", "Ga", "Gam", "Game", "Game OV", "Game O", "Game OV", "Game OVE", "Game OVER"]
+}
+
+[sub_resource type="Animation" id="Animation_uy8f0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FadeRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GameOver:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["Game Over"]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6r07y"]
+_data = {
+&"Fade_in": SubResource("Animation_af3po"),
+&"RESET": SubResource("Animation_uy8f0")
+}
+
+[sub_resource type="SystemFont" id="SystemFont_af3po"]
+font_names = PackedStringArray("Zapfino")
+font_weight = 475
+font_stretch = 200
+
+[sub_resource type="LabelSettings" id="LabelSettings_uy8f0"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_6r07y"]
+
 [node name="Main" type="Node3D"]
 
 [node name="Environment" type="Node" parent="."]
@@ -88,14 +160,15 @@ skeleton = NodePath("../..")
 shape = SubResource("ConvexPolygonShape3D_chwpn")
 
 [node name="Block-grass-narrow3" type="MeshInstance3D" parent="Platforms"]
-transform = Transform3D(2.60386, 0, 0, 0, 2.7383, 0, 0, 0, 1.98759, 11.0986, -0.621547, -10.7199)
+transform = Transform3D(2.60386, 0, 0, 0, 2.7383, 0, 0, 0, 1.98759, 1.28713, -0.628779, -21.3697)
 mesh = ExtResource("2_6444e")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0.0606323, 0.0442321, 6.25346)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow3/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0360022, 0, 0.00312805)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0360022, 0, -6.20565)
 shape = SubResource("ConvexPolygonShape3D_chwpn")
 
 [node name="Block-grass-narrow2" type="MeshInstance3D" parent="Platforms"]
@@ -110,7 +183,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00506246)
 shape = SubResource("ConvexPolygonShape3D_chwpn")
 
 [node name="Block-grass-large-tall" type="MeshInstance3D" parent="Platforms"]
-transform = Transform3D(1.98804, 0, 0, 0, 1, 0, 0, 0, 1.91197, 7.40567, 0, -11.1701)
+transform = Transform3D(1.98804, 0, 0, 0, 1, 0, 0, 0, 1.91197, 0.228178, -0.689281, -17.8753)
 mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../..")
 
@@ -121,7 +194,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
 shape = SubResource("ConvexPolygonShape3D_af3po")
 
 [node name="Block-grass-large" type="MeshInstance3D" parent="Platforms"]
-transform = Transform3D(1, 0, 0, 0, 3.13973, 0, 0, 0, 1, 13.8954, 0, -10.4572)
+transform = Transform3D(1, 0, 0, 0, 3.13973, 0, 0, 0, 1, -1.19987, 0, -21.7597)
 mesh = ExtResource("4_lsmp6")
 skeleton = NodePath("../..")
 
@@ -142,17 +215,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00739372, 0.00401145, 0)
 shape = SubResource("ConvexPolygonShape3D_6ioyp")
 
 [node name="Block-grass-overhang-low2" type="MeshInstance3D" parent="Platforms"]
-transform = Transform3D(3.80253, 0, 0, 0, 1, 0, 0, 0, 2.16823, 2.55115, 1.14222, -11.4181)
+transform = Transform3D(-0.189067, 0, 2.16555, 0, 1, 0, -3.79783, 0, -0.107807, 0.188329, 0.598297, -12.7512)
 mesh = ExtResource("5_xrdnt")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-overhang-low2"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-overhang-low2/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00680971, 0, 0)
+transform = Transform3D(0.998128, 0, -0.0611531, 0, 1, 0, 0.061153, 0, 0.998128, -0.00680995, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_6r07y")
 
 [node name="Collectibles" type="Node" parent="."]
+
+[node name="Shark" parent="Collectibles" instance=ExtResource("6_uy8f0")]
+transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.40814, -5.9712)
 
 [node name="Coin" parent="Collectibles" instance=ExtResource("8_xrdnt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.70662, 1.81196, -2.92554)
@@ -170,7 +246,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.202243, 1.4247, -3.60139)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20451, 1.7496, -2.22214)
 
 [node name="EndFlag" parent="Collectibles" instance=ExtResource("9_wrinw")]
-transform = Transform3D(0.087886, 0, -0.996131, 0, 1, 0, 0.996131, 0, 0.087886, 14.013, 3.17355, -10.4263)
+transform = Transform3D(0.96076, 0, 0.277382, 0, 1, 0, -0.277382, 0, 0.96076, -1.16695, 3.27, -21.6084)
 scene_to_load = ExtResource("10_chwpn")
 
 [node name="Enemies" type="Node" parent="."]
@@ -183,7 +259,55 @@ transform = Transform3D(0.996032, 0, -0.0889986, 0, 1, 0, 0.0889986, 0, 0.996032
 move_direction = Vector3(7, 1.5, 0)
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("7_lsmp6")]
-transform = Transform3D(0.0228792, 0, -0.999738, 0, 1, 0, 0.999738, 0, 0.0228792, 4.86028, 2.01264, -13.4239)
+transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629, 0.319145, 2.07795, -16.27)
 
-[node name="Player" parent="." instance=ExtResource("6_evi0p")]
+[node name="Player" parent="." groups=["player"] instance=ExtResource("6_evi0p")]
 transform = Transform3D(-0.999983, 0, -0.00574214, 0, 1, 0, 0.00574214, 0, -0.999983, 0.0712192, 0.694556, 0.18733)
+
+[node name="GOScn" type="CanvasLayer" parent="Player"]
+visible = false
+script = ExtResource("11_af3po")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/GOScn"]
+libraries = {
+&"": SubResource("AnimationLibrary_6r07y")
+}
+
+[node name="FadeRect" type="ColorRect" parent="Player/GOScn"]
+offset_left = -3.0
+offset_top = -6.0
+offset_right = 1138.0
+offset_bottom = 635.0
+
+[node name="GameOver" type="Label" parent="Player/GOScn"]
+anchors_preset = -1
+anchor_top = 0.151
+anchor_bottom = 0.151
+offset_left = 522.0
+offset_top = 147.152
+offset_right = 668.0
+offset_bottom = 216.152
+theme_override_fonts/font = SubResource("SystemFont_af3po")
+theme_override_font_sizes/font_size = 1
+text = "Game Over"
+label_settings = SubResource("LabelSettings_uy8f0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Player/GOScn"]
+offset_left = 521.0
+offset_top = 288.0
+offset_right = 717.0
+offset_bottom = 442.0
+
+[node name="Retry" type="Button" parent="Player/GOScn/HBoxContainer"]
+layout_mode = 2
+text = "Retry
+"
+
+[node name="MainM" type="Button" parent="Player/GOScn/HBoxContainer"]
+layout_mode = 2
+text = "Main Menu
+"
+icon = SubResource("ViewportTexture_6r07y")
+
+[connection signal="pressed" from="Player/GOScn/HBoxContainer/Retry" to="Player/GOScn" method="_on_retry_pressed"]
+[connection signal="pressed" from="Player/GOScn/HBoxContainer/MainM" to="Player/GOScn" method="_on_main_m_pressed"]

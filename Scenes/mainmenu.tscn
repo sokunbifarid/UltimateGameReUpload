@@ -60,12 +60,21 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -492.0
-offset_top = -88.0
+offset_top = -70.0
 offset_right = -325.0
-offset_bottom = -24.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Play"
+text = "Find/Create Game
+"
+
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 87.0
+offset_top = 326.0
+offset_right = 242.0
+offset_bottom = 393.0
+text = "Settings"
 
 [node name="QuitButton" type="Button" parent="."]
 layout_mode = 1
@@ -82,14 +91,16 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Quit"
 
-[node name="SettingsButton" type="Button" parent="."]
+[node name="LocalButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 87.0
-offset_top = 326.0
-offset_right = 242.0
-offset_bottom = 393.0
-text = "Settings"
+offset_left = 81.0
+offset_top = 172.0
+offset_right = 248.0
+offset_bottom = 233.0
+text = "Local Death Game
+"
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="LocalButton" to="." method="_on_local_button_pressed"]

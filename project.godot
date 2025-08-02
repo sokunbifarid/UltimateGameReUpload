@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="3DPlatformerCourse"
-run/main_scene="uid://d4fb4p3vy34yp"
+run/main_scene="uid://b0flbcapsm0ca"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 PlayerStats="*res://Scripts/player_stats.gd"
+
+[global_group]
+
+player="for anything with player"
 
 [input]
 

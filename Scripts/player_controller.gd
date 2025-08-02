@@ -8,7 +8,6 @@ signal OnUpdateScore (score : int)
 @export var jump_force : float = 8.0
 @export var gravity : float = 20.0
 @export var rotation_speed := 5.0
-
 @onready var camera = $Camera3D
 
 
@@ -64,7 +63,8 @@ func take_damage (amount : int):
 
 func _game_over ():
 	PlayerStats.score = 0
-	$GameOverScreen.visible = true
+	$GOScn.visible = true
+	$GOScn.get_node("AnimationPlayer").play("Fade_in")
 	
 func increase_score (amount : int):
 	PlayerStats.score += amount
