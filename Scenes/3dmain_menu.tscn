@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=14 format=3 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platformer/block-snow-large-tall.obj" id="1_t0pxn"]
@@ -10,52 +10,185 @@ size = Vector3(1.00684, 1, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_cwrni"]
 font_names = PackedStringArray("Academy Engraved LET")
+subpixel_positioning = 0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_cwrni"]
+[sub_resource type="Sky" id="Sky_cwrni"]
+
+[sub_resource type="Environment" id="Environment_cwrni"]
+background_mode = 2
+background_color = Color(0.0949808, 0.532177, 0.876589, 1)
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_cwrni")
+sky_custom_fov = 35.9
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 0)
+reflected_light_source = 2
+fog_enabled = true
+fog_light_color = Color(0.318008, 0.544956, 0.568694, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_gue0n"]
 font_names = PackedStringArray("Academy Engraved LET")
+subpixel_positioning = 0
 
-[node name="mainMenu" type="Node3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_cwrni"]
+
+[sub_resource type="Animation" id="Animation_gue0n"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Block-snow-large-tall:rotation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Block-snow-large-tall:rotation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-5.28835, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Block-snow-large-tall:rotation:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../../MainMenu/QuitButton:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.371, -0.346694, -0.0751365)]
+}
+
+[sub_resource type="Animation" id="Animation_cwrni"]
+resource_name = "Spin"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array()
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Block-snow-large-tall:rotation:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1.8, 3, 4.93333)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Block-snow-large-tall:rotation:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(4.85202, -0.25, 0, 0.25, 0, 6.28319, -0.25, 0, 0.25, 0, -5.28835, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(-0.0333333, 0.0333333, 4.93333)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Block-snow-large-tall:rotation:z")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.17, 0.36, 0.68, 1.03, 1.32, 1.65, 1.99)
+}
+
+[sub_resource type="Animation" id="Animation_xahlp"]
+resource_name = "main_to_local"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../../MainMenu/QuitButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.371, -0.346694, -0.0751365), Vector3(10.4189, -0.346694, -0.0751365)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xahlp"]
+_data = {
+&"RESET": SubResource("Animation_gue0n"),
+&"Spin": SubResource("Animation_cwrni"),
+&"main_to_local": SubResource("Animation_xahlp")
+}
+
+[node name="mainMenuroot" type="Node3D"]
 script = ExtResource("1_cwrni")
 
-[node name="Mainmenuscreen" type="Camera3D" parent="."]
+[node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 3.72094, 0.571279, 7.46273)
 
-[node name="RayCast3D" type="RayCast3D" parent="Mainmenuscreen"]
+[node name="RayCast3D" type="RayCast3D" parent="MainCamera"]
 transform = Transform3D(0.998888, 0, 0.0471413, 0, 1, 0, -0.0471413, 0, 0.998888, -3.68944, -1.10027, -5.28978)
 target_position = Vector3(0, 0, -1)
 
-[node name="LocalButton" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.47744, -1.30751, 0.0365164)
+[node name="MainMenu" type="Node3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LocalButton"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.130394, 0.18142, 0)
-shape = SubResource("BoxShape3D_p50pd")
+[node name="QuitButton" type="Area3D" parent="MainMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.371, -0.346694, -0.0751365)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LocalButton"]
-mesh = SubResource("BoxMesh_t0pxn")
-
-[node name="Label3D" type="Label3D" parent="LocalButton"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00234532, -0.0518208, 0.634825)
-modulate = Color(0.905882, 0.25098, 0.231373, 1)
-text = "Local
-"
-font = SubResource("SystemFont_cwrni")
-font_size = 63
-
-[node name="OnlineButton" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.923, -1.27947, 0.0818834)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="OnlineButton"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/QuitButton"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
 shape = SubResource("BoxShape3D_p50pd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="OnlineButton"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/QuitButton"]
 mesh = SubResource("BoxMesh_t0pxn")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="Label3D" type="Label3D" parent="OnlineButton"]
+[node name="Label3D" type="Label3D" parent="MainMenu/QuitButton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.536203)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Quit"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
+
+[node name="OnlineButton" type="Area3D" parent="MainMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.96921, -0.346504, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/OnlineButton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_p50pd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/OnlineButton"]
+mesh = SubResource("BoxMesh_t0pxn")
+skeleton = NodePath("../../..")
+
+[node name="Label3D" type="Label3D" parent="MainMenu/OnlineButton"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
 modulate = Color(0.905882, 0.25098, 0.231373, 1)
 text = "Online
@@ -63,43 +196,36 @@ text = "Online
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
-[node name="QuitButton" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.53748, -1.32731, -0.0460869)
+[node name="LocalButton" type="Area3D" parent="MainMenu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.71598, -0.331316, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="QuitButton"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/LocalButton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.130394, 0.18142, 0)
 shape = SubResource("BoxShape3D_p50pd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="QuitButton"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/LocalButton"]
 mesh = SubResource("BoxMesh_t0pxn")
-skeleton = NodePath("../..")
 
-[node name="Label3D" type="Label3D" parent="QuitButton"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.536203)
+[node name="Label3D" type="Label3D" parent="MainMenu/LocalButton"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0353732, -0.0518208, 0.634825)
 modulate = Color(0.905882, 0.25098, 0.231373, 1)
-text = "Quit"
+text = "Local
+"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
-[node name="Flatterrain" type="Area3D" parent="."]
-transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 6.4499, -25.837, -8.70574)
+[node name="LocalMenu" type="Node3D" parent="."]
 
-[node name="Block-snow-large-tall" type="MeshInstance3D" parent="Flatterrain"]
-mesh = ExtResource("1_t0pxn")
-skeleton = NodePath("../..")
+[node name="Settings" type="Node3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Flatterrain"]
-shape = SubResource("BoxShape3D_cwrni")
+[node name="World_Backgrouns" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -403.513, 2.54214, -327.151)
 
-[node name="TitleScreen" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8719, 1.75591, 2.24757)
-modulate = Color(0.31522, 0.389693, 0.710261, 1)
-text = "Ultimatum"
-font = SubResource("SystemFont_gue0n")
-font_size = 131
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World_Backgrouns"]
+environment = SubResource("Environment_cwrni")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 101.05, 2.54214, -327.151)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World_Backgrouns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 265.761, 98.8173, 145.224)
 light_color = Color(0.999999, 0.986738, 0.65883, 1)
 light_energy = 4.576
 light_indirect_energy = 13.244
@@ -107,11 +233,36 @@ light_angular_distance = 9.09
 light_cull_mask = 4294967231
 directional_shadow_mode = 1
 directional_shadow_split_1 = 0.11
-sky_mode = 1
 
-[connection signal="input_event" from="LocalButton" to="." method="_on_local_button_input_event"]
-[connection signal="mouse_entered" from="LocalButton" to="." method="_on_local_button_mouse_entered"]
-[connection signal="mouse_exited" from="LocalButton" to="." method="_on_local_button_mouse_exited"]
-[connection signal="input_event" from="QuitButton" to="." method="_on_quit_button_input_event"]
-[connection signal="mouse_entered" from="QuitButton" to="." method="_on_quit_button_mouse_entered"]
-[connection signal="mouse_exited" from="QuitButton" to="." method="_on_quit_button_mouse_exited"]
+[node name="TitleScreen" type="Label3D" parent="World_Backgrouns"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 407.385, -0.78623, 329.399)
+modulate = Color(0.31522, 0.389693, 0.710261, 1)
+text = "Ultimatum"
+font = SubResource("SystemFont_gue0n")
+font_size = 131
+
+[node name="Flatterrain" type="Area3D" parent="World_Backgrouns"]
+transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 409.963, -28.3791, 318.445)
+
+[node name="Block-snow-large-tall" type="MeshInstance3D" parent="World_Backgrouns/Flatterrain"]
+transform = Transform3D(0.801315, 0, 1.39386, 0, 1.22325, 0, -1.23391, 0, 0.905188, 0.183276, -0.319749, -6.58856)
+mesh = ExtResource("1_t0pxn")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World_Backgrouns/Flatterrain"]
+shape = SubResource("BoxShape3D_cwrni")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../World_Backgrouns/Flatterrain")
+libraries = {
+&"": SubResource("AnimationLibrary_xahlp")
+}
+autoplay = "Spin"
+speed_scale = -4.0
+
+[connection signal="input_event" from="MainMenu/QuitButton" to="." method="_on_quit_button_input_event"]
+[connection signal="mouse_entered" from="MainMenu/QuitButton" to="." method="_on_quit_button_mouse_entered"]
+[connection signal="mouse_exited" from="MainMenu/QuitButton" to="." method="_on_quit_button_mouse_exited"]
+[connection signal="input_event" from="MainMenu/LocalButton" to="." method="_on_local_button_input_event"]
+[connection signal="mouse_entered" from="MainMenu/LocalButton" to="." method="_on_local_button_mouse_entered"]
+[connection signal="mouse_exited" from="MainMenu/LocalButton" to="." method="_on_local_button_mouse_exited"]

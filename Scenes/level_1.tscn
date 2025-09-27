@@ -264,22 +264,22 @@ transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629
 [node name="Player" parent="." groups=["player"] instance=ExtResource("6_evi0p")]
 transform = Transform3D(-0.999983, 0, -0.00574214, 0, 1, 0, 0.00574214, 0, -0.999983, 0.0712192, 0.694556, 0.18733)
 
-[node name="GOScn" type="CanvasLayer" parent="Player"]
+[node name="GOScn2" type="CanvasLayer" parent="Player"]
 visible = false
 script = ExtResource("11_af3po")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/GOScn"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/GOScn2"]
 libraries = {
 &"": SubResource("AnimationLibrary_6r07y")
 }
 
-[node name="FadeRect" type="ColorRect" parent="Player/GOScn"]
+[node name="FadeRect" type="ColorRect" parent="Player/GOScn2"]
 offset_left = -3.0
 offset_top = -6.0
 offset_right = 1138.0
 offset_bottom = 635.0
 
-[node name="GameOver" type="Label" parent="Player/GOScn"]
+[node name="GameOver" type="Label" parent="Player/GOScn2"]
 anchors_preset = -1
 anchor_top = 0.151
 anchor_bottom = 0.151
@@ -292,22 +292,22 @@ theme_override_font_sizes/font_size = 1
 text = "Game Over"
 label_settings = SubResource("LabelSettings_uy8f0")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Player/GOScn"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Player/GOScn2"]
 offset_left = 521.0
 offset_top = 288.0
 offset_right = 717.0
 offset_bottom = 442.0
 
-[node name="Retry" type="Button" parent="Player/GOScn/HBoxContainer"]
+[node name="Retry" type="Button" parent="Player/GOScn2/HBoxContainer"]
 layout_mode = 2
 text = "Retry
 "
 
-[node name="MainM" type="Button" parent="Player/GOScn/HBoxContainer"]
+[node name="MainM" type="Button" parent="Player/GOScn2/HBoxContainer"]
 layout_mode = 2
 text = "Main Menu
 "
 icon = SubResource("ViewportTexture_6r07y")
 
-[connection signal="pressed" from="Player/GOScn/HBoxContainer/Retry" to="Player/GOScn" method="_on_retry_pressed"]
-[connection signal="pressed" from="Player/GOScn/HBoxContainer/MainM" to="Player/GOScn" method="_on_main_m_pressed"]
+[connection signal="pressed" from="Player/GOScn2/HBoxContainer/Retry" to="Player/GOScn2" method="_on_retry_pressed"]
+[connection signal="pressed" from="Player/GOScn2/HBoxContainer/MainM" to="Player/GOScn2" method="_on_main_m_pressed"]

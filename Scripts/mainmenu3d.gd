@@ -2,17 +2,18 @@
 # MainMenu3D.gd
 extends Node3D
 
-@onready var camera = $Mainmenuscreen
-@onready var local_button = $LocalButton
-@onready var online_button = $OnlineButton
-@onready var quit_button = $QuitButton
+@onready var Anim = get_node("/root/mainMenuroot/AnimationPlayer")
+@onready var camera = get_node("/root/mainMenuroot/MainCamera")
+@onready var local_button = get_node("/root/mainMenuroot/MainMenu/LocalButton")
+@onready var online_button = get_node("/root/mainMenuroot/MainMenu/OnlineButton")
+@onready var quit_button = get_node("/root/mainMenuroot/MainMenu/QuitButton")
+
 
 
 func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		print("Local game started")
-		get_tree().paused = false
-		get_tree().change_scene_to_file("res://Scenes/level_1.tscn")
+		Anim.play("main_to_local")
 
 
 
