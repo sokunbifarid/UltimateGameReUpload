@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://df2pm6v0hbicp"
-path="res://.godot/imported/platform-overhang.obj-4d00cc83be8d28fa539227e64b0edd24.mesh"
+path="res://.godot/imported/platform-overhang.obj-6473e97ce24a5f872ec5bf3f9691b0a8.mesh"
 
 [deps]
 
-files=["res://.godot/imported/platform-overhang.obj-4d00cc83be8d28fa539227e64b0edd24.mesh"]
+files=["res://.godot/imported/platform-overhang.obj-6473e97ce24a5f872ec5bf3f9691b0a8.mesh"]
 
-source_file="res://Models/Platformer/platform-overhang.obj"
-dest_files=["res://.godot/imported/platform-overhang.obj-4d00cc83be8d28fa539227e64b0edd24.mesh", "res://.godot/imported/platform-overhang.obj-4d00cc83be8d28fa539227e64b0edd24.mesh"]
+source_file="res://Models/Platform/platform-overhang.obj"
+dest_files=["res://.godot/imported/platform-overhang.obj-6473e97ce24a5f872ec5bf3f9691b0a8.mesh", "res://.godot/imported/platform-overhang.obj-6473e97ce24a5f872ec5bf3f9691b0a8.mesh"]
 
 [params]
 

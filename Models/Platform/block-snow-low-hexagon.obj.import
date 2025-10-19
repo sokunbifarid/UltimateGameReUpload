@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bg3aq3gdqcyat"
-path="res://.godot/imported/block-snow-low-hexagon.obj-97a2e72916b389fc10d277d58c73bcd7.mesh"
+path="res://.godot/imported/block-snow-low-hexagon.obj-8afbcfc800dd2bb2c16f81dd1f88fbbc.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-low-hexagon.obj-97a2e72916b389fc10d277d58c73bcd7.mesh"]
+files=["res://.godot/imported/block-snow-low-hexagon.obj-8afbcfc800dd2bb2c16f81dd1f88fbbc.mesh"]
 
-source_file="res://Models/Platformer/block-snow-low-hexagon.obj"
-dest_files=["res://.godot/imported/block-snow-low-hexagon.obj-97a2e72916b389fc10d277d58c73bcd7.mesh", "res://.godot/imported/block-snow-low-hexagon.obj-97a2e72916b389fc10d277d58c73bcd7.mesh"]
+source_file="res://Models/Platform/block-snow-low-hexagon.obj"
+dest_files=["res://.godot/imported/block-snow-low-hexagon.obj-8afbcfc800dd2bb2c16f81dd1f88fbbc.mesh", "res://.godot/imported/block-snow-low-hexagon.obj-8afbcfc800dd2bb2c16f81dd1f88fbbc.mesh"]
 
 [params]
 

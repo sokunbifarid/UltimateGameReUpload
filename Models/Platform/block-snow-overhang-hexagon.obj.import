@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cay0j3ft8i048"
-path="res://.godot/imported/block-snow-overhang-hexagon.obj-b1d9e640b9258a828f76b1d5c7df0ab4.mesh"
+path="res://.godot/imported/block-snow-overhang-hexagon.obj-a5517003ae2016b8d8baabc7af1d7425.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-overhang-hexagon.obj-b1d9e640b9258a828f76b1d5c7df0ab4.mesh"]
+files=["res://.godot/imported/block-snow-overhang-hexagon.obj-a5517003ae2016b8d8baabc7af1d7425.mesh"]
 
-source_file="res://Models/Platformer/block-snow-overhang-hexagon.obj"
-dest_files=["res://.godot/imported/block-snow-overhang-hexagon.obj-b1d9e640b9258a828f76b1d5c7df0ab4.mesh", "res://.godot/imported/block-snow-overhang-hexagon.obj-b1d9e640b9258a828f76b1d5c7df0ab4.mesh"]
+source_file="res://Models/Platform/block-snow-overhang-hexagon.obj"
+dest_files=["res://.godot/imported/block-snow-overhang-hexagon.obj-a5517003ae2016b8d8baabc7af1d7425.mesh", "res://.godot/imported/block-snow-overhang-hexagon.obj-a5517003ae2016b8d8baabc7af1d7425.mesh"]
 
 [params]
 

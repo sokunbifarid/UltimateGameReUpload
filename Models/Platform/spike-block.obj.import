@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://beo1mpfgurypo"
-path="res://.godot/imported/spike-block.obj-aa3b90f83a50f66d4f81fd147a51a13e.mesh"
+path="res://.godot/imported/spike-block.obj-55a550442678c842c967d0e82c021846.mesh"
 
 [deps]
 
-files=["res://.godot/imported/spike-block.obj-aa3b90f83a50f66d4f81fd147a51a13e.mesh"]
+files=["res://.godot/imported/spike-block.obj-55a550442678c842c967d0e82c021846.mesh"]
 
-source_file="res://Models/Platformer/spike-block.obj"
-dest_files=["res://.godot/imported/spike-block.obj-aa3b90f83a50f66d4f81fd147a51a13e.mesh", "res://.godot/imported/spike-block.obj-aa3b90f83a50f66d4f81fd147a51a13e.mesh"]
+source_file="res://Models/Platform/spike-block.obj"
+dest_files=["res://.godot/imported/spike-block.obj-55a550442678c842c967d0e82c021846.mesh", "res://.godot/imported/spike-block.obj-55a550442678c842c967d0e82c021846.mesh"]
 
 [params]
 

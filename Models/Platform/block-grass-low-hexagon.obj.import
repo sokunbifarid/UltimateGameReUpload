@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://4cgpa4lpdx5u"
-path="res://.godot/imported/block-grass-low-hexagon.obj-05634c52a3a33ec901fbbbafd40b6da5.mesh"
+path="res://.godot/imported/block-grass-low-hexagon.obj-d87f77ead10b87aaa4a1260f8aafb44c.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-low-hexagon.obj-05634c52a3a33ec901fbbbafd40b6da5.mesh"]
+files=["res://.godot/imported/block-grass-low-hexagon.obj-d87f77ead10b87aaa4a1260f8aafb44c.mesh"]
 
-source_file="res://Models/Platformer/block-grass-low-hexagon.obj"
-dest_files=["res://.godot/imported/block-grass-low-hexagon.obj-05634c52a3a33ec901fbbbafd40b6da5.mesh", "res://.godot/imported/block-grass-low-hexagon.obj-05634c52a3a33ec901fbbbafd40b6da5.mesh"]
+source_file="res://Models/Platform/block-grass-low-hexagon.obj"
+dest_files=["res://.godot/imported/block-grass-low-hexagon.obj-d87f77ead10b87aaa4a1260f8aafb44c.mesh", "res://.godot/imported/block-grass-low-hexagon.obj-d87f77ead10b87aaa4a1260f8aafb44c.mesh"]
 
 [params]
 

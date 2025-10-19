@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dckwxukil1md1"
-path="res://.godot/imported/block-grass-long.obj-1b0c328c2bb84cdcd3a2ecf822728da9.mesh"
+path="res://.godot/imported/block-grass-long.obj-392ef5dc04b7b271e0e973800b8b05f1.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-long.obj-1b0c328c2bb84cdcd3a2ecf822728da9.mesh"]
+files=["res://.godot/imported/block-grass-long.obj-392ef5dc04b7b271e0e973800b8b05f1.mesh"]
 
-source_file="res://Models/Platformer/block-grass-long.obj"
-dest_files=["res://.godot/imported/block-grass-long.obj-1b0c328c2bb84cdcd3a2ecf822728da9.mesh", "res://.godot/imported/block-grass-long.obj-1b0c328c2bb84cdcd3a2ecf822728da9.mesh"]
+source_file="res://Models/Platform/block-grass-long.obj"
+dest_files=["res://.godot/imported/block-grass-long.obj-392ef5dc04b7b271e0e973800b8b05f1.mesh", "res://.godot/imported/block-grass-long.obj-392ef5dc04b7b271e0e973800b8b05f1.mesh"]
 
 [params]
 

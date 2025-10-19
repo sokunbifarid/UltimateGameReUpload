@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bbrj7y7o618l"
-path="res://.godot/imported/stones.obj-f14ddd2c358e3ce59601d6cbebc01a79.mesh"
+path="res://.godot/imported/stones.obj-6b7db8a1be5cf6ae4f1a5309f38afe13.mesh"
 
 [deps]
 
-files=["res://.godot/imported/stones.obj-f14ddd2c358e3ce59601d6cbebc01a79.mesh"]
+files=["res://.godot/imported/stones.obj-6b7db8a1be5cf6ae4f1a5309f38afe13.mesh"]
 
-source_file="res://Models/Platformer/stones.obj"
-dest_files=["res://.godot/imported/stones.obj-f14ddd2c358e3ce59601d6cbebc01a79.mesh", "res://.godot/imported/stones.obj-f14ddd2c358e3ce59601d6cbebc01a79.mesh"]
+source_file="res://Models/Platform/stones.obj"
+dest_files=["res://.godot/imported/stones.obj-6b7db8a1be5cf6ae4f1a5309f38afe13.mesh", "res://.godot/imported/stones.obj-6b7db8a1be5cf6ae4f1a5309f38afe13.mesh"]
 
 [params]
 

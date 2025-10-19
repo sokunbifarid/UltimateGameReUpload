@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://boiebi7424bf1"
-path="res://.godot/imported/block-snow-corner-low.obj-2cc435a77a86050c91a9111bdd1ef3da.mesh"
+path="res://.godot/imported/block-snow-corner-low.obj-0027739d6bc2904b694a7616b2a57442.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-corner-low.obj-2cc435a77a86050c91a9111bdd1ef3da.mesh"]
+files=["res://.godot/imported/block-snow-corner-low.obj-0027739d6bc2904b694a7616b2a57442.mesh"]
 
-source_file="res://Models/Platformer/block-snow-corner-low.obj"
-dest_files=["res://.godot/imported/block-snow-corner-low.obj-2cc435a77a86050c91a9111bdd1ef3da.mesh", "res://.godot/imported/block-snow-corner-low.obj-2cc435a77a86050c91a9111bdd1ef3da.mesh"]
+source_file="res://Models/Platform/block-snow-corner-low.obj"
+dest_files=["res://.godot/imported/block-snow-corner-low.obj-0027739d6bc2904b694a7616b2a57442.mesh", "res://.godot/imported/block-snow-corner-low.obj-0027739d6bc2904b694a7616b2a57442.mesh"]
 
 [params]
 

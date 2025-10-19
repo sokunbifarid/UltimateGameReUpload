@@ -1,10 +1,10 @@
 [gd_scene load_steps=28 format=3 uid="uid://fipqc70kew4o"]
 
-[ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platformer/block-grass-low-large.obj" id="1_vk57k"]
-[ext_resource type="ArrayMesh" uid="uid://co8da657s8jod" path="res://Models/Platformer/block-grass-narrow.obj" id="2_6444e"]
-[ext_resource type="ArrayMesh" uid="uid://bocjqigsytkyn" path="res://Models/Platformer/block-grass-large-tall.obj" id="3_evi0p"]
-[ext_resource type="ArrayMesh" uid="uid://sfpkxlk61sjg" path="res://Models/Platformer/block-grass-large.obj" id="4_lsmp6"]
-[ext_resource type="ArrayMesh" uid="uid://cc5gyq8lwp7hh" path="res://Models/Platformer/block-grass-overhang-low.obj" id="5_xrdnt"]
+[ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_vk57k"]
+[ext_resource type="ArrayMesh" uid="uid://co8da657s8jod" path="res://Models/Platform/block-grass-narrow.obj" id="2_6444e"]
+[ext_resource type="ArrayMesh" uid="uid://bocjqigsytkyn" path="res://Models/Platform/block-grass-large-tall.obj" id="3_evi0p"]
+[ext_resource type="ArrayMesh" uid="uid://sfpkxlk61sjg" path="res://Models/Platform/block-grass-large.obj" id="4_lsmp6"]
+[ext_resource type="ArrayMesh" uid="uid://cc5gyq8lwp7hh" path="res://Models/Platform/block-grass-overhang-low.obj" id="5_xrdnt"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="6_evi0p"]
 [ext_resource type="PackedScene" uid="uid://cjuqudhfasqgm" path="res://Scenes/shark.tscn" id="6_uy8f0"]
 [ext_resource type="PackedScene" uid="uid://d1n3slt2234do" path="res://Scenes/enemy.tscn" id="7_lsmp6"]
@@ -265,7 +265,6 @@ transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629
 transform = Transform3D(-0.999983, 0, -0.00574214, 0, 1, 0, 0.00574214, 0, -0.999983, 0.0712192, 0.694556, 0.18733)
 
 [node name="GOScn2" type="CanvasLayer" parent="Player"]
-visible = false
 script = ExtResource("11_af3po")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Player/GOScn2"]

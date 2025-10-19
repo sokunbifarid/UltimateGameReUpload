@@ -8,10 +8,15 @@ signal OnUpdateScore (score : int)
 @export var jump_force : float = 8.0
 @export var gravity : float = 20.0
 @export var rotation_speed := 5.0
-@onready var camera = $Camera3D
+@onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
 
 
 func _physics_process(delta):
+
+	if is_multiplayer_authority():
+		camera.current = true
+		print("yes is_multiplayer_authority")
+
   	# Apply gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -47,6 +52,9 @@ func _physics_process(delta):
 
 # Add new action "dash" and bind it to Shift
 func _ready():
+	if is_multiplayer_authority():
+		camera.current = true
+		print("yes is_multiplayer_authority")
 	var dash_event = InputEventKey.new()
 	dash_event.keycode = KEY_SHIFT
 	InputMap.add_action("dash")

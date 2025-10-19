@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dxw4seruxrubn"
-path="res://.godot/imported/platform-fortified.obj-2c57b5a2ccc879902249d7ca29c2e741.mesh"
+path="res://.godot/imported/platform-fortified.obj-ac1f2f63fd19561d18fe4398672bab7f.mesh"
 
 [deps]
 
-files=["res://.godot/imported/platform-fortified.obj-2c57b5a2ccc879902249d7ca29c2e741.mesh"]
+files=["res://.godot/imported/platform-fortified.obj-ac1f2f63fd19561d18fe4398672bab7f.mesh"]
 
-source_file="res://Models/Platformer/platform-fortified.obj"
-dest_files=["res://.godot/imported/platform-fortified.obj-2c57b5a2ccc879902249d7ca29c2e741.mesh", "res://.godot/imported/platform-fortified.obj-2c57b5a2ccc879902249d7ca29c2e741.mesh"]
+source_file="res://Models/Platform/platform-fortified.obj"
+dest_files=["res://.godot/imported/platform-fortified.obj-ac1f2f63fd19561d18fe4398672bab7f.mesh", "res://.godot/imported/platform-fortified.obj-ac1f2f63fd19561d18fe4398672bab7f.mesh"]
 
 [params]
 

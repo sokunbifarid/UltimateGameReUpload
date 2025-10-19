@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bw7h2udy2inw6"
-path="res://.godot/imported/crate-item-strong.obj-d18bb07bb826d502c32004e43378a7fc.mesh"
+path="res://.godot/imported/crate-item-strong.obj-3035481b90493c2118926040e751a010.mesh"
 
 [deps]
 
-files=["res://.godot/imported/crate-item-strong.obj-d18bb07bb826d502c32004e43378a7fc.mesh"]
+files=["res://.godot/imported/crate-item-strong.obj-3035481b90493c2118926040e751a010.mesh"]
 
-source_file="res://Models/Platformer/crate-item-strong.obj"
-dest_files=["res://.godot/imported/crate-item-strong.obj-d18bb07bb826d502c32004e43378a7fc.mesh", "res://.godot/imported/crate-item-strong.obj-d18bb07bb826d502c32004e43378a7fc.mesh"]
+source_file="res://Models/Platform/crate-item-strong.obj"
+dest_files=["res://.godot/imported/crate-item-strong.obj-3035481b90493c2118926040e751a010.mesh", "res://.godot/imported/crate-item-strong.obj-3035481b90493c2118926040e751a010.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://hsxi6dbrkpi6"
-path="res://.godot/imported/fence-straight.obj-09feb10783b2eda785f193aafb66c09f.mesh"
+path="res://.godot/imported/fence-straight.obj-1b3c3e3af2e363e7d39248242a55a03e.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fence-straight.obj-09feb10783b2eda785f193aafb66c09f.mesh"]
+files=["res://.godot/imported/fence-straight.obj-1b3c3e3af2e363e7d39248242a55a03e.mesh"]
 
-source_file="res://Models/Platformer/fence-straight.obj"
-dest_files=["res://.godot/imported/fence-straight.obj-09feb10783b2eda785f193aafb66c09f.mesh", "res://.godot/imported/fence-straight.obj-09feb10783b2eda785f193aafb66c09f.mesh"]
+source_file="res://Models/Platform/fence-straight.obj"
+dest_files=["res://.godot/imported/fence-straight.obj-1b3c3e3af2e363e7d39248242a55a03e.mesh", "res://.godot/imported/fence-straight.obj-1b3c3e3af2e363e7d39248242a55a03e.mesh"]
 
 [params]
 

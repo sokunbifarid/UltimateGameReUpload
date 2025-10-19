@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cegs3f04xpbjp"
-path="res://.godot/imported/block-grass-edge.obj-3ded3cb237908669fec5ca81bdfe0eae.mesh"
+path="res://.godot/imported/block-grass-edge.obj-3d427140d190579b04d94e6f824a5ce2.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-edge.obj-3ded3cb237908669fec5ca81bdfe0eae.mesh"]
+files=["res://.godot/imported/block-grass-edge.obj-3d427140d190579b04d94e6f824a5ce2.mesh"]
 
-source_file="res://Models/Platformer/block-grass-edge.obj"
-dest_files=["res://.godot/imported/block-grass-edge.obj-3ded3cb237908669fec5ca81bdfe0eae.mesh", "res://.godot/imported/block-grass-edge.obj-3ded3cb237908669fec5ca81bdfe0eae.mesh"]
+source_file="res://Models/Platform/block-grass-edge.obj"
+dest_files=["res://.godot/imported/block-grass-edge.obj-3d427140d190579b04d94e6f824a5ce2.mesh", "res://.godot/imported/block-grass-edge.obj-3d427140d190579b04d94e6f824a5ce2.mesh"]
 
 [params]
 

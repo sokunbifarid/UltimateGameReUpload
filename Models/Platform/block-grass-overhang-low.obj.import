@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cc5gyq8lwp7hh"
-path="res://.godot/imported/block-grass-overhang-low.obj-1fd896f1c7d6657ef5744a4a1e443ac9.mesh"
+path="res://.godot/imported/block-grass-overhang-low.obj-9aab40d5b609b5d4e7643c45ff873c6a.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-overhang-low.obj-1fd896f1c7d6657ef5744a4a1e443ac9.mesh"]
+files=["res://.godot/imported/block-grass-overhang-low.obj-9aab40d5b609b5d4e7643c45ff873c6a.mesh"]
 
-source_file="res://Models/Platformer/block-grass-overhang-low.obj"
-dest_files=["res://.godot/imported/block-grass-overhang-low.obj-1fd896f1c7d6657ef5744a4a1e443ac9.mesh", "res://.godot/imported/block-grass-overhang-low.obj-1fd896f1c7d6657ef5744a4a1e443ac9.mesh"]
+source_file="res://Models/Platform/block-grass-overhang-low.obj"
+dest_files=["res://.godot/imported/block-grass-overhang-low.obj-9aab40d5b609b5d4e7643c45ff873c6a.mesh", "res://.godot/imported/block-grass-overhang-low.obj-9aab40d5b609b5d4e7643c45ff873c6a.mesh"]
 
 [params]
 

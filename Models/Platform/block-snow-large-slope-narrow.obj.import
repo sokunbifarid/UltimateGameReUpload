@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bau25sh5n7d5g"
-path="res://.godot/imported/block-snow-large-slope-narrow.obj-83fade8deff8bafa9b7698a5961e3cc4.mesh"
+path="res://.godot/imported/block-snow-large-slope-narrow.obj-d293e67c598b2de6e7b6f99c4bd2efda.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-large-slope-narrow.obj-83fade8deff8bafa9b7698a5961e3cc4.mesh"]
+files=["res://.godot/imported/block-snow-large-slope-narrow.obj-d293e67c598b2de6e7b6f99c4bd2efda.mesh"]
 
-source_file="res://Models/Platformer/block-snow-large-slope-narrow.obj"
-dest_files=["res://.godot/imported/block-snow-large-slope-narrow.obj-83fade8deff8bafa9b7698a5961e3cc4.mesh", "res://.godot/imported/block-snow-large-slope-narrow.obj-83fade8deff8bafa9b7698a5961e3cc4.mesh"]
+source_file="res://Models/Platform/block-snow-large-slope-narrow.obj"
+dest_files=["res://.godot/imported/block-snow-large-slope-narrow.obj-d293e67c598b2de6e7b6f99c4bd2efda.mesh", "res://.godot/imported/block-snow-large-slope-narrow.obj-d293e67c598b2de6e7b6f99c4bd2efda.mesh"]
 
 [params]
 

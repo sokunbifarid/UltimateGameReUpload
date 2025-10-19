@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://d08dulgaqmmq1"
-path="res://.godot/imported/lever.obj-f5faced2861b24a007d7190efdd9b399.mesh"
+path="res://.godot/imported/lever.obj-6c53e48edfcaa0900eebdedb15c28a32.mesh"
 
 [deps]
 
-files=["res://.godot/imported/lever.obj-f5faced2861b24a007d7190efdd9b399.mesh"]
+files=["res://.godot/imported/lever.obj-6c53e48edfcaa0900eebdedb15c28a32.mesh"]
 
-source_file="res://Models/Platformer/lever.obj"
-dest_files=["res://.godot/imported/lever.obj-f5faced2861b24a007d7190efdd9b399.mesh", "res://.godot/imported/lever.obj-f5faced2861b24a007d7190efdd9b399.mesh"]
+source_file="res://Models/Platform/lever.obj"
+dest_files=["res://.godot/imported/lever.obj-6c53e48edfcaa0900eebdedb15c28a32.mesh", "res://.godot/imported/lever.obj-6c53e48edfcaa0900eebdedb15c28a32.mesh"]
 
 [params]
 

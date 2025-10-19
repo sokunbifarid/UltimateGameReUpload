@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dpq0cve2mx015"
-path="res://.godot/imported/mushrooms.obj-e1256c157854f97c002064af3f1ee98f.mesh"
+path="res://.godot/imported/mushrooms.obj-0ca107ebf49d75c92f0cbfef7ed5bd33.mesh"
 
 [deps]
 
-files=["res://.godot/imported/mushrooms.obj-e1256c157854f97c002064af3f1ee98f.mesh"]
+files=["res://.godot/imported/mushrooms.obj-0ca107ebf49d75c92f0cbfef7ed5bd33.mesh"]
 
-source_file="res://Models/Platformer/mushrooms.obj"
-dest_files=["res://.godot/imported/mushrooms.obj-e1256c157854f97c002064af3f1ee98f.mesh", "res://.godot/imported/mushrooms.obj-e1256c157854f97c002064af3f1ee98f.mesh"]
+source_file="res://Models/Platform/mushrooms.obj"
+dest_files=["res://.godot/imported/mushrooms.obj-0ca107ebf49d75c92f0cbfef7ed5bd33.mesh", "res://.godot/imported/mushrooms.obj-0ca107ebf49d75c92f0cbfef7ed5bd33.mesh"]
 
 [params]
 

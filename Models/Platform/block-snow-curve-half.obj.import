@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://ma674e0mt46n"
-path="res://.godot/imported/block-snow-curve-half.obj-d78ca70c12b466cd51d77c6757750492.mesh"
+path="res://.godot/imported/block-snow-curve-half.obj-fdc2541a1caf2329e5cc90f516605a10.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-curve-half.obj-d78ca70c12b466cd51d77c6757750492.mesh"]
+files=["res://.godot/imported/block-snow-curve-half.obj-fdc2541a1caf2329e5cc90f516605a10.mesh"]
 
-source_file="res://Models/Platformer/block-snow-curve-half.obj"
-dest_files=["res://.godot/imported/block-snow-curve-half.obj-d78ca70c12b466cd51d77c6757750492.mesh", "res://.godot/imported/block-snow-curve-half.obj-d78ca70c12b466cd51d77c6757750492.mesh"]
+source_file="res://Models/Platform/block-snow-curve-half.obj"
+dest_files=["res://.godot/imported/block-snow-curve-half.obj-fdc2541a1caf2329e5cc90f516605a10.mesh", "res://.godot/imported/block-snow-curve-half.obj-fdc2541a1caf2329e5cc90f516605a10.mesh"]
 
 [params]
 

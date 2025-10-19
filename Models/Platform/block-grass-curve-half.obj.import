@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dxmlka3fr0dg0"
-path="res://.godot/imported/block-grass-curve-half.obj-3b9d27dc6910208460b9949aab6f1ad9.mesh"
+path="res://.godot/imported/block-grass-curve-half.obj-df6f77b920d006245e9f65e6b8e034c7.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-curve-half.obj-3b9d27dc6910208460b9949aab6f1ad9.mesh"]
+files=["res://.godot/imported/block-grass-curve-half.obj-df6f77b920d006245e9f65e6b8e034c7.mesh"]
 
-source_file="res://Models/Platformer/block-grass-curve-half.obj"
-dest_files=["res://.godot/imported/block-grass-curve-half.obj-3b9d27dc6910208460b9949aab6f1ad9.mesh", "res://.godot/imported/block-grass-curve-half.obj-3b9d27dc6910208460b9949aab6f1ad9.mesh"]
+source_file="res://Models/Platform/block-grass-curve-half.obj"
+dest_files=["res://.godot/imported/block-grass-curve-half.obj-df6f77b920d006245e9f65e6b8e034c7.mesh", "res://.godot/imported/block-grass-curve-half.obj-df6f77b920d006245e9f65e6b8e034c7.mesh"]
 
 [params]
 

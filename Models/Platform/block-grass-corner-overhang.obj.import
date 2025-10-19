@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cpk11u6vkeo8u"
-path="res://.godot/imported/block-grass-corner-overhang.obj-dfcd59430e579c5fa1c5b603aec8fc9b.mesh"
+path="res://.godot/imported/block-grass-corner-overhang.obj-4eee8a38f552f1ca84b763323d109886.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-corner-overhang.obj-dfcd59430e579c5fa1c5b603aec8fc9b.mesh"]
+files=["res://.godot/imported/block-grass-corner-overhang.obj-4eee8a38f552f1ca84b763323d109886.mesh"]
 
-source_file="res://Models/Platformer/block-grass-corner-overhang.obj"
-dest_files=["res://.godot/imported/block-grass-corner-overhang.obj-dfcd59430e579c5fa1c5b603aec8fc9b.mesh", "res://.godot/imported/block-grass-corner-overhang.obj-dfcd59430e579c5fa1c5b603aec8fc9b.mesh"]
+source_file="res://Models/Platform/block-grass-corner-overhang.obj"
+dest_files=["res://.godot/imported/block-grass-corner-overhang.obj-4eee8a38f552f1ca84b763323d109886.mesh", "res://.godot/imported/block-grass-corner-overhang.obj-4eee8a38f552f1ca84b763323d109886.mesh"]
 
 [params]
 

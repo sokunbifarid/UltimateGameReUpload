@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bqpkgnd20cyj0"
-path="res://.godot/imported/tree-pine-snow-small.obj-63e07a19f40cb6256db27ec72bf1acfc.mesh"
+path="res://.godot/imported/tree-pine-snow-small.obj-cedc929b8282b6370b78460a58dd7217.mesh"
 
 [deps]
 
-files=["res://.godot/imported/tree-pine-snow-small.obj-63e07a19f40cb6256db27ec72bf1acfc.mesh"]
+files=["res://.godot/imported/tree-pine-snow-small.obj-cedc929b8282b6370b78460a58dd7217.mesh"]
 
-source_file="res://Models/Platformer/tree-pine-snow-small.obj"
-dest_files=["res://.godot/imported/tree-pine-snow-small.obj-63e07a19f40cb6256db27ec72bf1acfc.mesh", "res://.godot/imported/tree-pine-snow-small.obj-63e07a19f40cb6256db27ec72bf1acfc.mesh"]
+source_file="res://Models/Platform/tree-pine-snow-small.obj"
+dest_files=["res://.godot/imported/tree-pine-snow-small.obj-cedc929b8282b6370b78460a58dd7217.mesh", "res://.godot/imported/tree-pine-snow-small.obj-cedc929b8282b6370b78460a58dd7217.mesh"]
 
 [params]
 

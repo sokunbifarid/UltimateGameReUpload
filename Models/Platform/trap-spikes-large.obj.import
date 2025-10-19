@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://wplm3i0306u8"
-path="res://.godot/imported/trap-spikes-large.obj-ca6c219f7244a55246abc86795f86ca8.mesh"
+path="res://.godot/imported/trap-spikes-large.obj-65e5d2dc0c39b1fd32bc0961480be6b8.mesh"
 
 [deps]
 
-files=["res://.godot/imported/trap-spikes-large.obj-ca6c219f7244a55246abc86795f86ca8.mesh"]
+files=["res://.godot/imported/trap-spikes-large.obj-65e5d2dc0c39b1fd32bc0961480be6b8.mesh"]
 
-source_file="res://Models/Platformer/trap-spikes-large.obj"
-dest_files=["res://.godot/imported/trap-spikes-large.obj-ca6c219f7244a55246abc86795f86ca8.mesh", "res://.godot/imported/trap-spikes-large.obj-ca6c219f7244a55246abc86795f86ca8.mesh"]
+source_file="res://Models/Platform/trap-spikes-large.obj"
+dest_files=["res://.godot/imported/trap-spikes-large.obj-65e5d2dc0c39b1fd32bc0961480be6b8.mesh", "res://.godot/imported/trap-spikes-large.obj-65e5d2dc0c39b1fd32bc0961480be6b8.mesh"]
 
 [params]
 

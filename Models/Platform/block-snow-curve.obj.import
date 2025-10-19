@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://deifvnaii6pxg"
-path="res://.godot/imported/block-snow-curve.obj-2bf8050c21f0cdda40d25ff2602b5f96.mesh"
+path="res://.godot/imported/block-snow-curve.obj-5f8ab4f092e763350330f6dae3796723.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-curve.obj-2bf8050c21f0cdda40d25ff2602b5f96.mesh"]
+files=["res://.godot/imported/block-snow-curve.obj-5f8ab4f092e763350330f6dae3796723.mesh"]
 
-source_file="res://Models/Platformer/block-snow-curve.obj"
-dest_files=["res://.godot/imported/block-snow-curve.obj-2bf8050c21f0cdda40d25ff2602b5f96.mesh", "res://.godot/imported/block-snow-curve.obj-2bf8050c21f0cdda40d25ff2602b5f96.mesh"]
+source_file="res://Models/Platform/block-snow-curve.obj"
+dest_files=["res://.godot/imported/block-snow-curve.obj-5f8ab4f092e763350330f6dae3796723.mesh", "res://.godot/imported/block-snow-curve.obj-5f8ab4f092e763350330f6dae3796723.mesh"]
 
 [params]
 

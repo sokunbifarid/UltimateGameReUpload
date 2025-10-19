@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://uiuu4ux13qg4"
-path="res://.godot/imported/coin-gold.obj-f5f091dc4bc3d47c2503ec52a255febd.mesh"
+path="res://.godot/imported/coin-gold.obj-ca1da2676420b892f16b54bc1faa28d5.mesh"
 
 [deps]
 
-files=["res://.godot/imported/coin-gold.obj-f5f091dc4bc3d47c2503ec52a255febd.mesh"]
+files=["res://.godot/imported/coin-gold.obj-ca1da2676420b892f16b54bc1faa28d5.mesh"]
 
-source_file="res://Models/Platformer/coin-gold.obj"
-dest_files=["res://.godot/imported/coin-gold.obj-f5f091dc4bc3d47c2503ec52a255febd.mesh", "res://.godot/imported/coin-gold.obj-f5f091dc4bc3d47c2503ec52a255febd.mesh"]
+source_file="res://Models/Platform/coin-gold.obj"
+dest_files=["res://.godot/imported/coin-gold.obj-ca1da2676420b892f16b54bc1faa28d5.mesh", "res://.godot/imported/coin-gold.obj-ca1da2676420b892f16b54bc1faa28d5.mesh"]
 
 [params]
 

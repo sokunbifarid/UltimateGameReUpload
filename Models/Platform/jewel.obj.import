@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b1x2dhyo2b4i1"
-path="res://.godot/imported/jewel.obj-233bb6c9494bb74c688442a60631b1e2.mesh"
+path="res://.godot/imported/jewel.obj-8e7a3a4956298b6073d9e706bf5df517.mesh"
 
 [deps]
 
-files=["res://.godot/imported/jewel.obj-233bb6c9494bb74c688442a60631b1e2.mesh"]
+files=["res://.godot/imported/jewel.obj-8e7a3a4956298b6073d9e706bf5df517.mesh"]
 
-source_file="res://Models/Platformer/jewel.obj"
-dest_files=["res://.godot/imported/jewel.obj-233bb6c9494bb74c688442a60631b1e2.mesh", "res://.godot/imported/jewel.obj-233bb6c9494bb74c688442a60631b1e2.mesh"]
+source_file="res://Models/Platform/jewel.obj"
+dest_files=["res://.godot/imported/jewel.obj-8e7a3a4956298b6073d9e706bf5df517.mesh", "res://.godot/imported/jewel.obj-8e7a3a4956298b6073d9e706bf5df517.mesh"]
 
 [params]
 

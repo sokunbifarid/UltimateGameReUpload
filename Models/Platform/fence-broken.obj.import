@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cn5yeftl8233k"
-path="res://.godot/imported/fence-broken.obj-a2c43295a031bf0893692567f1855728.mesh"
+path="res://.godot/imported/fence-broken.obj-f06a32dc1179396b1c3762d3c13a946c.mesh"
 
 [deps]
 
-files=["res://.godot/imported/fence-broken.obj-a2c43295a031bf0893692567f1855728.mesh"]
+files=["res://.godot/imported/fence-broken.obj-f06a32dc1179396b1c3762d3c13a946c.mesh"]
 
-source_file="res://Models/Platformer/fence-broken.obj"
-dest_files=["res://.godot/imported/fence-broken.obj-a2c43295a031bf0893692567f1855728.mesh", "res://.godot/imported/fence-broken.obj-a2c43295a031bf0893692567f1855728.mesh"]
+source_file="res://Models/Platform/fence-broken.obj"
+dest_files=["res://.godot/imported/fence-broken.obj-f06a32dc1179396b1c3762d3c13a946c.mesh", "res://.godot/imported/fence-broken.obj-f06a32dc1179396b1c3762d3c13a946c.mesh"]
 
 [params]
 

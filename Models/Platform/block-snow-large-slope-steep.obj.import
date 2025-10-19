@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://dmf40gcj1k5b3"
-path="res://.godot/imported/block-snow-large-slope-steep.obj-0b82c329461ce80e3d1a0d61a2d893e7.mesh"
+path="res://.godot/imported/block-snow-large-slope-steep.obj-67c20ccca33b9ec60a95eef8321b2d40.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-large-slope-steep.obj-0b82c329461ce80e3d1a0d61a2d893e7.mesh"]
+files=["res://.godot/imported/block-snow-large-slope-steep.obj-67c20ccca33b9ec60a95eef8321b2d40.mesh"]
 
-source_file="res://Models/Platformer/block-snow-large-slope-steep.obj"
-dest_files=["res://.godot/imported/block-snow-large-slope-steep.obj-0b82c329461ce80e3d1a0d61a2d893e7.mesh", "res://.godot/imported/block-snow-large-slope-steep.obj-0b82c329461ce80e3d1a0d61a2d893e7.mesh"]
+source_file="res://Models/Platform/block-snow-large-slope-steep.obj"
+dest_files=["res://.godot/imported/block-snow-large-slope-steep.obj-67c20ccca33b9ec60a95eef8321b2d40.mesh", "res://.godot/imported/block-snow-large-slope-steep.obj-67c20ccca33b9ec60a95eef8321b2d40.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://ftsebo2ad1fk"
-path="res://.godot/imported/ladder-long.obj-2d5dc58bfce787477df303a4938cc53e.mesh"
+path="res://.godot/imported/ladder-long.obj-8c7160cd7c9266e866efea98a14f9584.mesh"
 
 [deps]
 
-files=["res://.godot/imported/ladder-long.obj-2d5dc58bfce787477df303a4938cc53e.mesh"]
+files=["res://.godot/imported/ladder-long.obj-8c7160cd7c9266e866efea98a14f9584.mesh"]
 
-source_file="res://Models/Platformer/ladder-long.obj"
-dest_files=["res://.godot/imported/ladder-long.obj-2d5dc58bfce787477df303a4938cc53e.mesh", "res://.godot/imported/ladder-long.obj-2d5dc58bfce787477df303a4938cc53e.mesh"]
+source_file="res://Models/Platform/ladder-long.obj"
+dest_files=["res://.godot/imported/ladder-long.obj-8c7160cd7c9266e866efea98a14f9584.mesh", "res://.godot/imported/ladder-long.obj-8c7160cd7c9266e866efea98a14f9584.mesh"]
 
 [params]
 

@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://c0lso6wgh8onk"
-path="res://.godot/imported/door-open.obj-c662bfb15d41910f69e87b42ef69d038.mesh"
+path="res://.godot/imported/door-open.obj-ad27d5fa1ea57cb2575484cf8f292692.mesh"
 
 [deps]
 
-files=["res://.godot/imported/door-open.obj-c662bfb15d41910f69e87b42ef69d038.mesh"]
+files=["res://.godot/imported/door-open.obj-ad27d5fa1ea57cb2575484cf8f292692.mesh"]
 
-source_file="res://Models/Platformer/door-open.obj"
-dest_files=["res://.godot/imported/door-open.obj-c662bfb15d41910f69e87b42ef69d038.mesh", "res://.godot/imported/door-open.obj-c662bfb15d41910f69e87b42ef69d038.mesh"]
+source_file="res://Models/Platform/door-open.obj"
+dest_files=["res://.godot/imported/door-open.obj-ad27d5fa1ea57cb2575484cf8f292692.mesh", "res://.godot/imported/door-open.obj-ad27d5fa1ea57cb2575484cf8f292692.mesh"]
 
 [params]
 

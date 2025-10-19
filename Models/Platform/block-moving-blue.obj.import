@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bqst48sp8kyri"
-path="res://.godot/imported/block-moving-blue.obj-b4f6301e96251cc9137256d992cf2a11.mesh"
+path="res://.godot/imported/block-moving-blue.obj-aa21c9070b72d8803a8ecc12d4e597d4.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-moving-blue.obj-b4f6301e96251cc9137256d992cf2a11.mesh"]
+files=["res://.godot/imported/block-moving-blue.obj-aa21c9070b72d8803a8ecc12d4e597d4.mesh"]
 
-source_file="res://Models/Platformer/block-moving-blue.obj"
-dest_files=["res://.godot/imported/block-moving-blue.obj-b4f6301e96251cc9137256d992cf2a11.mesh", "res://.godot/imported/block-moving-blue.obj-b4f6301e96251cc9137256d992cf2a11.mesh"]
+source_file="res://Models/Platform/block-moving-blue.obj"
+dest_files=["res://.godot/imported/block-moving-blue.obj-aa21c9070b72d8803a8ecc12d4e597d4.mesh", "res://.godot/imported/block-moving-blue.obj-aa21c9070b72d8803a8ecc12d4e597d4.mesh"]
 
 [params]
 

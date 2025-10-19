@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bo5gaulkfakcm"
-path="res://.godot/imported/block-grass-corner-low.obj-ee1d8aa3326ee6b0c6e3077c292c0557.mesh"
+path="res://.godot/imported/block-grass-corner-low.obj-a93e72a1a4e6a8f0262289c749577923.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-corner-low.obj-ee1d8aa3326ee6b0c6e3077c292c0557.mesh"]
+files=["res://.godot/imported/block-grass-corner-low.obj-a93e72a1a4e6a8f0262289c749577923.mesh"]
 
-source_file="res://Models/Platformer/block-grass-corner-low.obj"
-dest_files=["res://.godot/imported/block-grass-corner-low.obj-ee1d8aa3326ee6b0c6e3077c292c0557.mesh", "res://.godot/imported/block-grass-corner-low.obj-ee1d8aa3326ee6b0c6e3077c292c0557.mesh"]
+source_file="res://Models/Platform/block-grass-corner-low.obj"
+dest_files=["res://.godot/imported/block-grass-corner-low.obj-a93e72a1a4e6a8f0262289c749577923.mesh", "res://.godot/imported/block-grass-corner-low.obj-a93e72a1a4e6a8f0262289c749577923.mesh"]
 
 [params]
 

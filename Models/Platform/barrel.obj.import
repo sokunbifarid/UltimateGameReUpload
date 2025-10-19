@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cjm2x142uvn3u"
-path="res://.godot/imported/barrel.obj-6c1b7de6530a8fa6fbc5cd937063edd1.mesh"
+path="res://.godot/imported/barrel.obj-7b7150b8bfe070531361b5b68252ad75.mesh"
 
 [deps]
 
-files=["res://.godot/imported/barrel.obj-6c1b7de6530a8fa6fbc5cd937063edd1.mesh"]
+files=["res://.godot/imported/barrel.obj-7b7150b8bfe070531361b5b68252ad75.mesh"]
 
-source_file="res://Models/Platformer/barrel.obj"
-dest_files=["res://.godot/imported/barrel.obj-6c1b7de6530a8fa6fbc5cd937063edd1.mesh", "res://.godot/imported/barrel.obj-6c1b7de6530a8fa6fbc5cd937063edd1.mesh"]
+source_file="res://Models/Platform/barrel.obj"
+dest_files=["res://.godot/imported/barrel.obj-7b7150b8bfe070531361b5b68252ad75.mesh", "res://.godot/imported/barrel.obj-7b7150b8bfe070531361b5b68252ad75.mesh"]
 
 [params]
 

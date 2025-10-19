@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://blckldqtxi6pf"
-path="res://.godot/imported/block-grass-low-narrow.obj-9038e7762232d4297660824bd2a061f8.mesh"
+path="res://.godot/imported/block-grass-low-narrow.obj-a6e96e00e7df240950ee29a2f90f5e60.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-low-narrow.obj-9038e7762232d4297660824bd2a061f8.mesh"]
+files=["res://.godot/imported/block-grass-low-narrow.obj-a6e96e00e7df240950ee29a2f90f5e60.mesh"]
 
-source_file="res://Models/Platformer/block-grass-low-narrow.obj"
-dest_files=["res://.godot/imported/block-grass-low-narrow.obj-9038e7762232d4297660824bd2a061f8.mesh", "res://.godot/imported/block-grass-low-narrow.obj-9038e7762232d4297660824bd2a061f8.mesh"]
+source_file="res://Models/Platform/block-grass-low-narrow.obj"
+dest_files=["res://.godot/imported/block-grass-low-narrow.obj-a6e96e00e7df240950ee29a2f90f5e60.mesh", "res://.godot/imported/block-grass-low-narrow.obj-a6e96e00e7df240950ee29a2f90f5e60.mesh"]
 
 [params]
 

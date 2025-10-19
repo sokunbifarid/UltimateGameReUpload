@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cpyir446kwxa7"
-path="res://.godot/imported/block-moving.obj-613759289bfe3ac7c2d34a498edce27e.mesh"
+path="res://.godot/imported/block-moving.obj-1a8832063142a9862b0a1679b59a077b.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-moving.obj-613759289bfe3ac7c2d34a498edce27e.mesh"]
+files=["res://.godot/imported/block-moving.obj-1a8832063142a9862b0a1679b59a077b.mesh"]
 
-source_file="res://Models/Platformer/block-moving.obj"
-dest_files=["res://.godot/imported/block-moving.obj-613759289bfe3ac7c2d34a498edce27e.mesh", "res://.godot/imported/block-moving.obj-613759289bfe3ac7c2d34a498edce27e.mesh"]
+source_file="res://Models/Platform/block-moving.obj"
+dest_files=["res://.godot/imported/block-moving.obj-1a8832063142a9862b0a1679b59a077b.mesh", "res://.godot/imported/block-moving.obj-1a8832063142a9862b0a1679b59a077b.mesh"]
 
 [params]
 

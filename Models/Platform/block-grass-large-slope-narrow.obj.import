@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://52rpadwhd3q2"
-path="res://.godot/imported/block-grass-large-slope-narrow.obj-6854bf5aa8e0d12d28e4f487b9c0928d.mesh"
+path="res://.godot/imported/block-grass-large-slope-narrow.obj-e08642d6692caca97364a31224df9491.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-large-slope-narrow.obj-6854bf5aa8e0d12d28e4f487b9c0928d.mesh"]
+files=["res://.godot/imported/block-grass-large-slope-narrow.obj-e08642d6692caca97364a31224df9491.mesh"]
 
-source_file="res://Models/Platformer/block-grass-large-slope-narrow.obj"
-dest_files=["res://.godot/imported/block-grass-large-slope-narrow.obj-6854bf5aa8e0d12d28e4f487b9c0928d.mesh", "res://.godot/imported/block-grass-large-slope-narrow.obj-6854bf5aa8e0d12d28e4f487b9c0928d.mesh"]
+source_file="res://Models/Platform/block-grass-large-slope-narrow.obj"
+dest_files=["res://.godot/imported/block-grass-large-slope-narrow.obj-e08642d6692caca97364a31224df9491.mesh", "res://.godot/imported/block-grass-large-slope-narrow.obj-e08642d6692caca97364a31224df9491.mesh"]
 
 [params]
 

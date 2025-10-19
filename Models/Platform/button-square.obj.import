@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://u114uig1g6h1"
-path="res://.godot/imported/button-square.obj-b1ca2bf875921269362037254f8e90c3.mesh"
+path="res://.godot/imported/button-square.obj-d122cc058b8ef2c3bd2e217980d2d179.mesh"
 
 [deps]
 
-files=["res://.godot/imported/button-square.obj-b1ca2bf875921269362037254f8e90c3.mesh"]
+files=["res://.godot/imported/button-square.obj-d122cc058b8ef2c3bd2e217980d2d179.mesh"]
 
-source_file="res://Models/Platformer/button-square.obj"
-dest_files=["res://.godot/imported/button-square.obj-b1ca2bf875921269362037254f8e90c3.mesh", "res://.godot/imported/button-square.obj-b1ca2bf875921269362037254f8e90c3.mesh"]
+source_file="res://Models/Platform/button-square.obj"
+dest_files=["res://.godot/imported/button-square.obj-d122cc058b8ef2c3bd2e217980d2d179.mesh", "res://.godot/imported/button-square.obj-d122cc058b8ef2c3bd2e217980d2d179.mesh"]
 
 [params]
 

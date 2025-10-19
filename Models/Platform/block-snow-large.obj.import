@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://cwptbvaioco2l"
-path="res://.godot/imported/block-snow-large.obj-a9cccd74ce4572be5515338fcd68f7ae.mesh"
+path="res://.godot/imported/block-snow-large.obj-e827bf1e7c37d24ddf0b5a900dac3a9f.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-large.obj-a9cccd74ce4572be5515338fcd68f7ae.mesh"]
+files=["res://.godot/imported/block-snow-large.obj-e827bf1e7c37d24ddf0b5a900dac3a9f.mesh"]
 
-source_file="res://Models/Platformer/block-snow-large.obj"
-dest_files=["res://.godot/imported/block-snow-large.obj-a9cccd74ce4572be5515338fcd68f7ae.mesh", "res://.godot/imported/block-snow-large.obj-a9cccd74ce4572be5515338fcd68f7ae.mesh"]
+source_file="res://Models/Platform/block-snow-large.obj"
+dest_files=["res://.godot/imported/block-snow-large.obj-e827bf1e7c37d24ddf0b5a900dac3a9f.mesh", "res://.godot/imported/block-snow-large.obj-e827bf1e7c37d24ddf0b5a900dac3a9f.mesh"]
 
 [params]
 

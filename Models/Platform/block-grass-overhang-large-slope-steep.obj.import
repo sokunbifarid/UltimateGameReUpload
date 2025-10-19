@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bxv174h4kt50h"
-path="res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8cec34781d2d2739115863163f9d7ba0.mesh"
+path="res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8a969f1286dac384204bde312385d64e.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8cec34781d2d2739115863163f9d7ba0.mesh"]
+files=["res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8a969f1286dac384204bde312385d64e.mesh"]
 
-source_file="res://Models/Platformer/block-grass-overhang-large-slope-steep.obj"
-dest_files=["res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8cec34781d2d2739115863163f9d7ba0.mesh", "res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8cec34781d2d2739115863163f9d7ba0.mesh"]
+source_file="res://Models/Platform/block-grass-overhang-large-slope-steep.obj"
+dest_files=["res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8a969f1286dac384204bde312385d64e.mesh", "res://.godot/imported/block-grass-overhang-large-slope-steep.obj-8a969f1286dac384204bde312385d64e.mesh"]
 
 [params]
 

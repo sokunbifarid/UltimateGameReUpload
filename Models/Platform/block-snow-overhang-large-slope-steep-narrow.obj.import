@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b63nemcevcn3w"
-path="res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-840bdaa9081b7032f42cd44419fda710.mesh"
+path="res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-d585f42a1eb4f11c71edc8e7d415c9ee.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-840bdaa9081b7032f42cd44419fda710.mesh"]
+files=["res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-d585f42a1eb4f11c71edc8e7d415c9ee.mesh"]
 
-source_file="res://Models/Platformer/block-snow-overhang-large-slope-steep-narrow.obj"
-dest_files=["res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-840bdaa9081b7032f42cd44419fda710.mesh", "res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-840bdaa9081b7032f42cd44419fda710.mesh"]
+source_file="res://Models/Platform/block-snow-overhang-large-slope-steep-narrow.obj"
+dest_files=["res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-d585f42a1eb4f11c71edc8e7d415c9ee.mesh", "res://.godot/imported/block-snow-overhang-large-slope-steep-narrow.obj-d585f42a1eb4f11c71edc8e7d415c9ee.mesh"]
 
 [params]
 

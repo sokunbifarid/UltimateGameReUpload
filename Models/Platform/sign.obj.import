@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://db0f8w7exh26m"
-path="res://.godot/imported/sign.obj-e8fe61b237268faabaa46b007d46155e.mesh"
+path="res://.godot/imported/sign.obj-3e8330d0447f067105752e7eb4d63a83.mesh"
 
 [deps]
 
-files=["res://.godot/imported/sign.obj-e8fe61b237268faabaa46b007d46155e.mesh"]
+files=["res://.godot/imported/sign.obj-3e8330d0447f067105752e7eb4d63a83.mesh"]
 
-source_file="res://Models/Platformer/sign.obj"
-dest_files=["res://.godot/imported/sign.obj-e8fe61b237268faabaa46b007d46155e.mesh", "res://.godot/imported/sign.obj-e8fe61b237268faabaa46b007d46155e.mesh"]
+source_file="res://Models/Platform/sign.obj"
+dest_files=["res://.godot/imported/sign.obj-3e8330d0447f067105752e7eb4d63a83.mesh", "res://.godot/imported/sign.obj-3e8330d0447f067105752e7eb4d63a83.mesh"]
 
 [params]
 

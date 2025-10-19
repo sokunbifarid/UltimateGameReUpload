@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://d200lksawku20"
-path="res://.godot/imported/block-snow-overhang-low-narrow.obj-37395179b5da9f4afd7a46602533e023.mesh"
+path="res://.godot/imported/block-snow-overhang-low-narrow.obj-4b5d5b2e87f418b65b4681cde3cb764b.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-overhang-low-narrow.obj-37395179b5da9f4afd7a46602533e023.mesh"]
+files=["res://.godot/imported/block-snow-overhang-low-narrow.obj-4b5d5b2e87f418b65b4681cde3cb764b.mesh"]
 
-source_file="res://Models/Platformer/block-snow-overhang-low-narrow.obj"
-dest_files=["res://.godot/imported/block-snow-overhang-low-narrow.obj-37395179b5da9f4afd7a46602533e023.mesh", "res://.godot/imported/block-snow-overhang-low-narrow.obj-37395179b5da9f4afd7a46602533e023.mesh"]
+source_file="res://Models/Platform/block-snow-overhang-low-narrow.obj"
+dest_files=["res://.godot/imported/block-snow-overhang-low-narrow.obj-4b5d5b2e87f418b65b4681cde3cb764b.mesh", "res://.godot/imported/block-snow-overhang-low-narrow.obj-4b5d5b2e87f418b65b4681cde3cb764b.mesh"]
 
 [params]
 

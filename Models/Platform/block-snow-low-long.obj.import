@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://b71fplhmtc8xw"
-path="res://.godot/imported/block-snow-low-long.obj-01eb262cb644420afd534bccf577e2a2.mesh"
+path="res://.godot/imported/block-snow-low-long.obj-5a54148617339ecc3b88d90c50902934.mesh"
 
 [deps]
 
-files=["res://.godot/imported/block-snow-low-long.obj-01eb262cb644420afd534bccf577e2a2.mesh"]
+files=["res://.godot/imported/block-snow-low-long.obj-5a54148617339ecc3b88d90c50902934.mesh"]
 
-source_file="res://Models/Platformer/block-snow-low-long.obj"
-dest_files=["res://.godot/imported/block-snow-low-long.obj-01eb262cb644420afd534bccf577e2a2.mesh", "res://.godot/imported/block-snow-low-long.obj-01eb262cb644420afd534bccf577e2a2.mesh"]
+source_file="res://Models/Platform/block-snow-low-long.obj"
+dest_files=["res://.godot/imported/block-snow-low-long.obj-5a54148617339ecc3b88d90c50902934.mesh", "res://.godot/imported/block-snow-low-long.obj-5a54148617339ecc3b88d90c50902934.mesh"]
 
 [params]
 
