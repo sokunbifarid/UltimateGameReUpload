@@ -6,7 +6,7 @@ var target_y_rot : float = 0
 @onready var player : CharacterBody3D = get_parent()
 
 func _process (delta):
-	_smooth_rotation(delta)
+	#_smooth_rotation(delta)
 	_move_bob(delta)
 
 func _smooth_rotation (delta):
@@ -14,9 +14,13 @@ func _smooth_rotation (delta):
 	
 	if vel.x != 0 or vel.z != 0:
 		target_y_rot = atan2(vel.x, vel.z)
-	
-	rotation.y = lerp_angle(rotation.y, target_y_rot, rotate_rate * delta)
+	if is_multiplayer_authority():
+		$"../Label".text = "vel.x " + str(vel.x) +" vel.z : "+ str(vel.z) 
+		$"../Label".text += "\n target y rot : "+ str(target_y_rot)
 
+	rotation.y = lerp_angle(rotation.y, target_y_rot, rotate_rate * delta)
+	if is_multiplayer_authority():
+		$"../Label".text += "\n rotation y : " + str(rotation.y)
 func _move_bob (_delta):
 	var move_speed = player.velocity.length()
 	

@@ -241,5 +241,11 @@ spring_length = 2.0
 [node name="Camera3D" type="Camera3D" parent="third_person_controller/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62268e-07, 0, 3)
 
+[node name="Label" type="Label" parent="."]
+offset_left = 547.0
+offset_top = 10.0
+offset_right = 587.0
+offset_bottom = 33.0
+
 [connection signal="pressed" from="GOScn/HBoxContainer/Retry" to="GOScn" method="_on_retry_pressed"]
 [connection signal="pressed" from="GOScn/HBoxContainer/MainM" to="GOScn" method="_on_main_m_pressed"]
