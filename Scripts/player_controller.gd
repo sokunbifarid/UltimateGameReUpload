@@ -10,6 +10,9 @@ signal OnUpdateScore (score : int)
 @onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
 
 func _ready():
+	# Wait a frame to ensure multiplayer authority is properly set
+	await get_tree().process_frame
+	
 	print("Player ready - Name: %s, Authority: %s, Multiplayer ID: %s" % [name, get_multiplayer_authority(), multiplayer.get_unique_id()])
 	
 	# Only enable camera for local player

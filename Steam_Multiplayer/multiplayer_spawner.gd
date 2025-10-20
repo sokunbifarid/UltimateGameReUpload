@@ -20,7 +20,7 @@ func _setup_spawner():
 	print("Setting up spawner, authority: %s, unique_id: %s" % [is_multiplayer_authority(), multiplayer.get_unique_id()])
 	
 	if is_multiplayer_authority():
-		# Spawn player for the server/host
+		# HOST: Spawn player for the server/host
 		var host_id = multiplayer.get_unique_id()
 		print("HOST: Spawning player for host ID: %s" % host_id)
 		spawn(host_id)
@@ -28,15 +28,25 @@ func _setup_spawner():
 		# Connect signals for when other players join/leave
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(remove_player)
+	else:
+		# CLIENT: Do nothing - wait for host to spawn us
+		print("CLIENT: Waiting for host to spawn my player...")
 
 func _on_peer_connected(id: int):
-	print("MultiplayerSpawner: Peer %s connected, spawning player" % id)
-	spawn(id)
+	# Only spawn if we're the server/host
+	if is_multiplayer_authority():
+		print("HOST: Peer %s connected, spawning their player" % id)
+		spawn(id)
 
 func _process(delta: float) -> void:
 	label.text = "Players: " + str(players.keys())
 
 func spawnPlayer(peer_id):
+	# Prevent duplicate spawns
+	if players.has(peer_id):
+		print("WARNING: Player %s already exists, skipping spawn" % peer_id)
+		return players[peer_id]
+	
 	print("Spawning player for peer ID: %s" % peer_id)
 	var p = player_Scene.instantiate()
 	p.name = "Player_" + str(peer_id)

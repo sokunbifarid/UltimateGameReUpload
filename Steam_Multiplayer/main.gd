@@ -117,6 +117,8 @@ func join_lobby(this_lobby_id: int):
 	is_host = false
 	Steam.joinLobby(this_lobby_id)
 
+# Replace the _on_lobby_joined function in main.gd with this:
+
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	print("Lobby joined callback - lobby_id: %s, response: %s" % [this_lobby_id, response])
 	
@@ -139,11 +141,15 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 				
 			multiplayer.multiplayer_peer = peer
 			print("CLIENT: Multiplayer peer created with ID: %s" % multiplayer.get_unique_id())
+			
+			# Wait a moment for connection to establish
+			await get_tree().create_timer(0.5).timeout
 
 			host.hide()
 			refresh.hide()
 			$LobbyContainer/Lobbies.hide()
 			
+			# Client spawns level AFTER connection is established
 			if not has_spawned_level:
 				var level_path: String = Steam.getLobbyData(lobby_id, "level")
 				
@@ -151,6 +157,7 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 					print("CLIENT: Spawning level from lobby data: %s" % level_path)
 					ms.spawn(level_path)
 					has_spawned_level = true
+					print("CLIENT: Level spawned, waiting for player spawn...")
 				else:
 					print("CLIENT: No level data found in lobby")
 		
@@ -183,7 +190,6 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 		
 		print("Failed to join this chat room: %s" % fail_reason)
 		open_lobby_list()
-
 func _on_peer_connected(id: int):
 	print("Peer connected with multiplayer ID: %s" % id)
 
