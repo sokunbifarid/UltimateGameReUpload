@@ -13,10 +13,9 @@ signal OnUpdateScore (score : int)
 
 func _physics_process(delta):
 
-	if is_multiplayer_authority():
-		camera.current = true
-		print("yes is_multiplayer_authority")
-
+	if !is_multiplayer_authority():
+		return
+	
   	# Apply gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta

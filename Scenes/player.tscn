@@ -127,7 +127,6 @@ properties/2/replication_mode = 1
 script = ExtResource("1_cvnsp")
 
 [node name="Model" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00609231, 0.397833, -0.0085437)
 mesh = ExtResource("5_x3wgy")
 script = ExtResource("3_6t5aa")
 
