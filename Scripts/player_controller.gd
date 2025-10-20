@@ -12,6 +12,7 @@ signal OnUpdateScore(score)
 
 #=========================================================
 @onready var charater_mesh: MeshInstance3D = $Model
+@onready var go_scn: CanvasLayer = $GOScn
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
@@ -20,7 +21,7 @@ const RUN_SPEED: float = 7
 const WALK_SPEED: float = 2
 const JUMP_VELOCITY = 4.5
 
-# Enhanced movement variablabel_2les
+# Enhanced movement variables
 var can_move: bool = true
 var is_moving: bool = false
 var cur_speed: float = 2
@@ -32,34 +33,47 @@ var health :int = 100
 var movement_vector: Vector3 = Vector3.ZERO
 var target_velocity: Vector3 = Vector3.ZERO
 var is_talking: bool = false
+
+# Jump variables
+var was_on_floor: bool = true
 ''' ======================================================================='''
 
 func _ready() -> void:
+	# Wait a frame to ensure multiplayer authority is properly set
+	await get_tree().process_frame
+	
 	if is_multiplayer_authority():
 		camera.current = true
+		print("Player %s: Camera enabled (LOCAL)" % name)
+	else:
+		camera.current = false
+		print("Player %s: Camera disabled (REMOTE)" % name)
+
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority():
 		return
 
 	# Enhanced movement with polish
 	handle_movement(delta)
+	handle_jump()
 	move_and_slide()
 	update_movement_state_tracking(delta)
-	#if Input.is_action_just_pressed("free_mouse"):
-		#if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		#else:
-			#Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	check_landing()
 
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
-
-	
-	
 	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
+
+func handle_jump():
+	# Jump handling
+	if Input.is_action_just_pressed("Jump") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+func check_landing():
+
+	was_on_floor = is_on_floor()
 
 # PRESERVED: Original third person movement
 func handle_third_person_movement(delta: float):
@@ -116,8 +130,6 @@ func face_direction(direction: Vector3, delta: float):
 
 		charater_mesh.rotation.y = new_rotation
 
-
-
 # PRESERVED: Original movement setter
 func set_movements(movements: bool):
 	velocity = Vector3.ZERO
@@ -140,22 +152,8 @@ func get_movement_direction() -> Vector3:
 func is_airborne() -> bool:
 	return not is_on_floor()
 
-# NEW: Enhanced landing and impact system
-func _on_player_landed(impact_force: float):
-	# Hook for landing effects - screen shake, particles, sound, etc.
-	# You can connect this signal to other systems
+func increase_score(value):
 	pass
-
-func _on_player_jumped():
-	# Hook for jump effects - particles, sound, etc.
-	pass
-
-func _on_movement_started():
-	# Hook for movement start effects - dust particles, footstep sounds, etc.
-	pass
-
-func _on_movement_stopped():
-	# Hook for movement stop effects - stopping dust, etc.
-	pass
-func apply_item_effects(item):
-	pass
+func take_damage(value):
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	go_scn.show()

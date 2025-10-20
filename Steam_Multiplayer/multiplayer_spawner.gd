@@ -38,8 +38,8 @@ func _on_peer_connected(id: int):
 		print("HOST: Peer %s connected, spawning their player" % id)
 		spawn(id)
 
-func _process(delta: float) -> void:
-	label.text = "Players: " + str(players.keys())
+#func _process(delta: float) -> void:
+	#label.text = "Players: " + str(players.keys())
 
 func spawnPlayer(peer_id):
 	# Prevent duplicate spawns

@@ -8,6 +8,8 @@ var steam_username: String = ""
 var is_host: bool = false
 var has_spawned_level: bool = false
 
+@export var level : PackedScene
+
 @onready var host: Button = $host
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
 @onready var refresh: Button = $refresh
@@ -81,7 +83,7 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		Steam.setLobbyJoinable(lobby_id, true)
 		Steam.setLobbyData(lobby_id, "name", str(steam_username + "'s Lobby"))
 		Steam.setLobbyData(lobby_id, "mode", "game")
-		Steam.setLobbyData(lobby_id, "level", "res://Steam_Multiplayer/level.tscn")
+		Steam.setLobbyData(lobby_id, "level", level.resource_path)
 
 		# Create host peer
 		var peer = SteamMultiplayerPeer.new()
@@ -104,7 +106,7 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		if not has_spawned_level:
 			print("HOST: Spawning level...")
-			ms.spawn("res://Steam_Multiplayer/level.tscn")
+			ms.spawn(level.resource_path)
 			has_spawned_level = true
 		
 	else:
