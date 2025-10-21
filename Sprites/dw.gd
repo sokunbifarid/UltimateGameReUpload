@@ -27,19 +27,19 @@ func _physics_process(delta):
 	
 	
 	move_and_slide()
-	
-func take_damage (amount : int):
-	health -= amount
-	OnTakeDamage.emit(health)
-	if health <=0:
-		_game_over()
-		 
-func _game_over():
-	PlayerSts.score = 0 
-	get_tree().reload_current_scene()
-
-func increase_score (amount : int):
-	PlayerSts.score += amount
-	OnUpdateScore.emit(PlayerSts.score)
-	print(PlayerSts.score)
-	
+	#
+#func take_damage (amount : int):
+	#health -= amount
+	#OnTakeDamage.emit(health)
+	#if health <=0:
+		#_game_over()
+		 #
+#func _game_over():
+	#PlayerSts.score = 0 
+	#get_tree().reload_current_scene()
+#
+#func increase_score (amount : int):
+	#PlayerSts.score += amount
+	#OnUpdateScore.emit(PlayerSts.score)
+	#print(PlayerSts.score)
+	#

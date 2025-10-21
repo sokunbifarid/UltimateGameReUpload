@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3 uid="uid://ce705c0ystq6c"]
+
+[ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="1_mdkri"]
+[ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="1_mng1v"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="2_235bc"]
+[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="3_mdkri"]
+[ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_3nbr6"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3nbr6"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_btth6"]
+sky_material = SubResource("ProceduralSkyMaterial_3nbr6")
+
+[sub_resource type="Environment" id="Environment_ov5p2"]
+background_mode = 2
+sky = SubResource("Sky_btth6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_fm6ub"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_235bc"]
+albedo_texture = ExtResource("1_mng1v")
+uv1_triplanar = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mdkri"]
+data = PackedVector3Array(-25, 0.5, 25, 25, 0.5, 25, -25, -0.5, 25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, 0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, 25, 25, 0.5, -25, 25, -0.5, -25, 25, -0.5, 25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, -25, 25, 0.5, 25, -25, 0.5, 25, 25, 0.5, -25, -25, 0.5, 25, -25, 0.5, -25, 25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, -25, -0.5, -25, 25, -0.5, 25, 25, -0.5, -25, -25, -0.5, -25)
+
+[node name="Character_Selection" type="Node3D" groups=["Selector"]]
+script = ExtResource("1_mdkri")
+mouse_sensitivity = 0.01
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ov5p2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_fm6ub")
+surface_material_override/0 = SubResource("StandardMaterial3D_235bc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_mdkri")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.99341685, 0.11455571, 0, -0.11455571, 0.99341685, 0.03193128, 1.1003504, 2.1293726)
+current = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="characters" type="Node3D" parent="."]
+
+[node name="Player" parent="characters" instance=ExtResource("2_235bc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50509393, 0)
+
+[node name="Player2" parent="characters" instance=ExtResource("3_mdkri")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.516, 0)
+
+[node name="arrows_container" type="Node3D" parent="."]
+
+[node name="arrows" parent="arrows_container" instance=ExtResource("5_3nbr6")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.28508198, 0.73809206, 1.3788217)
+direction = 0
+
+[node name="arrows2" parent="arrows_container" instance=ExtResource("5_3nbr6")]
+transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 0.30245936, 0.73809206, 1.3788217)

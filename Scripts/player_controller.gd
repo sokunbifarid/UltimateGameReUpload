@@ -38,19 +38,21 @@ var is_talking: bool = false
 var was_on_floor: bool = true
 ''' ======================================================================='''
 
+var in_selection: bool = false
+
 func _ready() -> void:
 	# Wait a frame to ensure multiplayer authority is properly set
 	await get_tree().process_frame
-	
-	if is_multiplayer_authority():
-		camera.current = true
-		print("Player %s: Camera enabled (LOCAL)" % name)
-	else:
-		camera.current = false
-		print("Player %s: Camera disabled (REMOTE)" % name)
+	if camera:
+		if is_multiplayer_authority():
+			camera.current = true
+			print("Player %s: Camera enabled (LOCAL)" % name)
+		else:
+			camera.current = false
+			print("Player %s: Camera disabled (REMOTE)" % name)
 
 func _physics_process(delta: float) -> void:
-	if !is_multiplayer_authority():
+	if !is_multiplayer_authority() or in_selection:
 		return
 
 	# Enhanced movement with polish
@@ -59,7 +61,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	update_movement_state_tracking(delta)
 	check_landing()
-
+	fall_damage()
+func disable_camera():
+	camera.queue_free()
+	in_selection = true
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -151,6 +156,11 @@ func get_movement_direction() -> Vector3:
 
 func is_airborne() -> bool:
 	return not is_on_floor()
+
+func fall_damage():
+	if global_position.y < -10:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		go_scn.show()
 
 func increase_score(value):
 	pass
