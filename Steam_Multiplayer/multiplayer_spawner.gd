@@ -2,6 +2,7 @@ extends MultiplayerSpawner
 
 @export var player_Scene : PackedScene
 @onready var label: Label = $"../Label"
+@onready var player_spawn_point: Node3D = $"../playerSpawnPoint"
 
 var players = {}
 
@@ -53,11 +54,13 @@ func spawnPlayer(peer_id):
 	p.set_multiplayer_authority(peer_id)
 	
 	# Set spawn position based on number of players
-	var spawn_offset = Vector3(players.size() * 3.0, 1, 0)
-	p.position = spawn_offset
+	#var spawn_offset = Vector3(players.size() * 3.0, 1, 0)
+	p.global_position = player_spawn_point.global_position
+
 	
+	#
 	players[peer_id] = p
-	print("Player spawned at position: %s with authority: %s" % [spawn_offset, peer_id])
+	#print("Player spawned at position: %s with authority: %s" % [spawn_offset, peer_id])
 	return p
 
 func remove_player(peer_id):
