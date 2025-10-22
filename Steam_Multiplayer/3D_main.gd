@@ -1,5 +1,20 @@
 extends Node
 
+@export var level : PackedScene
+
+@onready var host: Button = $host
+@onready var ms: MultiplayerSpawner = $MultiplayerSpawner
+@onready var refresh: Button = $refresh
+@onready var lobby: Node3D = $"../lobbies_container/lobby"
+@onready var lobbies_container: Node3D = $"../lobbies_container"
+@onready var refresh_lobbies: Area3D = $"../refresh_Lobbies"
+@onready var host_lobby: Area3D = $"../Host_Lobby"
+@onready var main_menu: Area3D = $"../Main_Menu"
+@onready var _main_menu: Node3D = $"../../MainMenu"
+@onready var local_menu: Node3D = $"../../LocalMenu"
+@onready var settings: Node3D = $"../../Settings"
+@onready var world_backgrouns: Node3D = $"../../World_Backgrouns"
+
 var lobby_id: int = 0
 var lobby_members: Array = []
 var lobby_members_max: int = 10
@@ -8,15 +23,10 @@ var steam_username: String = ""
 var is_host: bool = false
 var has_spawned_level: bool = false
 
-@export var level : PackedScene
-
-@onready var host: Button = $host
-@onready var ms: MultiplayerSpawner = $MultiplayerSpawner
-@onready var refresh: Button = $refresh
-@onready var lobby: Node3D = $"../lobbies_container/lobby"
-@onready var lobbies_container: Node3D = $"../lobbies_container"
-
+var to_hide : Array 
 func _ready() -> void:
+	to_hide = [host_lobby,refresh_lobbies,lobbies_container,main_menu,
+	_main_menu,local_menu,settings,world_backgrouns]
 	add_to_group("lobby_manager")
 	
 	await get_tree().process_frame
@@ -54,6 +64,15 @@ func _ready() -> void:
 	ms.spawn_function = spawn_level
 	
 	open_lobby_list()
+	refresh_lobbies.input_event.connect(_on_refresh_lobbies_pressed)
+	host_lobby.input_event.connect(_on_host_lobby_pressed)
+
+func _on_refresh_lobbies_pressed(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		open_lobby_list()
+func _on_host_lobby_pressed(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		_on_host_connected()
 
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
@@ -71,7 +90,7 @@ func _on_host_connected():
 		print("Creating lobby...")
 		is_host = true
 		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
-		host.disabled = true
+		#host.disabled = true
 	else:
 		print("Already in a lobby: %s" % lobby_id)
 
@@ -102,9 +121,9 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		get_lobby_members()
 		
-		host.hide()
-		refresh.hide()
-		$LobbyContainer/Lobbies.hide()
+	
+		get_tree().change_scene_to_packed(level)
+
 		
 		if not has_spawned_level:
 			print("HOST: Spawning level...")
@@ -147,10 +166,10 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 			# Wait a moment for connection to establish
 			await get_tree().create_timer(0.5).timeout
 
-			host.hide()
-			refresh.hide()
-			$LobbyContainer/Lobbies.hide()
-			
+			for ele in to_hide:
+				ele.hide()
+				$"../../MainCamera".current = false
+
 			# Client spawns level AFTER connection is established
 			if not has_spawned_level:
 				var level_path: String = Steam.getLobbyData(lobby_id, "level")
@@ -233,7 +252,7 @@ func open_lobby_list():
 
 func _on_lobby_match_list(these_lobbies: Array) -> void:
 	print("Received %s lobbies" % these_lobbies.size())
-	
+	var lobbies_container: Node3D = $LobbyContainer/Lobbies
 	for this_lobby in these_lobbies:
 		var lobby_name: String = Steam.getLobbyData(this_lobby, "name")
 		var lobby_mode: String = Steam.getLobbyData(this_lobby, "mode")
@@ -245,27 +264,60 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 		lobby_button.set_name("lobby_%s" % this_lobby)
 		lobby_button.pressed.connect(join_lobby.bind(this_lobby))
 		
-		$LobbyContainer/Lobbies.add_child(lobby_button)
+		lobbies_container.add_child(lobby_button)
 var curr_pos = Vector2.ZERO
 func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 	print("Received %s lobbies" % these_lobbies.size())
+	
+	# Hide the template lobby
 	lobby.hide()
+	
+	# Clear existing lobby instances (keep the template)
+	for lobbi in lobbies_container.get_children():
+		if lobbi.name == "lobby": 
+			continue
+		lobbi.queue_free()  # Fixed: was 'lobby' instead of 'lobbi'
+	
+	# Reset position counter
+	curr_pos.y = 0
+	
+	# Create lobby entries for each received lobby
 	for this_lobby in these_lobbies:
 		var lobby_name: String = Steam.getLobbyData(this_lobby, "name")
-		#var lobby_mode: String = Steam.getLobbyData(this_lobby, "mode")
-		#var lobby_num_members: int = Steam.getNumLobbyMembers(this_lobby)
-		#
-		var new_lobby : Node3D = lobby.duplicate()
-		new_lobby.get_node("Label3D").text = str(lobby_name) if lobby_name.length() > 0 else "."
-		new_lobby.get_node("Label3D").name = ("lobby_%s" % this_lobby)
-
+		var lobby_mode: String = Steam.getLobbyData(this_lobby, "mode")
+		var lobby_num_members: int = Steam.getNumLobbyMembers(this_lobby)
 		
+		var display_text = str(lobby_name) if lobby_name.length() > 0 else "Unnamed Lobby"
+		if display_text == "Unnamed Lobby": continue
+		# Duplicate the template lobby
+		var new_lobby: Node3D = lobby.duplicate()
+		new_lobby.name = "lobby_%s" % this_lobby  # Give it a unique name
+		
+		# Set the lobby display text
+		new_lobby.get_node("Label3D").text = display_text
+		
+		# Store lobby ID for later use (when joining)
+		new_lobby.set_meta("lobby_id", this_lobby)
+		new_lobby.set_meta("lobby_name", lobby_name)
+		new_lobby.set_meta("lobby_mode", lobby_mode)
+		new_lobby.set_meta("num_members", lobby_num_members)
+		
+		# Add to container
 		lobbies_container.add_child(new_lobby)
-		new_lobby.global_position.y += curr_pos.y
+		
+		# Position the lobby entry
+		new_lobby.position = Vector3(0, curr_pos.y, 0)
 		new_lobby.show()
 		
+		# Increment position for next lobby
 		curr_pos.y += 1.5
-	lobbies_container._add_functionality()
+	
+	print("Total lobbies displayed: ", lobbies_container.get_child_count() - 1)  # -1 for template
+	
+	# Add functionality to lobby buttons (click handlers, hover effects, etc.)
+	if lobbies_container.has_method("_add_functionality"):
+		lobbies_container._add_functionality()
+
 func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)

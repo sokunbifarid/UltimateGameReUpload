@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=23 format=3 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
@@ -22,6 +22,15 @@ size = Vector3(4, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wtcdj"]
 size = Vector3(4, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gyi8l"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2e5yr"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shoky"]
+size = Vector3(3, 1, 1)
 
 [sub_resource type="Sky" id="Sky_cwrni"]
 
@@ -169,7 +178,7 @@ transform = Transform3D(0.998888, 0, 0.0471413, 0, 1, 0, -0.0471413, 0, 0.998888
 target_position = Vector3(0, 0, -1)
 
 [node name="OnlineMenu" type="Node3D" parent="."]
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 
 [node name="Host_Lobby" type="Area3D" parent="OnlineMenu"]
 transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, 1.0321437, -4.7683716e-07)
@@ -207,8 +216,26 @@ text = "Resfresh Lobbies"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
+[node name="Main_Menu" type="Area3D" parent="OnlineMenu"]
+transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, -2.3213499, -4.7683716e-07)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OnlineMenu/Main_Menu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_p50pd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OnlineMenu/Main_Menu"]
+mesh = SubResource("BoxMesh_t0pxn")
+skeleton = NodePath("../../..")
+
+[node name="Label3D" type="Label3D" parent="OnlineMenu/Main_Menu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Main Menu"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
+
 [node name="lobbies_container" type="Node3D" parent="OnlineMenu"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3658047, -2.7835927, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.633364, -2.7835927, 0)
 script = ExtResource("2_wtcdj")
 
 [node name="lobby" type="Node3D" parent="OnlineMenu/lobbies_container"]
@@ -222,7 +249,7 @@ skeleton = NodePath("../../../..")
 [node name="Label3D" type="Label3D" parent="OnlineMenu/lobbies_container/lobby"]
 transform = Transform3D(0.85222954, 0.06975343, -0.51849717, 3.7252903e-09, 0.9910718, 0.13332891, 0.523168, -0.11362684, 0.84462065, -0.2178545, 0.13102269, 0.537271)
 modulate = Color(0.905882, 0.25098, 0.231373, 1)
-text = "Lobby 1"
+text = "No internet"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
@@ -249,7 +276,7 @@ transform = Transform3D(0.82275957, 0, 0.56838953, 0, 1, 0, -0.56838953, 0, 0.82
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/QuitButton"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
-shape = SubResource("BoxShape3D_p50pd")
+shape = SubResource("BoxShape3D_gyi8l")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/QuitButton"]
 mesh = SubResource("BoxMesh_t0pxn")
@@ -267,7 +294,7 @@ transform = Transform3D(0.74336666, 0, 0.66888416, 0, 1, 0, -0.66888416, 0, 0.74
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/OnlineButton"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
-shape = SubResource("BoxShape3D_p50pd")
+shape = SubResource("BoxShape3D_2e5yr")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/OnlineButton"]
 mesh = SubResource("BoxMesh_t0pxn")
@@ -286,7 +313,7 @@ transform = Transform3D(0.7674562, 0, 0.6411014, 0, 1, 0, -0.6411014, 0, 0.76745
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenu/LocalButton"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.130394, 0.18142, 0)
-shape = SubResource("BoxShape3D_p50pd")
+shape = SubResource("BoxShape3D_shoky")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenu/LocalButton"]
 mesh = SubResource("BoxMesh_t0pxn")
@@ -346,8 +373,6 @@ autoplay = "Spin"
 speed_scale = -4.0
 
 [connection signal="input_event" from="MainMenu/QuitButton" to="." method="_on_quit_button_input_event"]
-[connection signal="mouse_entered" from="MainMenu/QuitButton" to="." method="_on_quit_button_mouse_entered"]
-[connection signal="mouse_exited" from="MainMenu/QuitButton" to="." method="_on_quit_button_mouse_exited"]
 [connection signal="input_event" from="MainMenu/OnlineButton" to="." method="_on_online_button_input_event"]
 [connection signal="input_event" from="MainMenu/LocalButton" to="." method="_on_local_button_input_event"]
 [connection signal="mouse_entered" from="MainMenu/LocalButton" to="." method="_on_local_button_mouse_entered"]

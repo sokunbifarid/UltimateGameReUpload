@@ -24,8 +24,6 @@ func _input_event(camera: Node, event: InputEvent, event_position: Vector3, norm
 
 func _on_mouse_entered(area3d):
 	var box = area3d.get_parent()
-	print(box.name)
-	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_BACK)

@@ -43,6 +43,7 @@ func _physics_process(delta: float) -> void:
 func disable_camera():
 	camera.current = false
 	in_selection  = true
+	print("is camera: ",camera.current)
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta

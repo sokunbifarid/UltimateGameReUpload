@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://blsmnbf0hl7km"]
+[gd_scene load_steps=11 format=3 uid="uid://blsmnbf0hl7km"]
 
 [ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="1_7d8o2"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="2_0seqp"]
 [ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="3_3fvjc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0seqp"]
@@ -43,7 +42,7 @@ shadow_enabled = true
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../Node3D3")
 script = ExtResource("1_7d8o2")
-player_Scene = ExtResource("2_0seqp")
+player_Scene = ExtResource("3_3fvjc")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_0seqp")
@@ -53,9 +52,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3fvjc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_3fvjc")
-
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.01296, 0)
 
 [node name="Node3D2" type="Node3D" parent="."]
 
@@ -102,6 +98,3 @@ offset_bottom = 91.0
 
 [node name="Node3D3" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
-
-[node name="Player" parent="." instance=ExtResource("3_3fvjc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6163336, 0)
