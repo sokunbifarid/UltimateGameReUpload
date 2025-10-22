@@ -8,6 +8,8 @@ extends Node3D
 @onready var online_button = get_node("/root/mainMenuroot/MainMenu/OnlineButton")
 @onready var quit_button = get_node("/root/mainMenuroot/MainMenu/QuitButton")
 
+@onready var online_menu: Node3D = $OnlineMenu
+@onready var main_menu: Node3D = $MainMenu
 
 
 func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
@@ -17,7 +19,8 @@ func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_posit
 
 func _on_online_button_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
-		pass
+		main_menu.hide()
+		online_menu.show()
 
 func _on_quit_button_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:

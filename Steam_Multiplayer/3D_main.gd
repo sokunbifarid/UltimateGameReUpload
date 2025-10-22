@@ -14,6 +14,7 @@ var has_spawned_level: bool = false
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
 @onready var refresh: Button = $refresh
 @onready var lobby: Node3D = $"../lobbies_container/lobby"
+@onready var lobbies_container: Node3D = $"../lobbies_container"
 
 func _ready() -> void:
 	add_to_group("lobby_manager")
@@ -22,8 +23,8 @@ func _ready() -> void:
 	
 	if not Steam.isSteamRunning():
 		print("ERROR: Steam is not running!")
-		host.disabled = true
-		refresh.disabled = true
+		#host.disabled = true
+		#refresh.disabled = true
 		return
 	
 	steam_id = Steam.getSteamID()
@@ -31,20 +32,20 @@ func _ready() -> void:
 	
 	if steam_id == 0 or steam_username == "":
 		print("ERROR: Failed to get Steam user data!")
-		host.disabled = true
-		refresh.disabled = true
+		#host.disabled = true
+		#refresh.disabled = true
 		return
 	
 	print("Steam initialized - ID: %s, Name: %s" % [steam_id, steam_username])
 	
-	host.pressed.connect(_on_host_connected)
-	refresh.pressed.connect(_on_refresh_pressed)
+	#host.pressed.connect(_on_host_connected)
+	#refresh.pressed.connect(_on_refresh_pressed)
 	
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.lobby_chat_update.connect(_on_lobby_chat_update)
 	Steam.persona_state_change.connect(_on_persona_change)
-	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	Steam.lobby_match_list.connect(_on_3D_lobby_match_list)
 	
 	# Connect multiplayer signals
 	multiplayer.peer_connected.connect(_on_peer_connected)
@@ -245,26 +246,26 @@ func _on_lobby_match_list(these_lobbies: Array) -> void:
 		lobby_button.pressed.connect(join_lobby.bind(this_lobby))
 		
 		$LobbyContainer/Lobbies.add_child(lobby_button)
+var curr_pos = Vector2.ZERO
 func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 	print("Received %s lobbies" % these_lobbies.size())
-	
+	lobby.hide()
 	for this_lobby in these_lobbies:
 		var lobby_name: String = Steam.getLobbyData(this_lobby, "name")
-		var lobby_mode: String = Steam.getLobbyData(this_lobby, "mode")
-		var lobby_num_members: int = Steam.getNumLobbyMembers(this_lobby)
-		
-		var lobby_button: Button = Button.new()
+		#var lobby_mode: String = Steam.getLobbyData(this_lobby, "mode")
+		#var lobby_num_members: int = Steam.getNumLobbyMembers(this_lobby)
+		#
 		var new_lobby : Node3D = lobby.duplicate()
-		new_lobby.get_node("Label3D").text = ("Lobby %s: %s [%s] - %s/%s Player(s)" % [this_lobby, lobby_name, lobby_mode, lobby_num_members, lobby_members_max])
+		new_lobby.get_node("Label3D").text = str(lobby_name) if lobby_name.length() > 0 else "."
 		new_lobby.get_node("Label3D").name = ("lobby_%s" % this_lobby)
 
-		#lobby_button.set_text("Lobby %s: %s [%s] - %s/%s Player(s)" % [this_lobby, lobby_name, lobby_mode, lobby_num_members, lobby_members_max])
-		lobby_button.set_size(Vector2(800, 50))
-		lobby_button.set_name("lobby_%s" % this_lobby)
-		lobby_button.pressed.connect(join_lobby.bind(this_lobby))
 		
-		$LobbyContainer/Lobbies.add_child(lobby_button)
-
+		lobbies_container.add_child(new_lobby)
+		new_lobby.global_position.y += curr_pos.y
+		new_lobby.show()
+		
+		curr_pos.y += 1.5
+	lobbies_container._add_functionality()
 func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
