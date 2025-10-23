@@ -13,8 +13,7 @@ func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Ve
 			if continue_btn:
 				var char = get_tree().get_first_node_in_group("Selector").in_front_char
 				MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group("Selector").get_selected_player()
-				get_tree().change_scene_to_packed(MultiplayerGlobal.selected_level)
-
+				get_tree().change_scene_to_packed(MultiplayerGlobal.main_menu_scene)
 			elif direction == Direction.LEFT:
 				get_tree().get_first_node_in_group("Selector").left_click()
 			elif direction == Direction.RIGHT:

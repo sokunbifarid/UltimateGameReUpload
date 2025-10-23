@@ -1,6 +1,5 @@
 extends Node3D
 
-@export var character_selection_scene : PackedScene
 @onready var character_selection: Area3D = $Character_Selection
 @onready var host_lobby: Area3D = $Host_Lobby
 @onready var refresh_lobbies: Area3D = $refresh_Lobbies
@@ -24,7 +23,7 @@ func _on_host_lobby_pressed(camera: Node, event: InputEvent, event_position: Vec
 
 func _on_character_selection_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
-		get_tree().change_scene_to_packed(character_selection_scene)
+		get_tree().change_scene_to_packed(MultiplayerGlobal.character_selection_scene)
 
 func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 	
@@ -63,7 +62,8 @@ func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 		
 		# Add to container
 		lobbies_container.add_child(new_lobby)
-		
+		var area : Area3D = new_lobby.get_node("Area3D")
+		area.input_event.connect(_on_area_3d_input_event.bind(this_lobby))
 		# Position the lobby entry
 		new_lobby.position = Vector3(0, curr_pos.y, 0)
 		new_lobby.show()
@@ -76,3 +76,7 @@ func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 	# Add functionality to lobby buttons (click handlers, hover effects, etc.)
 	if lobbies_container.has_method("_add_functionality"):
 		lobbies_container._add_functionality()
+
+func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int,this_lobby) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		Multiplayer.join_lobby(this_lobby)

@@ -14,13 +14,10 @@ func _input(event):
 func _add_functionality():
 	for box in get_children():
 		var area3D: Area3D = box.get_node("Area3D")
-		area3D.input_event.connect(_input_event.bind(area3D))
 		area3D.mouse_entered.connect(_on_mouse_entered.bind(area3D))
 		area3D.mouse_exited.connect(_on_mouse_exited.bind(area3D))
 		
-func _input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int, area3D: Area3D) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		print("Parent name: ", area3D.get_parent().name)
+
 
 func _on_mouse_entered(area3d):
 	var box = area3d.get_parent()

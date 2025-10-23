@@ -11,6 +11,7 @@ extends Node3D
 @onready var online_menu: Node3D = $OnlineMenu
 @onready var main_menu: Node3D = $MainMenu
 @onready var back_to_main_menu: Area3D = $OnlineMenu/Main_Menu
+@onready var character_selection: Area3D = $OnlineMenu/Character_Selection
 
 # Store initial positions
 var main_menu_start_pos: Vector3
@@ -35,6 +36,7 @@ func connect_signals():
 	host_lobby.mouse_entered.connect(_on_mouse_entered.bind(host_lobby))
 	refresh_lobbies.mouse_entered.connect(_on_mouse_entered.bind(refresh_lobbies))
 	back_to_main_menu.mouse_entered.connect(_on_mouse_entered.bind(back_to_main_menu))
+	character_selection.mouse_entered.connect(_on_mouse_entered.bind(character_selection))
 
 	local_button.mouse_exited.connect(_on_mouse_exited.bind(local_button))
 	online_button.mouse_exited.connect(_on_mouse_exited.bind(online_button))
@@ -42,7 +44,8 @@ func connect_signals():
 	host_lobby.mouse_exited.connect(_on_mouse_exited.bind(host_lobby))
 	refresh_lobbies.mouse_exited.connect(_on_mouse_exited.bind(refresh_lobbies))
 	back_to_main_menu.mouse_exited.connect(_on_mouse_exited.bind(back_to_main_menu))
-	
+	character_selection.mouse_exited.connect(_on_mouse_exited.bind(character_selection))
+
 	back_to_main_menu.input_event.connect(_on_main_menu_input_event)
 
 

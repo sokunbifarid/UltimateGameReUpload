@@ -1,10 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=21 format=3 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
 [ext_resource type="Script" uid="uid://osefpjqgu331" path="res://Steam_Multiplayer/online_menu.gd" id="2_2e5yr"]
 [ext_resource type="Script" uid="uid://dcikloa5uqb3q" path="res://Scenes/lobbies_container.gd" id="2_wtcdj"]
-[ext_resource type="PackedScene" uid="uid://ce705c0ystq6c" path="res://Scenes/character_selection.tscn" id="5_gyi8l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p50pd"]
 size = Vector3(3, 1, 1)
@@ -179,7 +178,6 @@ target_position = Vector3(0, 0, -1)
 [node name="OnlineMenu" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 script = ExtResource("2_2e5yr")
-character_selection_scene = ExtResource("5_gyi8l")
 
 [node name="Host_Lobby" type="Area3D" parent="OnlineMenu"]
 transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, 1.0321437, -4.7683716e-07)
