@@ -49,7 +49,7 @@ func spawnPlayer(peer_id):
 		return players[peer_id]
 	
 	print("Spawning player for peer ID: %s" % peer_id)
-	var p = player_Scene.instantiate()
+	var p = MultiplayerGlobal.selected_player.instantiate()
 	p.name = "Player_" + str(peer_id)
 	p.set_multiplayer_authority(peer_id)
 	

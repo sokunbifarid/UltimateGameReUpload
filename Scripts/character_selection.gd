@@ -3,9 +3,6 @@ extends Node3D
 @onready var player: CharacterBody3D = $characters/Player
 @onready var player_2: CharacterBody3D = $characters/Player2
 
-var in_front_char 
-var in_left_char
-var in_right_char
 
 @export var spacing: float = 1.5
 @export var shift_duration: float = 0.4
@@ -15,9 +12,15 @@ var in_right_char
 @export_group("Mouse Rotation")
 @export var mouse_sensitivity: float = 0.006
 
+var in_front_char 
+var in_left_char
+var in_right_char
+
 var is_shifting: bool = false
 var rotation_y: float = 0.0
 var is_dragging: bool = false
+
+var player_scenes :Dictionary 
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -26,6 +29,16 @@ func _ready() -> void:
 	in_front_char = player
 	in_right_char = player_2
 	in_left_char = null
+	
+	player_scenes = {
+	player : preload("res://Scenes/player.tscn"),
+	player_2 : preload("res://Player/Scenes/player.tscn")
+	}
+	print(player_scenes[player])
+func get_selected_player():
+	for _player in player_scenes:
+		if in_front_char == _player:
+			return player_scenes[_player]
 
 func _input(event: InputEvent) -> void:
 	# Track left mouse button state

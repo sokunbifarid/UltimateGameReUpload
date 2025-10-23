@@ -1,0 +1,5 @@
+extends Node
+
+
+var selected_level : PackedScene
+var selected_player : PackedScene

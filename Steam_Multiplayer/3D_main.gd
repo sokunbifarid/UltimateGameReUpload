@@ -1,6 +1,7 @@
 extends Node
 
 @export var level : PackedScene
+@export var character_selector : PackedScene
 
 @onready var host: Button = $host
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
@@ -121,8 +122,8 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		get_lobby_members()
 		
-	
-		get_tree().change_scene_to_packed(level)
+		MultiplayerGlobal.selected_level = level
+		get_tree().change_scene_to_packed(character_selector)
 
 		
 		if not has_spawned_level:

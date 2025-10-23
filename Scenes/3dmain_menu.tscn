@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=24 format=3 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://dcikloa5uqb3q" path="res://Scenes/lobbies_container.gd" id="2_wtcdj"]
 [ext_resource type="PackedScene" uid="uid://blsmnbf0hl7km" path="res://Steam_Multiplayer/level.tscn" id="3_wtcdj"]
 [ext_resource type="Script" uid="uid://dsweeooakf4js" path="res://Steam_Multiplayer/steam.gd" id="4_gyi8l"]
+[ext_resource type="PackedScene" uid="uid://ce705c0ystq6c" path="res://Scenes/character_selection.tscn" id="5_gyi8l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p50pd"]
 size = Vector3(3, 1, 1)
@@ -262,6 +263,7 @@ shape = SubResource("BoxShape3D_wtcdj")
 [node name="multiplayer" type="Node" parent="OnlineMenu"]
 script = ExtResource("2_fd1vy")
 level = ExtResource("3_wtcdj")
+character_selector = ExtResource("5_gyi8l")
 
 [node name="Steam" type="Node" parent="OnlineMenu/multiplayer"]
 script = ExtResource("4_gyi8l")
