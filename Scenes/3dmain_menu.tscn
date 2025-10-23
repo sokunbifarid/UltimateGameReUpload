@@ -1,11 +1,9 @@
-[gd_scene load_steps=24 format=3 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=22 format=3 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
-[ext_resource type="Script" uid="uid://bqi7fkukn4q4m" path="res://Steam_Multiplayer/3D_main.gd" id="2_fd1vy"]
+[ext_resource type="Script" uid="uid://osefpjqgu331" path="res://Steam_Multiplayer/online_menu.gd" id="2_2e5yr"]
 [ext_resource type="Script" uid="uid://dcikloa5uqb3q" path="res://Scenes/lobbies_container.gd" id="2_wtcdj"]
-[ext_resource type="PackedScene" uid="uid://blsmnbf0hl7km" path="res://Steam_Multiplayer/level.tscn" id="3_wtcdj"]
-[ext_resource type="Script" uid="uid://dsweeooakf4js" path="res://Steam_Multiplayer/steam.gd" id="4_gyi8l"]
 [ext_resource type="PackedScene" uid="uid://ce705c0ystq6c" path="res://Scenes/character_selection.tscn" id="5_gyi8l"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p50pd"]
@@ -180,6 +178,8 @@ target_position = Vector3(0, 0, -1)
 
 [node name="OnlineMenu" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
+script = ExtResource("2_2e5yr")
+character_selection_scene = ExtResource("5_gyi8l")
 
 [node name="Host_Lobby" type="Area3D" parent="OnlineMenu"]
 transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, 1.0321437, -4.7683716e-07)
@@ -235,6 +235,24 @@ text = "Main Menu"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
+[node name="Character_Selection" type="Area3D" parent="OnlineMenu"]
+transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, 2.641474, -4.7683716e-07)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OnlineMenu/Character_Selection"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_p50pd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OnlineMenu/Character_Selection"]
+mesh = SubResource("BoxMesh_t0pxn")
+skeleton = NodePath("../../..")
+
+[node name="Label3D" type="Label3D" parent="OnlineMenu/Character_Selection"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Charater Selection"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
+
 [node name="lobbies_container" type="Node3D" parent="OnlineMenu"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.633364, -2.7835927, 0)
 script = ExtResource("2_wtcdj")
@@ -259,17 +277,6 @@ transform = Transform3D(0.85222954, 0.06975343, -0.51849717, 3.7252903e-09, 0.99
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="OnlineMenu/lobbies_container/lobby/Area3D"]
 shape = SubResource("BoxShape3D_wtcdj")
-
-[node name="multiplayer" type="Node" parent="OnlineMenu"]
-script = ExtResource("2_fd1vy")
-level = ExtResource("3_wtcdj")
-character_selector = ExtResource("5_gyi8l")
-
-[node name="Steam" type="Node" parent="OnlineMenu/multiplayer"]
-script = ExtResource("4_gyi8l")
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="OnlineMenu/multiplayer"]
-spawn_path = NodePath(".")
 
 [node name="MainMenu" type="Node3D" parent="."]
 

@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 PlayerStats="*res://Scripts/player_stats.gd"
 MultiplayerGlobal="*res://Steam_Multiplayer/multiplayer_global.gd"
+Multiplayer="*res://Steam_Multiplayer/multiplayer.tscn"
 
 [global_group]
 

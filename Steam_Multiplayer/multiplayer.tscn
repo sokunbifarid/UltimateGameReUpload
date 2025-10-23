@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://61mc7e76n5ce"]
+
+[ext_resource type="Script" uid="uid://bqi7fkukn4q4m" path="res://Steam_Multiplayer/3D_main.gd" id="1_fnipn"]
+[ext_resource type="PackedScene" uid="uid://c3wsgeatay1hg" path="res://Steam_Multiplayer/level.tscn" id="2_66nf8"]
+[ext_resource type="PackedScene" uid="uid://ce705c0ystq6c" path="res://Scenes/character_selection.tscn" id="3_u5fgm"]
+[ext_resource type="Script" uid="uid://dsweeooakf4js" path="res://Steam_Multiplayer/steam.gd" id="4_tcr5q"]
+
+[node name="multiplayer" type="Node"]
+script = ExtResource("1_fnipn")
+level = ExtResource("2_66nf8")
+character_selector = ExtResource("3_u5fgm")
+
+[node name="Steam" type="Node" parent="."]
+script = ExtResource("4_tcr5q")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath(".")
