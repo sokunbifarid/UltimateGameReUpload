@@ -198,9 +198,6 @@ shape = SubResource("ConvexPolygonShape3D_6r07y")
 
 [node name="Collectibles" type="Node" parent="."]
 
-[node name="Shark" parent="Collectibles" instance=ExtResource("6_uy8f0")]
-transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.40814, -5.9712)
-
 [node name="Coin" parent="Collectibles" instance=ExtResource("8_xrdnt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.70662, 1.81196, -2.92554)
 
@@ -231,6 +228,9 @@ move_direction = Vector3(7, 1.5, 0)
 
 [node name="Enemy2" parent="Enemies" instance=ExtResource("7_lsmp6")]
 transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629, 0.319145, 2.07795, -16.27)
+
+[node name="Shark" parent="Enemies" instance=ExtResource("6_uy8f0")]
+transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.9733999, -5.9712)
 
 [node name="Player" parent="." groups=["player"] instance=ExtResource("6_evi0p")]
 transform = Transform3D(-0.999983, 0, -0.00574214, 0, 1, 0, 0.00574214, 0, -0.999983, 0.0712192, 0.96136975, 0.2695446)

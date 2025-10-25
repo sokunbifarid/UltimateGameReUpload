@@ -28,7 +28,7 @@ func _physics_process(_delta):
 		
 		velocity = direction * speed
 		move_and_slide()
-		
+		print(velocity)
 		# Damage on proximity with cooldown
 		var distance_to_player = global_transform.origin.distance_to(player.global_transform.origin)
 		if distance_to_player < damage_distance and can_damage:

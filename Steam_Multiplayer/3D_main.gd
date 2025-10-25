@@ -2,7 +2,8 @@ extends Node
 
 signal lobbies_refreshed(lobbies)
 
-@export var level : PackedScene
+@export var levels : Array[PackedScene]
+@export var waiting_level : PackedScene
 @export var character_selector : PackedScene
 
 @onready var host: Button = $host
@@ -15,12 +16,12 @@ signal lobbies_refreshed(lobbies)
 
 var lobby_id: int = 0
 var lobby_members: Array = []
-var lobby_members_max: int = 10
+var lobby_members_max: int = 4
 var steam_id: int = 0
 var steam_username: String = ""
 var is_host: bool = false
 var has_spawned_level: bool = false
-
+var num_of_players: int = 1
 func _ready() -> void:
 
 	add_to_group("lobby_manager")
@@ -90,11 +91,11 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 	if connect == 1:
 		lobby_id = this_lobby_id
 		print("Created a lobby: %s" % lobby_id)
-		
+		var _selected_level = levels.pick_random()
 		Steam.setLobbyJoinable(lobby_id, true)
 		Steam.setLobbyData(lobby_id, "name", str(steam_username + "'s Lobby"))
 		Steam.setLobbyData(lobby_id, "mode", "game")
-		Steam.setLobbyData(lobby_id, "level", level.resource_path)
+		Steam.setLobbyData(lobby_id, "level", _selected_level.resource_path)
 
 		# Create host peer
 		var peer = SteamMultiplayerPeer.new()
@@ -111,14 +112,10 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		get_lobby_members()
 		
-		MultiplayerGlobal.selected_level = level
-		get_tree().change_scene_to_packed(level)  # Uncomment this line
+		MultiplayerGlobal.selected_level = _selected_level
+		get_tree().change_scene_to_packed(_selected_level)  # Uncomment this line
 		has_spawned_level = true
-		
-		#if not has_spawned_level:
-			#print("HOST: Spawning level...")
-			#ms.spawn(level.resource_path)
-			#has_spawned_level = true
+
 		
 	else:
 		print("Failed to create lobby. Error code: %s" % connect)
