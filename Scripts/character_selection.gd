@@ -9,6 +9,7 @@ extends Node3D
 @export var shift_ease: Tween.EaseType = Tween.EASE_OUT
 @export var shift_trans: Tween.TransitionType = Tween.TRANS_BACK
 
+
 @export_group("Mouse Rotation")
 @export var mouse_sensitivity: float = 0.006
 

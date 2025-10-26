@@ -268,6 +268,7 @@ transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545
 shadow_enabled = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00069850683, 0.0063619614, -0.0045936108)
 mesh = SubResource("BoxMesh_fm6ub")
 surface_material_override/0 = SubResource("StandardMaterial3D_235bc")
 

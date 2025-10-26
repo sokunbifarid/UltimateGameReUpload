@@ -21,6 +21,10 @@ PlayerStats="*res://Scripts/player_stats.gd"
 MultiplayerGlobal="*res://Steam_Multiplayer/multiplayer_global.gd"
 Multiplayer="*res://Steam_Multiplayer/multiplayer.tscn"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [global_group]
 
 player="for anything with player"
@@ -76,3 +80,7 @@ run={
 
 anti_aliasing/quality/msaa_2d=2
 anti_aliasing/quality/msaa_3d=2
+
+[steam_server]
+
+initialization/embed_callbacks=false

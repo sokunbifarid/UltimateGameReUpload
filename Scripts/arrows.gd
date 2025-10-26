@@ -7,10 +7,13 @@ enum Direction { LEFT, RIGHT }
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
 
+@warning_ignore("unused_parameter")
+
 func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if continue_btn:
+				@warning_ignore("shadowed_global_identifier", "unused_variable")
 				var char = get_tree().get_first_node_in_group("Selector").in_front_char
 				MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group("Selector").get_selected_player()
 				get_tree().get_first_node_in_group("Main_menu").move_camera_to_online_menu()

@@ -446,7 +446,7 @@ font_size = 131
 transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 409.963, -28.3791, 318.445)
 
 [node name="Block-snow-large-tall" type="MeshInstance3D" parent="World_Backgrouns/Flatterrain"]
-transform = Transform3D(0.80131483, 0, 1.39386, 0, 1.22325, 0, -1.2339101, 0, 0.905188, 0.183276, -0.319749, -6.58856)
+transform = Transform3D(0.80131495, 0, 1.39386, 0, 1.22325, 0, -1.2339101, 0, 0.90518814, 0.183276, -0.319749, -6.58856)
 mesh = ExtResource("1_t0pxn")
 skeleton = NodePath("../../..")
 

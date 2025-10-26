@@ -129,6 +129,7 @@ func set_movements(movements: bool):
 	can_move = movements
 
 # NEW: Additional utility functions for enhanced feel
+@warning_ignore("unused_parameter")
 func update_movement_state_tracking(delta: float):
 	# Update movement state based on actual velocity
 	var horizontal_speed = Vector2(velocity.x, velocity.z).length()

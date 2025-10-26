@@ -64,10 +64,12 @@ func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_posit
 	if event is InputEventMouseButton and event.pressed:
 		pass
 		
+@warning_ignore("unused_parameter")
 func _on_online_button_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		move_camera_to_online_menu()
 
+@warning_ignore("unused_parameter")
 func _on_character_selection_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		move_camera_to_character_selection()
@@ -108,6 +110,7 @@ func _on_mouse_exited(area3d):
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_property(area3d, "scale", Vector3(1.0, 1.0, 1.0), 0.3)
 
+@warning_ignore("unused_parameter", "shadowed_variable")
 func _on_main_menu_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		move_camera_to_main_menu()
