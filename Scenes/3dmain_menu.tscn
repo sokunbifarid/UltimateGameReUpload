@@ -408,7 +408,7 @@ size = Vector3(3.002777, 2.3216553, 3.59272)
 script = ExtResource("1_cwrni")
 
 [node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 23.7, 0.57, 7.45)
+transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 3.7, 0.57, 7.45)
 
 [node name="RayCast3D" type="RayCast3D" parent="MainCamera"]
 transform = Transform3D(0.998888, 0, 0.0471413, 0, 1, 0, -0.0471413, 0, 0.998888, -3.68944, -1.10027, -5.28978)
@@ -446,7 +446,7 @@ font_size = 131
 transform = Transform3D(12, 0, 0, 0, 12, 0, 0, 0, 12, 409.963, -28.3791, 318.445)
 
 [node name="Block-snow-large-tall" type="MeshInstance3D" parent="World_Backgrouns/Flatterrain"]
-transform = Transform3D(0.80131495, 0, 1.39386, 0, 1.22325, 0, -1.2339101, 0, 0.90518814, 0.183276, -0.319749, -6.58856)
+transform = Transform3D(0.8013149, 0, 1.39386, 0, 1.22325, 0, -1.2339102, 0, 0.90518814, 0.183276, -0.319749, -6.58856)
 mesh = ExtResource("1_t0pxn")
 skeleton = NodePath("../../..")
 

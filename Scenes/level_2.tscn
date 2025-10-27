@@ -194,10 +194,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31854, 1.24682, -2.62733)
 move_speed = 3.0
 move_direction = Vector3(8, 0, 0)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
 spawn_path = NodePath("../playerSpawnPoint")
 script = ExtResource("10_t7v2y")
 player_Scene = ExtResource("6_bl0du")
+_spawn_path = NodePath("../playerSpawnPoint")
 
 [node name="playerSpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3233819, 0)
+
+[node name="Marker3D" type="Marker3D" parent="." groups=["respwan_point"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0115435, 0)

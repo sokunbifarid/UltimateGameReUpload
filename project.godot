@@ -28,6 +28,8 @@ import/blender/enabled=false
 [global_group]
 
 player="for anything with player"
+respwan_point=""
+multiplayer_spawner=""
 
 [input]
 

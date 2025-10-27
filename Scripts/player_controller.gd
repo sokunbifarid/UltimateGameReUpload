@@ -12,7 +12,6 @@ signal OnUpdateScore(score)
 
 #=========================================================
 @onready var charater_mesh: MeshInstance3D = $Model
-@onready var go_scn: CanvasLayer = $GOScn
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
@@ -159,11 +158,9 @@ func is_airborne() -> bool:
 
 func fall_damage():
 	if global_position.y < -10:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		go_scn.show()
+		position = get_tree().get_first_node_in_group("respwan_point").position
 
 func increase_score(value):
 	pass
 func take_damage(value):
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	go_scn.show()
+	position = get_tree().get_first_node_in_group("respwan_point").position

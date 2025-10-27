@@ -145,16 +145,3 @@ func get_movement_direction() -> Vector3:
 
 func is_airborne() -> bool:
 	return not is_on_floor()
-
-
-func _on_player_jumped():
-	# Hook for jump effects - particles, sound, etc.
-	pass
-
-func _on_movement_started():
-	# Hook for movement start effects - dust particles, footstep sounds, etc.
-	pass
-
-func _on_movement_stopped():
-	# Hook for movement stop effects - stopping dust, etc.
-	pass
