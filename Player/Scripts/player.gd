@@ -39,8 +39,10 @@ func _physics_process(delta: float) -> void:
 	handle_movement(delta)
 	move_and_slide()
 	update_movement_state_tracking(delta)
+	check_fall()
 
 func disable_camera():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	camera.current = false
 	in_selection  = true
 	print("is camera: ",camera.current)
@@ -145,3 +147,7 @@ func get_movement_direction() -> Vector3:
 
 func is_airborne() -> bool:
 	return not is_on_floor()
+
+func check_fall():
+	if global_position.y < -10:
+		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position

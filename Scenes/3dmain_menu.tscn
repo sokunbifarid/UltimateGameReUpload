@@ -1,8 +1,9 @@
-[gd_scene load_steps=42 format=4 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=43 format=4 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
 [ext_resource type="Script" uid="uid://osefpjqgu331" path="res://Steam_Multiplayer/online_menu.gd" id="2_2e5yr"]
+[ext_resource type="PackedScene" uid="uid://b556l2gh1l1bt" path="res://Local_Split_screen/local_character_selection.tscn" id="2_80bf7"]
 [ext_resource type="Script" uid="uid://dcikloa5uqb3q" path="res://Scenes/lobbies_container.gd" id="2_wtcdj"]
 [ext_resource type="Script" uid="uid://dngt76mtjnt3q" path="res://Scripts/plyers_numbers.gd" id="5_a1jyg"]
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="5_shoky"]
@@ -406,6 +407,7 @@ size = Vector3(3.002777, 2.3216553, 3.59272)
 
 [node name="mainMenuroot" type="Node3D" groups=["Main_menu"]]
 script = ExtResource("1_cwrni")
+local_character_selection = ExtResource("2_80bf7")
 
 [node name="MainCamera" type="Camera3D" parent="."]
 transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 3.7, 0.57, 7.45)
