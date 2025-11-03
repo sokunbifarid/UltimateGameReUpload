@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=4 uid="uid://ct7snbbp5yub3"]
 
-[ext_resource type="Script" uid="uid://0et50aqpwhs8" path="res://Scripts/arrows.gd" id="2_7p1vq"]
+[ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="2_7p1vq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ss3yg"]
 resource_name = "Principal color"
@@ -191,6 +191,21 @@ shadow_mesh = SubResource("ArrayMesh_000cd")
 [sub_resource type="BoxShape3D" id="BoxShape3D_8yay4"]
 size = Vector3(0.35699463, 0.529541, 0.1459961)
 
+[sub_resource type="Animation" id="Animation_7p1vq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("arrows_mesh:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_6686o"]
 resource_name = "mouse_entered"
 length = 0.1
@@ -205,21 +220,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(-0.5, -0.5),
 "update": 0,
 "values": [Vector3(1, 1, 1), Vector3(1.5, 1.5, 1.5)]
-}
-
-[sub_resource type="Animation" id="Animation_7p1vq"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("arrows_mesh:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8yay4"]

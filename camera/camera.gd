@@ -25,8 +25,6 @@ func _input(event: InputEvent) -> void:
 		# Update Winkel (wrap/clamp verhindert Ausreißer bei schnellen Deltas)
 		yaw   = wrapf(yaw   - event.relative.x * mouse_sensitivity, -PI, PI)
 		pitch = clampf(pitch - event.relative.y * mouse_sensitivity, deg_to_rad(-60.0), deg_to_rad(30.0))
-		print("yaw : ", yaw)
-		print("pitch : ", pitch)
 		_apply_yaw_pitch()
 
 	# ESC: Maus ein-/ausfangen (praktisch im Debug)
@@ -38,6 +36,8 @@ func _input(event: InputEvent) -> void:
 		)
 
 func _apply_yaw_pitch() -> void:
+	#if $"../Dialogue_UI".is_showing_choices: return
+	# WICHTIG: Basis *vollständig* aus Quaternions setzen und Translation beibehalten.
 
 	# Pivot/Yaw (nur Y-Achse)
 	var t_pivot := transform

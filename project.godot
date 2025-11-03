@@ -20,7 +20,8 @@ config/icon="res://icon.svg"
 PlayerStats="*res://Scripts/player_stats.gd"
 MultiplayerGlobal="*res://Steam_Multiplayer/multiplayer_global.gd"
 Multiplayer="*res://Steam_Multiplayer/multiplayer.tscn"
-LocalGlobal="*res://Scripts/local_global.gd"
+ScenesGlobal="*res://Scenes/scenes_global.tscn"
+LocalGlobal="*res://Local_Split_screen/local_global.gd"
 
 [filesystem]
 

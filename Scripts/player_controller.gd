@@ -61,8 +61,10 @@ func _physics_process(delta: float) -> void:
 	update_movement_state_tracking(delta)
 	check_landing()
 	fall_damage()
+	check_fall()
 func disable_camera():
 	camera.queue_free()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	in_selection = true
 func handle_movement(delta: float):
 	if not is_on_floor():
@@ -160,6 +162,10 @@ func fall_damage():
 	if global_position.y < -10:
 		position = get_tree().get_first_node_in_group("respwan_point").position
 
+func check_fall():
+	if global_position.y < -10:
+		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position
+		
 func increase_score(value):
 	pass
 func take_damage(value):

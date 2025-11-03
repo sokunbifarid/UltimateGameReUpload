@@ -1,0 +1,14 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7hsohxlcv4xp"]
+
+[ext_resource type="Script" uid="uid://dvwlnlo8bkixh" path="res://Scripts/Scenes_global.gd" id="1_seky7"]
+[ext_resource type="PackedScene" uid="uid://fipqc70kew4o" path="res://Scenes/level_1.tscn" id="2_8vnt3"]
+[ext_resource type="PackedScene" uid="uid://sg8envxv2q4c" path="res://Scenes/level_2.tscn" id="3_nwnw0"]
+[ext_resource type="PackedScene" uid="uid://b556l2gh1l1bt" path="res://Local_Split_screen/local_character_selection.tscn" id="4_8oxb3"]
+[ext_resource type="PackedScene" uid="uid://bhm3l3rjk8q14" path="res://Local_Split_screen/local_game.tscn" id="5_4lv2l"]
+
+[node name="Scenes_Global" type="Node"]
+script = ExtResource("1_seky7")
+level_1 = ExtResource("2_8vnt3")
+level_2 = ExtResource("3_nwnw0")
+local_character_selection = ExtResource("4_8oxb3")
+local_split_game = ExtResource("5_4lv2l")

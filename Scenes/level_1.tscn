@@ -162,14 +162,20 @@ transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629
 [node name="Shark" parent="Enemies" instance=ExtResource("6_uy8f0")]
 transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.9733999, -5.9712)
 
-[node name="Marker3D" type="Marker3D" parent="." groups=["respwan_point"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6537073, 1.806792, 0.20693165)
+[node name="Label" type="Label" parent="."]
+offset_left = 638.0
+offset_top = 61.0
+offset_right = 678.0
+offset_bottom = 84.0
+
+[node name="Marker3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3819103, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../Node3D")
+spawn_path = NodePath("../Marker3D")
 script = ExtResource("13_6ioyp")
 player_Scene = ExtResource("6_evi0p")
-_spawn_path = NodePath("../Node3D")
+_spawn_path = NodePath("../Marker3D")
 
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6537073, 1.806792, 0.20693165)
+[node name="Marker3D2" type="Marker3D" parent="." groups=["respwan_point"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0115435, 0)

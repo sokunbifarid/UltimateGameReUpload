@@ -40,11 +40,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	update_movement_state_tracking(delta)
 	check_fall()
-
 func disable_camera():
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	camera.current = false
 	in_selection  = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	print("is camera: ",camera.current)
 func handle_movement(delta: float):
 	if not is_on_floor():
@@ -137,6 +136,10 @@ func update_movement_state_tracking(delta: float):
 	var horizontal_speed = Vector2(velocity.x, velocity.z).length()
 	is_moving = horizontal_speed > 0.1
 
+func check_fall():
+	if global_position.y < -10:
+		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position
+		
 # NEW: Get current movement info (useful for other systems)
 func get_movement_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
@@ -147,7 +150,3 @@ func get_movement_direction() -> Vector3:
 
 func is_airborne() -> bool:
 	return not is_on_floor()
-
-func check_fall():
-	if global_position.y < -10:
-		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position

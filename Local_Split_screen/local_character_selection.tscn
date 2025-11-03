@@ -5,8 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="3_e5ees"]
 [ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="4_ttdom"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_s1rbn"]
-[ext_resource type="Script" uid="uid://0et50aqpwhs8" path="res://Scripts/arrows.gd" id="6_q2lqv"]
-[ext_resource type="PackedScene" uid="uid://bhm3l3rjk8q14" path="res://Local_Split_screen/local_game.tscn" id="7_y8nly"]
+[ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_q2lqv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3nbr6"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -30,6 +29,107 @@ uv1_triplanar = true
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mdkri"]
 data = PackedVector3Array(-25, 0.5, 25, 25, 0.5, 25, -25, -0.5, 25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, 0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, 25, 25, 0.5, -25, 25, -0.5, -25, 25, -0.5, 25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, -25, 25, 0.5, 25, -25, 0.5, 25, 25, 0.5, -25, -25, 0.5, 25, -25, 0.5, -25, 25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, -25, -0.5, -25, 25, -0.5, 25, 25, -0.5, -25, -25, -0.5, -25)
+
+[sub_resource type="GDScript" id="GDScript_m18g8"]
+script/source = "extends Node3D
+
+enum Direction { LEFT, RIGHT }
+@export var local_game_scene : PackedScene
+@export var player_num : int
+@export var is_back_btn: bool = false
+@export var continue_btn : bool = false
+@export var direction: Direction = Direction.RIGHT
+
+@export var is_local : bool =  false
+@export var last_player: bool = false
+
+@export var shift_ease: Tween.EaseType = Tween.EASE_OUT
+@export var shift_trans: Tween.TransitionType = Tween.TRANS_BACK
+
+@export var player_2_text : Area3D
+@onready var area_3d: Area3D = $Area3D
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
+
+@warning_ignore(\"unused_parameter\")
+
+func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if continue_btn:
+				if !is_local:
+					@warning_ignore(\"shadowed_global_identifier\", \"unused_variable\")
+					var char = get_tree().get_first_node_in_group(\"Selector\").in_front_char
+					MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group(\"Selector\").get_selected_player()
+					get_tree().get_first_node_in_group(\"Main_menu\").move_camera_to_online_menu()
+				else:
+					if last_player:
+						LocalGlobal.player_2 = get_tree().get_first_node_in_group(\"Selector\").get_selected_character(2)
+						if local_game_scene:
+							get_tree().change_scene_to_packed(local_game_scene)
+					elif is_back_btn:
+						move_camera(true)
+						if player_2_text:
+							move_player_text()
+					else:
+						LocalGlobal.player_1 = get_tree().get_first_node_in_group(\"Selector\").get_selected_character(1)
+						print(\"PLayer 1: \",LocalGlobal.player_1)
+						if player_2_text:
+							move_player_text(true)
+						move_camera()
+
+			elif direction == Direction.LEFT:
+				if is_local:
+					get_tree().get_first_node_in_group(\"Selector\").left_click(player_num)
+				else:
+					get_tree().get_first_node_in_group(\"Selector\").left_click()
+			elif direction == Direction.RIGHT:
+				if is_local:
+					get_tree().get_first_node_in_group(\"Selector\").right_click(player_num)
+				else:
+					get_tree().get_first_node_in_group(\"Selector\").right_click()
+func _on_area_3d_mouse_entered() -> void:
+	anim_player.play(\"mouse_entered\")
+
+func _on_area_3d_mouse_exited() -> void:
+	anim_player.play_backwards(\"mouse_entered\")
+func move_camera(back:bool = false):
+	var cam : Camera3D = get_tree().get_first_node_in_group(\"camera\")
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(shift_ease)
+	tween.set_trans(shift_trans)
+	var final_pos : float
+	if back:
+		final_pos = 0
+	else:
+		final_pos = 7.1
+	tween.tween_property(cam,\"position\",Vector3(final_pos,cam.position.y,cam.position.z),2)
+
+	# Rotate positions after tween completes
+	tween.finished.connect(func():
+		pass
+	)
+
+func move_player_text(go_back: bool = false):
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(shift_ease)
+	tween.set_trans(shift_trans)
+	var final_pos : float
+	if go_back:
+		final_pos = 2.5
+	else:
+		final_pos = 4.5
+	var new_pos = Vector3(player_2_text.position.x,final_pos,player_2_text.position.z)
+	print(\"New POsi \",new_pos)
+	tween.tween_property(player_2_text,\"position\",new_pos,2)
+
+	# Rotate positions after tween completes
+	tween.finished.connect(func():
+		pass
+	)
+"
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ss3yg"]
 resource_name = "Principal color"
@@ -296,18 +396,21 @@ current = true
 
 [node name="characters" type="Node3D" parent="."]
 
+[node name="characters2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1115465, 0, 0)
+
 [node name="arrows_container" type="Node3D" parent="."]
 
 [node name="arrows" parent="arrows_container" instance=ExtResource("5_s1rbn")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.28508198, 0.73809206, 1.3788217)
-player_num = 1
+script = SubResource("GDScript_m18g8")
+local_game_scene = null
 direction = 0
-is_local = true
 
 [node name="arrows2" parent="arrows_container" instance=ExtResource("5_s1rbn")]
 transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 0.30245936, 0.73809206, 1.3788217)
-player_num = 1
-is_local = true
+script = SubResource("GDScript_m18g8")
+local_game_scene = null
 
 [node name="arrows3" type="Node3D" parent="arrows_container" node_paths=PackedStringArray("player_2_text")]
 transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 0.8646054, 0.5915221, 1.4110123)
@@ -345,28 +448,21 @@ libraries = {
 &"": SubResource("AnimationLibrary_8yay4")
 }
 
-[node name="characters2" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1115465, 0, 0)
-
 [node name="arrows_container2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.1115465, 0, 0)
 
 [node name="arrows" parent="arrows_container2" instance=ExtResource("5_s1rbn")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.28508198, 0.73809206, 1.3788217)
-player_num = 2
 direction = 0
 is_local = true
 
 [node name="arrows2" parent="arrows_container2" instance=ExtResource("5_s1rbn")]
 transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 0.30245936, 0.73809206, 1.3788217)
-player_num = 2
 is_local = true
 
 [node name="arrows3" type="Node3D" parent="arrows_container2"]
 transform = Transform3D(-0.4, 0, -6.039832e-08, 0, 0.4, 0, 6.039832e-08, 0, -0.4, 0.8646054, 0.5915221, 1.4110123)
 script = ExtResource("6_q2lqv")
-local_game_scene = ExtResource("7_y8nly")
-player_num = 2
 continue_btn = true
 is_local = true
 last_player = true
@@ -399,14 +495,12 @@ libraries = {
 &"": SubResource("AnimationLibrary_8yay4")
 }
 
-[node name="arrows4" type="Node3D" parent="arrows_container2" node_paths=PackedStringArray("player_2_text")]
+[node name="arrows4" type="Node3D" parent="arrows_container2"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.8760214, 0.5915221, 1.4110123)
-script = ExtResource("6_q2lqv")
-player_num = 2
+script = SubResource("GDScript_m18g8")
 is_back_btn = true
 continue_btn = true
 is_local = true
-player_2_text = NodePath("../../player_2_text")
 
 [node name="arrows_mesh" type="Node3D" parent="arrows_container2/arrows4"]
 

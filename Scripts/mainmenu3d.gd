@@ -1,8 +1,6 @@
 # MainMenu3D.gd
 extends Node3D
 
-@export var local_character_selection: PackedScene
-
 @onready var Anim = get_node("/root/mainMenuroot/AnimationPlayer")
 @onready var camera = get_node("/root/mainMenuroot/MainCamera")
 @onready var local_button : Area3D = get_node("/root/mainMenuroot/MainMenu/LocalButton")
@@ -64,7 +62,7 @@ func connect_signals():
 
 func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
-		get_tree().change_scene_to_packed(local_character_selection)
+		get_tree().change_scene_to_packed(ScenesGlobal.local_character_selection)
 		
 @warning_ignore("unused_parameter")
 func _on_online_button_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:

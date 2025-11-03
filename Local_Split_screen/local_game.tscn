@@ -1,12 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhm3l3rjk8q14"]
+[gd_scene load_steps=2 format=3 uid="uid://bhm3l3rjk8q14"]
 
 [ext_resource type="Script" uid="uid://bi01qyui531ic" path="res://Scripts/local_game.gd" id="1_43uvr"]
-[ext_resource type="PackedScene" uid="uid://fipqc70kew4o" path="res://Scenes/level_1.tscn" id="2_rk32u"]
-[ext_resource type="PackedScene" uid="uid://sg8envxv2q4c" path="res://Scenes/level_2.tscn" id="3_8bf62"]
 
 [node name="local_game" type="Node"]
 script = ExtResource("1_43uvr")
-levels = Array[PackedScene]([ExtResource("2_rk32u"), ExtResource("3_8bf62")])
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15

@@ -1,7 +1,6 @@
 extends Node3D
 
 enum Direction { LEFT, RIGHT }
-@export var local_game_scene : PackedScene
 @export var player_num : int
 @export var is_back_btn: bool = false
 @export var continue_btn : bool = false
@@ -32,15 +31,14 @@ func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Ve
 				else:
 					if last_player:
 						LocalGlobal.player_2 = get_tree().get_first_node_in_group("Selector").get_selected_character(2)
-						if local_game_scene:
-							get_tree().change_scene_to_packed(local_game_scene)
+						if ScenesGlobal.local_split_game:
+							get_tree().change_scene_to_packed(ScenesGlobal.local_split_game)
 					elif is_back_btn:
 						move_camera(true)
 						if player_2_text:
 							move_player_text()
 					else:
 						LocalGlobal.player_1 = get_tree().get_first_node_in_group("Selector").get_selected_character(1)
-						print("PLayer 1: ",LocalGlobal.player_1)
 						if player_2_text:
 							move_player_text(true)
 						move_camera()
