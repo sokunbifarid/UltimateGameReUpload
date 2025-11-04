@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://if4y5d81dt3i"]
 
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="1_iti4p"]
-[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="2_dtjkg"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="2_dtjkg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dtjkg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -45,3 +45,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_eglq2")
 shape = SubResource("ConcavePolygonShape3D_rsyfn")
 
 [node name="Player" parent="." instance=ExtResource("2_dtjkg")]
+use_gamepad = true

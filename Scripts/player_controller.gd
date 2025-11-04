@@ -3,7 +3,7 @@ extends CharacterBody3D
 signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
 
-
+@export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
 #======================   Camera  ===================================
@@ -62,67 +62,82 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
-func disable_camera():
-	camera.queue_free()
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	in_selection = true
+
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
-
+func disable_camera():
+	camera.queue_free()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	in_selection = true
+func make_it_use_gamepad(val:bool):
+	use_gamepad = val
+	third_person_controller.use_gamepad = val
+	third_person_controller.player_index = 0 if val == false else 1
 func handle_jump():
 	# Jump handling
-	if Input.is_action_just_pressed("Jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
+	if !use_gamepad:
+		if Input.is_action_just_pressed("Jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+	else:
+		if Input.is_action_just_pressed("make_jump") and is_on_floor():
+			velocity.y = JUMP_VELOCITY
+			
 func check_landing():
 
 	was_on_floor = is_on_floor()
 
-# PRESERVED: Original third person movement
 func handle_third_person_movement(delta: float):
-
-	# Get input direction
 	var input_dir = Vector2.ZERO
 
-	if Input.is_action_pressed("move_forward"):
-		input_dir.y -= 1
-	if Input.is_action_pressed("move_back"):
-		input_dir.y += 1
-	if Input.is_action_pressed("move_left"):
-		input_dir.x += 1
-	if Input.is_action_pressed("move_right"):
-		input_dir.x -= 1
-	
-	# Calculate movement direction based on camera orientation
+	if use_gamepad:
+		# Left stick movement
+		input_dir.x = Input.get_action_strength("move_r") - Input.get_action_strength("move_l")
+		input_dir.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+
+		# X inverted by default for correct third-person feel
+		input_dir.x *= -1.0
+
+		# Apply deadzone
+		if input_dir.length() < 0.15:
+			input_dir = Vector2.ZERO
+		else:
+			input_dir = input_dir.normalized()
+	else:
+		# Keyboard movement
+		if Input.is_action_pressed("move_forward"):
+			input_dir.y -= 1
+		if Input.is_action_pressed("move_back"):
+			input_dir.y += 1
+		if Input.is_action_pressed("move_left"):
+			input_dir.x += 1
+		if Input.is_action_pressed("move_right"):
+			input_dir.x -= 1
+
+	# Convert to 3D movement based on camera
 	var camera_basis = third_person_controller.global_transform.basis
 	move_direction = (camera_basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
 
 
-	# Enhanced movement with smoother transitions
+	# Movement with smoothing
 	if move_direction != Vector3.ZERO:
-		# Smooth movement transition
 		target_velocity = Vector3(move_direction.x * cur_speed, velocity.y, move_direction.z * cur_speed)
 		velocity.x = lerp(velocity.x, target_velocity.x, movement_smoothing * delta)
 		velocity.z = lerp(velocity.z, target_velocity.z, movement_smoothing * delta)
 		
 		face_direction(move_direction, delta)
-
-		# Emit movement started signal
+		
 		if not is_moving:
 			is_moving = true
 	else:
-		#velocity = Vector3.ZERO
-		# Enhanced friction with smoothing
 		velocity.x = move_toward(velocity.x, 0, cur_speed * 8 * delta)
 		velocity.z = move_toward(velocity.z, 0, cur_speed * 8 * delta)
 		
-		# Emit movement stopped signal
 		if is_moving and velocity.length() < 0.1:
 			is_moving = false
-
+	
 # PRESERVED: Original rotation function
 func face_direction(direction: Vector3, delta: float):
 	if direction != Vector3.ZERO:
