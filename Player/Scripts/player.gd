@@ -38,7 +38,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if in_selection:
 		return
-	$Label.text = str(state_machine.get_active_state())
 	handle_movement(delta)
 	handle_jump()
 	move_and_slide()
@@ -154,7 +153,8 @@ func update_movement_state_tracking(delta: float):
 func check_fall():
 	if global_position.y < -10:
 		self.global_position = get_tree().get_first_node_in_group("respwan_point").global_position
-
+func take_damage(val):
+	self.global_position = get_tree().get_first_node_in_group("respwan_point").global_position
 
 func get_movement_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
@@ -167,3 +167,6 @@ func get_movement_direction() -> Vector3:
 
 func is_airborne() -> bool:
 	return not is_on_floor()
+
+func increase_score(s):
+	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://fipqc70kew4o"]
+[gd_scene load_steps=22 format=3 uid="uid://fipqc70kew4o"]
 
 [ext_resource type="Script" uid="uid://dt6pk1wono6xv" path="res://Scenes/level_1.gd" id="1_6r07y"]
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_vk57k"]
@@ -32,6 +32,10 @@ points = PackedVector3Array(0.263662, 0.397407, 0.52753, -0.25403, 0.29668, -0.5
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_6r07y"]
 points = PackedVector3Array(0.263662, 0.397407, 0.52753, -0.25403, 0.29668, -0.50806, 0.429472, 0.00123072, -0.396452, -0.429501, 0.00127392, 0.396383, -0.493303, 0.495768, 0.246652, 0.430266, 0.497383, -0.397185, 0.429472, 0.00123072, 0.396452, -0.497538, 0.000269713, -0.232143, -0.430306, 0.497346, -0.397126, 0.493303, 0.495768, 0.246652, -0.246652, 0.495768, 0.493304, -0.23223, 0.000287752, 0.497502, 0.232143, 0.000269713, -0.497538, 0.263662, 0.397407, -0.527531, 0.527498, 0.397398, -0.263749, 0.497538, 0.000269713, 0.232143, -0.396383, 0.00127392, -0.429501, -0.527498, 0.397398, -0.263749, -0.481221, 0.133002, 0.398158, 0.397126, 0.497346, 0.430306, 0.232143, 0.000269713, 0.497538, -0.246652, 0.495768, -0.493303, 0.527498, 0.397398, 0.263749, -0.314455, 0.381505, 0.513167, -0.527498, 0.397398, 0.263749, 0.481194, 0.132984, -0.398223, -0.398158, 0.133002, -0.481221, 0.398158, 0.133002, 0.481221, -0.445317, 0.414027, 0.445317, -0.23223, 0.000287752, -0.497502, -0.497538, 0.000269713, 0.232143, 0.497538, 0.000269713, -0.232143)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_6ioyp"]
+height = 5.0
+radius = 10.0
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_6r07y")
@@ -160,7 +164,17 @@ move_direction = Vector3(7, 1.5, 0)
 transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629, 0.319145, 2.07795, -16.27)
 
 [node name="Shark" parent="Enemies" instance=ExtResource("6_uy8f0")]
+transform = Transform3D(-0.99867576, 0, 0.051447123, 0, 1, 0, -0.051447123, 0, -0.99867576, 2.746717, 3.2227674, -11.258224)
+patrol_speed = 2.0
+rotation_speed = 2.0
+patrol_radius = 5.0
+
+[node name="patrol_area" type="Area3D" parent="Enemies"]
 transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.9733999, -5.9712)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/patrol_area"]
+transform = Transform3D(0.7221467, 0, -0.69174, 0, 1, 0, 0.69174, 0, 0.7221467, -0.9580128, 1.3545, 2.9197617)
+shape = SubResource("CylinderShape3D_6ioyp")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 638.0

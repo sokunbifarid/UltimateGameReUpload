@@ -137,7 +137,7 @@ func handle_third_person_movement(delta: float):
 		
 		if is_moving and velocity.length() < 0.1:
 			is_moving = false
-	
+
 # PRESERVED: Original rotation function
 func face_direction(direction: Vector3, delta: float):
 	if direction != Vector3.ZERO:

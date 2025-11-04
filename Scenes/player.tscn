@@ -42,6 +42,9 @@ height = 0.5
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cvnsp")
+use_gamepad = null
+movement_smoothing = null
+rotation_smoothing = null
 
 [node name="Model" type="MeshInstance3D" parent="."]
 mesh = ExtResource("5_x3wgy")
@@ -97,7 +100,6 @@ replication_config = SubResource("SceneReplicationConfig_3smsa")
 [node name="third_person_controller" type="Node3D" parent="."]
 transform = Transform3D(-0.9999539, 0, 0.009599213, 0, 1, 0, -0.009599213, 0, -0.9999539, 0, 0, 0)
 script = ExtResource("7_8erm5")
-use_gamepad = true
 
 [node name="SpringArm3D" type="SpringArm3D" parent="third_person_controller"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.9325174, -0.0812451)
