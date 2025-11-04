@@ -31,7 +31,6 @@ func _init_transitions():
 
 	add_transition(run,walk,"to_walk")
 	add_transition(idle,walk,"to_walk")
-#
-	#add_transition(idle,stand_jump,"to_stand_jump")
-#
-	#add_transition(run,jump,"to_jump")
+	add_transition(jump,walk,"to_run")
+
+	add_transition(run,jump,"to_jump")

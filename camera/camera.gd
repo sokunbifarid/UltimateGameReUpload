@@ -73,7 +73,6 @@ func _process(delta: float) -> void:
 			if mouse_velocity.length_squared() > 0.0:
 				yaw   = wrapf(yaw   - mouse_velocity.x * mouse_sensitivity * delta, -PI, PI)
 				pitch = clampf(pitch - mouse_velocity.y * mouse_sensitivity * delta, deg_to_rad(-60.0), deg_to_rad(30.0))
-				print("yaw : ", yaw, " pitch : ", pitch)
 				_apply_yaw_pitch()
 
 # Get joystick axis value for this player's specific device

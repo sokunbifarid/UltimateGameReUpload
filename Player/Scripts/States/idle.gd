@@ -11,5 +11,6 @@ func _exit() -> void:
 func _update(delta: float) -> void:
 	if agent.is_moving:
 		get_root().dispatch("to_walk")
-	#if animation_tree["parameters/conditions/is_idle"] !=  true:
-		#animation_tree["parameters/conditions/is_idle"] = true
+	
+	if animation_tree["parameters/conditions/is_idle"] !=  true:
+		animation_tree["parameters/conditions/is_idle"] = true

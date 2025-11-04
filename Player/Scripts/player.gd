@@ -31,18 +31,26 @@ var movement_vector: Vector3 = Vector3.ZERO
 var target_velocity: Vector3 = Vector3.ZERO
 var in_selection: bool = false
 ''' ======================================================================='''
+func _ready() -> void:
 
+	third_person_controller.use_gamepad = use_gamepad
 
 func _physics_process(delta: float) -> void:
 	if in_selection:
 		return
-	
+	$Label.text = str(state_machine.get_active_state())
 	handle_movement(delta)
+	handle_jump()
 	move_and_slide()
 	update_movement_state_tracking(delta)
 	check_fall()
-
-
+func handle_jump():
+	if use_gamepad:
+		if Input.is_action_just_pressed("make_jump"):
+			state_machine.dispatch("to_jump")
+	else:
+		if Input.is_action_just_pressed("Jump"):
+			state_machine.dispatch("to_jump")
 func disable_camera():
 	camera.current = false
 	in_selection  = true
