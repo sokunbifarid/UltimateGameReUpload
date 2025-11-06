@@ -1,6 +1,7 @@
 extends Node
 
 signal lobbies_refreshed(lobbies)
+signal waiting_room_ready()
 
 @export var levels : Array[PackedScene]
 @export var waiting_level : PackedScene
@@ -21,17 +22,17 @@ var steam_id: int = 0
 var steam_username: String = ""
 var is_host: bool = false
 var has_spawned_level: bool = false
+var in_waiting_room: bool = false
+var selected_game_level: PackedScene = null
 var num_of_players: int = 1
-func _ready() -> void:
 
+func _ready() -> void:
 	add_to_group("lobby_manager")
 	
 	await get_tree().process_frame
 	
 	if not Steam.isSteamRunning():
 		print("ERROR: Steam is not running!")
-		#host.disabled = true
-		#refresh.disabled = true
 		return
 	
 	steam_id = Steam.getSteamID()
@@ -39,14 +40,9 @@ func _ready() -> void:
 	
 	if steam_id == 0 or steam_username == "":
 		print("ERROR: Failed to get Steam user data!")
-		#host.disabled = true
-		#refresh.disabled = true
 		return
 	
 	print("Steam initialized - ID: %s, Name: %s" % [steam_id, steam_username])
-	
-	#host.pressed.connect(_on_host_connected)
-	#refresh.pressed.connect(_on_refresh_pressed)
 	
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
@@ -54,7 +50,6 @@ func _ready() -> void:
 	Steam.persona_state_change.connect(_on_persona_change)
 	Steam.lobby_match_list.connect(_on_3D_lobby_match_list)
 	
-	# Connect multiplayer signals
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	
@@ -81,7 +76,6 @@ func _on_host_connected():
 		print("Creating lobby...")
 		is_host = true
 		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
-		#host.disabled = true
 	else:
 		print("Already in a lobby: %s" % lobby_id)
 
@@ -91,11 +85,15 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 	if connect == 1:
 		lobby_id = this_lobby_id
 		print("Created a lobby: %s" % lobby_id)
-		var _selected_level = levels.pick_random()
+		
+		# Select the game level but don't load it yet
+		selected_game_level = levels.pick_random()
+		
 		Steam.setLobbyJoinable(lobby_id, true)
 		Steam.setLobbyData(lobby_id, "name", str(steam_username + "'s Lobby"))
 		Steam.setLobbyData(lobby_id, "mode", "game")
-		Steam.setLobbyData(lobby_id, "level", _selected_level.resource_path)
+		Steam.setLobbyData(lobby_id, "level", selected_game_level.resource_path)
+		Steam.setLobbyData(lobby_id, "game_started", "false")
 
 		# Create host peer
 		var peer = SteamMultiplayerPeer.new()
@@ -112,11 +110,11 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		get_lobby_members()
 		
-		MultiplayerGlobal.selected_level = _selected_level
-		get_tree().change_scene_to_packed(_selected_level)  # Uncomment this line
-		has_spawned_level = true
-
-		
+		# Go to waiting room instead of game level
+		MultiplayerGlobal.selected_level = waiting_level
+		get_tree().change_scene_to_packed(waiting_level)
+		in_waiting_room = true
+		has_spawned_level = false
 	else:
 		print("Failed to create lobby. Error code: %s" % connect)
 
@@ -149,22 +147,26 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 			multiplayer.multiplayer_peer = peer
 			print("CLIENT: Multiplayer peer created with ID: %s" % multiplayer.get_unique_id())
 			
-			# Wait a moment for connection to establish
 			await get_tree().create_timer(0.5).timeout
 
-			# Client spawns level AFTER connection is established
-			# Replace the client spawn section with:
-			if not has_spawned_level:
+			# Check if game has already started
+			var game_started = Steam.getLobbyData(lobby_id, "game_started")
+			
+			if game_started == "true":
+				# Join game in progress
 				var level_path: String = Steam.getLobbyData(lobby_id, "level")
-				
 				if level_path != "":
-					print("CLIENT: Loading level from lobby data: %s" % level_path)
+					print("CLIENT: Game already started, joining level: %s" % level_path)
 					var level_scene = load(level_path) as PackedScene
 					get_tree().change_scene_to_packed(level_scene)
 					has_spawned_level = true
-				else:
-					print("CLIENT: No level data found in lobby")
-		
+					in_waiting_room = false
+			else:
+				# Join waiting room
+				print("CLIENT: Joining waiting room")
+				get_tree().change_scene_to_packed(waiting_level)
+				in_waiting_room = true
+				has_spawned_level = false
 	else:
 		var fail_reason: String
 		
@@ -194,18 +196,24 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 		
 		print("Failed to join this chat room: %s" % fail_reason)
 		open_lobby_list()
+
 func _on_peer_connected(id: int):
 	print("Peer connected with multiplayer ID: %s" % id)
+	
+	# Check if lobby is full and auto-start if enabled
+	if is_host and in_waiting_room:
+		check_lobby_full()
 
 func _on_peer_disconnected(id: int):
 	print("Peer disconnected with multiplayer ID: %s" % id)
-
 
 func _on_lobby_chat_update(this_lobby_id: int, change_id: int, making_change_id: int, chat_state: int) -> void:
 	var changer_name: String = Steam.getFriendPersonaName(change_id)
 	
 	if chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_ENTERED:
 		print("%s has joined the lobby." % changer_name)
+		if is_host and in_waiting_room:
+			check_lobby_full()
 	elif chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_LEFT:
 		print("%s has left the lobby." % changer_name)
 	elif chat_state == Steam.CHAT_MEMBER_STATE_CHANGE_KICKED:
@@ -227,7 +235,6 @@ func open_lobby_list():
 	print("Requesting a lobby list")
 	Steam.requestLobbyList()
 
-
 func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
@@ -243,6 +250,76 @@ func get_lobby_members() -> void:
 	
 	print("Lobby members array: ", lobby_members)
 
+func check_lobby_full() -> void:
+	"""Check if lobby is full and auto-start game if it is"""
+	get_lobby_members()
+	if lobby_members.size() >= lobby_members_max:
+		print("Lobby is full! Auto-starting game...")
+		start_game()
+
+func start_game() -> void:
+	"""Called by host to start the game (either manually or when lobby is full)"""
+	if not is_host:
+		print("ERROR: Only host can start the game!")
+		return
+	
+	if not in_waiting_room:
+		print("ERROR: Not in waiting room!")
+		return
+	
+	print("Starting game...")
+	
+	# Mark game as started
+	Steam.setLobbyData(lobby_id, "game_started", "true")
+	
+	# Load the actual game level
+	var level_path: String = Steam.getLobbyData(lobby_id, "level")
+	if level_path != "":
+		in_waiting_room = false
+		has_spawned_level = true
+		
+		# Use RPC to tell all clients to load the game level
+		rpc_start_game.rpc(level_path)
+		
+		# Host loads the level too
+		var level_scene = load(level_path) as PackedScene
+		MultiplayerGlobal.selected_level = level_scene
+		get_tree().change_scene_to_packed(level_scene)
+
+@rpc("authority", "call_local", "reliable")
+func rpc_start_game(level_path: String) -> void:
+	"""RPC to tell all clients to start the game"""
+	print("Received start game command, loading level: %s" % level_path)
+	in_waiting_room = false
+	has_spawned_level = true
+	var level_scene = load(level_path) as PackedScene
+	get_tree().change_scene_to_packed(level_scene)
+
+func get_current_players() -> Array:
+	"""Returns array of players currently in the lobby (waiting room or in game)"""
+	return lobby_members.duplicate()
+
+func get_current_player_count() -> int:
+	"""Returns the number of players currently in the lobby"""
+	return lobby_members.size()
+
+func get_players_info() -> Dictionary:
+	"""Returns detailed info about current lobby state and players"""
+	return {
+		"players": lobby_members.duplicate(),
+		"player_count": lobby_members.size(),
+		"max_players": lobby_members_max,
+		"is_full": lobby_members.size() >= lobby_members_max,
+		"in_waiting_room": in_waiting_room,
+		"game_started": has_spawned_level,
+		"is_host": is_host,
+		"lobby_id": lobby_id
+	}
+
+func is_lobby_full() -> bool:
+	"""Returns true if lobby has reached max capacity"""
+	return lobby_members.size() >= lobby_members_max
+
 func leave_lobby() -> void:
 	if lobby_id != 0:
 		print("Leaving lobby...")
@@ -251,6 +328,7 @@ func leave_lobby() -> void:
 		lobby_id = 0
 		is_host = false
 		has_spawned_level = false
+		in_waiting_room = false
 		lobby_members.clear()
 		
 		host.disabled = false
