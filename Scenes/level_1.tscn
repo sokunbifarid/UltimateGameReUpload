@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://fipqc70kew4o"]
+[gd_scene load_steps=32 format=3 uid="uid://fipqc70kew4o"]
 
 [ext_resource type="Script" uid="uid://dt6pk1wono6xv" path="res://Scenes/level_1.gd" id="1_6r07y"]
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_vk57k"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://ynj416avw04q" path="res://Scenes/end_flag.tscn" id="9_wrinw"]
 [ext_resource type="PackedScene" uid="uid://sg8envxv2q4c" path="res://Scenes/level_2.tscn" id="10_chwpn"]
 [ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="13_6ioyp"]
+[ext_resource type="Script" uid="uid://6kp8gixwjrk2" path="res://Steam_Multiplayer/waiiting_room.gd" id="14_oovug"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wrinw"]
 points = PackedVector3Array(-0.960469, 0, -0.712585, 1.02225, 0.375568, 0.798547, 0.925047, 0.343508, -0.956875, -0.976889, 0.5, 0.756357, 0.805516, 0, 0.929408, -0.756168, 0.5, -0.976887, -0.867297, -2.77556e-17, 0.898544, 0.867436, -2.77556e-17, -0.898544, 0.75631, 0.5, 0.976887, 0.976834, 0.5, -0.756357, -0.798522, 0.375563, 1.02226, -0.7124, 0, -0.960466, -1.02208, 0.407556, -0.766558, 0.960414, 2.77556e-17, -0.712585, 0.733024, 0.439086, -1.02003, -1.02226, 0.375563, 0.798516, 0.960414, 0, 0.712585, 0.798479, 0.375565, 1.02228, -0.7124, 0, 0.960466, -0.798521, 0.375563, -1.02226, -0.960469, 2.77556e-17, 0.712585, 0.712539, 0, -0.960466, 1.02225, 0.375568, -0.798547, 0.976834, 0.5, 0.756357, -0.756168, 0.5, 0.976887, -0.976889, 0.5, -0.756357, 0.75631, 0.5, -0.976887, -0.95686, 0.343507, -0.925082, 0.712539, 0, 0.960466, 0.956845, 0.343511, 0.925121, 0.798479, 0.375565, -1.02228, -0.867297, -2.77556e-17, -0.898544)
@@ -40,10 +41,37 @@ radius = 10.508301
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_oovug"]
 radius = 2.043457
 
-[node name="Main" type="Node3D"]
-script = ExtResource("1_6r07y")
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0seqp"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[node name="Environment" parent="." instance=ExtResource("2_6ioyp")]
+[sub_resource type="Sky" id="Sky_6ioyp"]
+sky_material = SubResource("ProceduralSkyMaterial_0seqp")
+
+[sub_resource type="Environment" id="Environment_2qlfx"]
+background_mode = 2
+sky = SubResource("Sky_6ioyp")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_0seqp"]
+size = Vector3(50, 0.5, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3fvjc"]
+albedo_color = Color(0.38170326, 0.38170323, 0.38170323, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3fvjc"]
+data = PackedVector3Array(-25, 0.25, 25, 25, 0.25, 25, -25, -0.25, 25, 25, 0.25, 25, 25, -0.25, 25, -25, -0.25, 25, 25, 0.25, -25, -25, 0.25, -25, 25, -0.25, -25, -25, 0.25, -25, -25, -0.25, -25, 25, -0.25, -25, 25, 0.25, 25, 25, 0.25, -25, 25, -0.25, 25, 25, 0.25, -25, 25, -0.25, -25, 25, -0.25, 25, -25, 0.25, -25, -25, 0.25, 25, -25, -0.25, -25, -25, 0.25, 25, -25, -0.25, 25, -25, -0.25, -25, 25, 0.25, 25, -25, 0.25, 25, 25, 0.25, -25, -25, 0.25, 25, -25, 0.25, -25, 25, 0.25, -25, -25, -0.25, 25, 25, -0.25, 25, -25, -0.25, -25, 25, -0.25, 25, 25, -0.25, -25, -25, -0.25, -25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2qlfx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mt0ga"]
+albedo_color = Color(0.43634963, 0.09542277, 0.023212835, 1)
+
+[node name="Main" type="Node3D" node_paths=PackedStringArray("level_spawn_point") groups=["level_controller"]]
+script = ExtResource("1_6r07y")
+enviroment = ExtResource("2_6ioyp")
+level_spawn_point = NodePath("Marker3D")
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -198,10 +226,112 @@ offset_bottom = 84.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3819103, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../Marker3D")
+spawn_path = NodePath("../waiting_room/spawn_path")
 script = ExtResource("13_6ioyp")
 player_Scene = ExtResource("6_evi0p")
-_spawn_path = NodePath("../Marker3D")
+_spawn_path = NodePath("../waiting_room/spawn_path")
 
 [node name="Marker3D2" type="Marker3D" parent="." groups=["respwan_point"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0115435, 0)
+
+[node name="waiting_room" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
+script = ExtResource("14_oovug")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="waiting_room"]
+environment = SubResource("Environment_2qlfx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="waiting_room"]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="floor" type="MeshInstance3D" parent="waiting_room"]
+mesh = SubResource("BoxMesh_0seqp")
+surface_material_override/0 = SubResource("StandardMaterial3D_3fvjc")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="waiting_room/floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="waiting_room/floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_3fvjc")
+
+[node name="boxes" type="Node3D" parent="waiting_room"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2932835, 0.75, -4.07098)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2634687, 0.75, 8.557474)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.51183, 0.75, 7.326103)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.257103, 0.75, -11.785713)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.571556, 0.74999905, -15.097141)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.225113, 0.74999905, 19.819706)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.785496, 0.75, 17.683731)
+mesh = SubResource("BoxMesh_2qlfx")
+surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
+
+[node name="Label" type="Label" parent="waiting_room"]
+offset_left = 155.0
+offset_top = 68.0
+offset_right = 195.0
+offset_bottom = 91.0
+
+[node name="spawn_path" type="Node3D" parent="waiting_room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
+
+[node name="Control" type="Control" parent="waiting_room"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="start_game" type="Button" parent="waiting_room/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -115.0
+offset_right = -30.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Start Game
+[press Enter["
+
+[node name="heading" type="Label" parent="waiting_room/Control"]
+layout_mode = 0
+offset_right = 126.0
+offset_bottom = 23.0
+text = " Players in lobby"
+
+[node name="players_names" type="VBoxContainer" parent="waiting_room/Control"]
+layout_mode = 0
+offset_top = 25.0
+offset_right = 128.0
+offset_bottom = 65.0

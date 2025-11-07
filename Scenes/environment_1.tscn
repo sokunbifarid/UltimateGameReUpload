@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cutf20meffonm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fhuy1"]
+
+[sub_resource type="Sky" id="Sky_evi0p"]
+sky_material = SubResource("ProceduralSkyMaterial_fhuy1")
+
+[sub_resource type="Environment" id="Environment_i6dbo"]
+background_mode = 2
+sky = SubResource("Sky_evi0p")
+ambient_light_source = 2
+ambient_light_color = Color(0.87451, 0.521569, 0.317647, 1)
+ssao_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.8, 0.588235, 0.415686, 1)
+fog_light_energy = 1.2
+fog_density = 0.06
+fog_height = 2.0
+fog_height_density = 0.4
+adjustment_enabled = true
+adjustment_contrast = 1.2
+adjustment_saturation = 1.2
+
+[node name="Environment" type="Node"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i6dbo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.845113, 0.0857285, 0.52767, -0.534588, 0.135525, 0.834175, 0, -0.987058, 0.160364, 0, 3.46478, 0)
+shadow_enabled = true
+shadow_blur = 3.733

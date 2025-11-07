@@ -2,12 +2,19 @@ extends Node
 
 @onready var start_game: Button = $Control/start_game
 @onready var players_names: VBoxContainer = $Control/players_names
+@onready var spawn_path: Node3D = $spawn_path
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	start_game.pressed.connect(_on_start_game_pressed)
+	if !Multiplayer.is_host:
+		
+		print("Selected level : ",Multiplayer.selected_game_level) 
+	else:
+		print("I am host and selected level : ", Multiplayer.selected_game_level)
 
 func _on_start_game_pressed():
+	get_tree().get_first_node_in_group("level_controller").shift_to_level()
 	Multiplayer.start_game()
 func _process(delta: float) -> void:
 	add_players_ui()
@@ -21,7 +28,6 @@ func add_players_ui():
 		var player_info_label : Label = Label.new()
 		players_names.add_child(player_info_label)
 		player_info_label.text = " "+str(player.steam_name)
-		print("Player: %s (ID: %s)" % [player.steam_name, player.steam_id])
 
 	# Get player count for UI
 	#var count = Multiplayer.get_current_player_count()

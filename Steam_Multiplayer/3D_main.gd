@@ -111,8 +111,8 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		get_lobby_members()
 		
 		# Go to waiting room instead of game level
-		MultiplayerGlobal.selected_level = waiting_level
-		get_tree().change_scene_to_packed(waiting_level)
+		MultiplayerGlobal.selected_level = selected_game_level
+		get_tree().change_scene_to_packed(selected_game_level)
 		in_waiting_room = true
 		has_spawned_level = false
 	else:
@@ -148,25 +148,19 @@ func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, resp
 			print("CLIENT: Multiplayer peer created with ID: %s" % multiplayer.get_unique_id())
 			
 			await get_tree().create_timer(0.5).timeout
-
-			# Check if game has already started
-			var game_started = Steam.getLobbyData(lobby_id, "game_started")
+#
+			## Check if game has already started
+			#var game_started = Steam.getLobbyData(lobby_id, "game_started")
 			
-			if game_started == "true":
 				# Join game in progress
-				var level_path: String = Steam.getLobbyData(lobby_id, "level")
-				if level_path != "":
-					print("CLIENT: Game already started, joining level: %s" % level_path)
-					var level_scene = load(level_path) as PackedScene
-					get_tree().change_scene_to_packed(level_scene)
-					has_spawned_level = true
-					in_waiting_room = false
-			else:
-				# Join waiting room
-				print("CLIENT: Joining waiting room")
-				get_tree().change_scene_to_packed(waiting_level)
-				in_waiting_room = true
-				has_spawned_level = false
+			var level_path: String = Steam.getLobbyData(lobby_id, "level")
+			if level_path != "":
+				print("CLIENT: Game already started, joining level: %s" % level_path)
+				var level_scene = load(level_path) as PackedScene
+				get_tree().change_scene_to_packed(level_scene)
+				has_spawned_level = true
+				in_waiting_room = false
+
 	else:
 		var fail_reason: String
 		
@@ -269,32 +263,35 @@ func start_game() -> void:
 	
 	print("Starting game...")
 	
-	# Mark game as started
+	# Mark game as started in Steam lobby data
 	Steam.setLobbyData(lobby_id, "game_started", "true")
 	
 	# Load the actual game level
 	var level_path: String = Steam.getLobbyData(lobby_id, "level")
 	if level_path != "":
+		print("HOST: Broadcasting game start to all clients...")
+		
+		# Send RPC to clients FIRST before changing host's scene
+		rpc_start_game.rpc(level_path)
+		
+		# Small delay to ensure RPC is sent before scene change
+		await get_tree().create_timer(0.1).timeout
+		
+		# Then host loads the level
 		in_waiting_room = false
 		has_spawned_level = true
 		
-		# Use RPC to tell all clients to load the game level
-		rpc_start_game.rpc(level_path)
-		
-		# Host loads the level too
-		var level_scene = load(level_path) as PackedScene
-		MultiplayerGlobal.selected_level = level_scene
-		get_tree().change_scene_to_packed(level_scene)
-
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_remote", "reliable")
 func rpc_start_game(level_path: String) -> void:
 	"""RPC to tell all clients to start the game"""
-	print("Received start game command, loading level: %s" % level_path)
+	if is_host:
+		# Host doesn't need to receive this
+		return
+	
+	print("CLIENT: Received start game command, loading level: %s" % level_path)
 	in_waiting_room = false
 	has_spawned_level = true
-	var level_scene = load(level_path) as PackedScene
-	get_tree().change_scene_to_packed(level_scene)
-
+	
 func get_current_players() -> Array:
 	"""Returns array of players currently in the lobby (waiting room or in game)"""
 	return lobby_members.duplicate()

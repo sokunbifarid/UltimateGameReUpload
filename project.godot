@@ -32,6 +32,7 @@ import/blender/enabled=false
 player="for anything with player"
 respwan_point=""
 multiplayer_spawner=""
+level_controller=""
 
 [input]
 
