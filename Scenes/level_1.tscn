@@ -223,7 +223,7 @@ offset_right = 678.0
 offset_bottom = 84.0
 
 [node name="Marker3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3819103, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.112726, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
 spawn_path = NodePath("../waiting_room/spawn_path")
