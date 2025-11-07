@@ -170,3 +170,6 @@ func is_airborne() -> bool:
 
 func increase_score(s):
 	pass
+
+func move_to_level():
+	self.global_position = get_tree().get_first_node_in_group("respwan_point").position

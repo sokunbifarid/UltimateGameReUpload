@@ -185,3 +185,6 @@ func increase_score(value):
 	pass
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
+func move_to_level():
+	self.global_position = get_tree().get_first_node_in_group("respwan_point").position
+	

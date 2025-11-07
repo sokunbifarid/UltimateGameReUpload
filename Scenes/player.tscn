@@ -42,9 +42,6 @@ height = 0.5
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cvnsp")
-use_gamepad = null
-movement_smoothing = null
-rotation_smoothing = null
 
 [node name="Model" type="MeshInstance3D" parent="."]
 mesh = ExtResource("5_x3wgy")
