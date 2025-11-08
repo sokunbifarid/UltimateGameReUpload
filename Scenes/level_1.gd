@@ -6,6 +6,11 @@ extends Node3D
 @export var level_spawn_point: Node3D
 @onready var waiting_spawn_path: Node3D = $waiting_room/spawn_path
 @onready var waiting_room: Node3D = $waiting_room
+@onready var players_names: VBoxContainer = $Control/players_names
+
+
+func _process(delta: float) -> void:
+	update_players_ui()
 
 
 @rpc("authority", "call_local", "reliable")
@@ -39,3 +44,18 @@ func shift_to_level():
 		waiting_room.queue_free()
 	
 	print("Level transition complete!")
+func update_players_ui():
+	"""Updates the list of players in the waiting room"""
+	if not Multiplayer:
+		return
+	
+	# Clear existing labels
+	for child in players_names.get_children():
+		child.queue_free()
+	
+	# Add label for each player
+	var players = Multiplayer.get_current_players()
+	for player in players:
+		var player_label = Label.new()
+		player_label.text = " " + str(player.steam_name)
+		players_names.add_child(player_label)

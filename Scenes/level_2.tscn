@@ -57,7 +57,7 @@ data = PackedVector3Array(-25, 0.25, 25, 25, 0.25, 25, -25, -0.25, 25, 25, 0.25,
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijtdf"]
 albedo_color = Color(0.43634963, 0.09542277, 0.023212835, 1)
 
-[node name="Main" type="Node3D" node_paths=PackedStringArray("level_spawn_point")]
+[node name="Main" type="Node3D" node_paths=PackedStringArray("level_spawn_point") groups=["level_controller"]]
 script = ExtResource("1_bl0du")
 enviroment = ExtResource("1_vcilj")
 level_spawn_point = NodePath("playerSpawnPoint")
@@ -202,7 +202,7 @@ script = ExtResource("10_t7v2y")
 player_Scene = ExtResource("6_bl0du")
 _spawn_path = NodePath("../waiting_room/spawn_path")
 
-[node name="playerSpawnPoint" type="Node3D" parent="."]
+[node name="playerSpawnPoint" type="Node3D" parent="." groups=["respwan_point"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3233819, 0)
 
 [node name="waiting_room" type="Node3D" parent="."]
@@ -271,16 +271,7 @@ offset_bottom = 91.0
 [node name="spawn_path" type="Node3D" parent="waiting_room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
 
-[node name="Control" type="Control" parent="waiting_room"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="start_game" type="Button" parent="waiting_room/Control"]
-layout_mode = 1
+[node name="start_game" type="Button" parent="waiting_room"]
 anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 1.0
@@ -295,13 +286,21 @@ grow_vertical = 0
 text = "Start Game
 [press Enter["
 
-[node name="heading" type="Label" parent="waiting_room/Control"]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="heading" type="Label" parent="Control"]
 layout_mode = 0
 offset_right = 126.0
 offset_bottom = 23.0
 text = " Players in lobby"
 
-[node name="players_names" type="VBoxContainer" parent="waiting_room/Control"]
+[node name="players_names" type="VBoxContainer" parent="Control"]
 layout_mode = 0
 offset_top = 25.0
 offset_right = 128.0

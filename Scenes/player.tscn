@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ce48elb3fsyic"]
+[gd_scene load_steps=10 format=3 uid="uid://ce48elb3fsyic"]
 
 [ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Scripts/player_controller.gd" id="1_cvnsp"]
 [ext_resource type="Script" uid="uid://dbdpgchc4cwmk" path="res://Scripts/player_visual.gd" id="3_6t5aa"]
@@ -35,10 +35,6 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath("Model:position")
 properties/5/spawn = true
 properties/5/replication_mode = 1
-
-[sub_resource type="SphereMesh" id="SphereMesh_x3wgy"]
-radius = 0.25
-height = 0.5
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cvnsp")
@@ -104,9 +100,6 @@ spring_length = 2.0
 
 [node name="Camera3D" type="Camera3D" parent="third_person_controller/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62268e-07, 0, 3)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="third_person_controller/SpringArm3D/Camera3D"]
-mesh = SubResource("SphereMesh_x3wgy")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 547.0
