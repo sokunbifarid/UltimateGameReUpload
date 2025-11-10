@@ -7,15 +7,6 @@
 [ext_resource type="ArrayMesh" uid="uid://xmt2xitb40xe" path="res://Models/Characters/character-male-d.obj" id="5_x3wgy"]
 [ext_resource type="Script" uid="uid://cqq4suxgli1rd" path="res://camera/camera.gd" id="7_8erm5"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
-radius = 0.169431
-height = 0.697453
-
-[sub_resource type="LabelSettings" id="LabelSettings_vgqql"]
-font_size = 38
-shadow_size = 8
-shadow_color = Color(0, 0, 0, 0.709804)
-
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3smsa"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
@@ -36,9 +27,21 @@ properties/5/path = NodePath("Model:position")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
+radius = 0.169431
+height = 0.697453
+
+[sub_resource type="LabelSettings" id="LabelSettings_vgqql"]
+font_size = 38
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.709804)
+
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cvnsp")
 use_gamepad = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." groups=["Player"]]
+replication_config = SubResource("SceneReplicationConfig_3smsa")
 
 [node name="Model" type="MeshInstance3D" parent="."]
 mesh = ExtResource("5_x3wgy")
@@ -87,9 +90,6 @@ text = "Score: 500"
 label_settings = SubResource("LabelSettings_vgqql")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." groups=["Player"]]
-replication_config = SubResource("SceneReplicationConfig_3smsa")
 
 [node name="third_person_controller" type="Node3D" parent="."]
 transform = Transform3D(-0.9999539, 0, 0.009599213, 0, 1, 0, -0.009599213, 0, -0.9999539, 0, 0, 0)

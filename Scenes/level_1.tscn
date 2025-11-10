@@ -73,6 +73,12 @@ script = ExtResource("1_6r07y")
 enviroment = ExtResource("2_6ioyp")
 level_spawn_point = NodePath("Marker3D")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
+spawn_path = NodePath("../waiting_room/spawn_path")
+script = ExtResource("13_6ioyp")
+player_Scene = ExtResource("6_evi0p")
+_spawn_path = NodePath("../waiting_room/spawn_path")
+
 [node name="Platforms" type="Node" parent="."]
 
 [node name="PlatformLowLarge" type="StaticBody3D" parent="Platforms"]
@@ -328,9 +334,3 @@ layout_mode = 0
 offset_top = 25.0
 offset_right = 128.0
 offset_bottom = 65.0
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../waiting_room/spawn_path")
-script = ExtResource("13_6ioyp")
-player_Scene = ExtResource("6_evi0p")
-_spawn_path = NodePath("../waiting_room/spawn_path")

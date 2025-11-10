@@ -5,7 +5,7 @@ extends Node
 @onready var start_game: Button = $start_game
 
 func _ready() -> void:
-	
+	_randomize_spawn_pos()
 	if Multiplayer and !Multiplayer.is_host:
 		$start_game.queue_free()
 	

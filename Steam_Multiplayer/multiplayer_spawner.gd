@@ -9,7 +9,6 @@ var is_local : bool = false
 var players = {}
 
 func _ready() -> void:
-	$"../waiting_room"._randomize_spawn_pos()
 	if is_local: return
 	spawn_function = spawnPlayer
 	# Wait for multiplayer to be set up
