@@ -9,6 +9,7 @@ var is_local : bool = false
 var players = {}
 
 func _ready() -> void:
+	
 	if is_local: return
 	spawn_function = spawnPlayer
 	

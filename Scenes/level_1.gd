@@ -8,6 +8,12 @@ extends Node3D
 @onready var waiting_room: Node3D = $waiting_room
 @onready var players_names: VBoxContainer = $Control/players_names
 
+func _ready() -> void:
+	var random_x = randf_range(level_spawn_point.global_position.x - 1, level_spawn_point.global_position.x + 1)
+	var random_z = randf_range(level_spawn_point.global_position.z - 1, level_spawn_point.global_position.z + 1)
+	var new_pos = Vector3(random_x, level_spawn_point.global_position.y, random_z)
+	
+	level_spawn_point.global_position = new_pos
 
 func _process(delta: float) -> void:
 	update_players_ui()

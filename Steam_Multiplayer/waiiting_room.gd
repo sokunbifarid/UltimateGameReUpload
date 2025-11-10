@@ -5,12 +5,19 @@ extends Node
 @onready var start_game: Button = $start_game
 
 func _ready() -> void:
+	var random_x = randf_range(spawn_path.global_position.x - 1, spawn_path.global_position.x + 1)
+	var random_z = randf_range(spawn_path.global_position.z - 1, spawn_path.global_position.z + 1)
+	var new_pos = Vector3(random_x, spawn_path.global_position.y, random_z)
+	
+	spawn_path.global_position = new_pos
 	
 	
-	if Multiplayer:
-		print("Selected level: ", Multiplayer.selected_game_level)
-
-
+	if Multiplayer and !Multiplayer.is_host:
+		$start_game.queue_free()
+	
+	if Multiplayer and Multiplayer.is_host:
+		if MultiplayerGlobal.selected_player.use_gamepad:
+			start_game.text = "Start Game\n[press R2 or RT]"
 func _on_start_game_pressed():
 	# Host triggers the level shift
 	if Multiplayer and Multiplayer.is_host:

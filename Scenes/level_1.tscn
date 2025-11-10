@@ -313,7 +313,7 @@ offset_bottom = -35.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Start Game
-[press Enter["
+[press Enter]"
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
