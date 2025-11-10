@@ -201,7 +201,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12326026, 1.3233819, 0)
 
 [node name="waiting_room" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
-visible = false
 script = ExtResource("13_bl0du")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="waiting_room"]
