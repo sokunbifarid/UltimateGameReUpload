@@ -7,6 +7,11 @@ signal OnUpdateScore(score)
 @export var enable_running: bool = true
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
+
+# Animation sync variables - add these to MultiplayerSynchronizer
+@export var sync_ground_air: String = "grounded"
+@export var sync_iwr_blend: float = -1.0
+
 #======================   Camera  ===================================
 @onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/Camera3D
 @onready var third_person_controller: Node3D = $SpringArmPivot
@@ -53,8 +58,12 @@ func _ready() -> void:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
 	third_person_controller.use_gamepad = use_gamepad
+
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
+		# Remote clients still need to update animations
+		if not is_multiplayer_authority():
+			apply_synced_animations()
 		return
 
 	# Enhanced movement with polish
@@ -68,18 +77,28 @@ func _physics_process(delta: float) -> void:
 	animate(delta)
 
 func animate(delta):
-	if is_on_floor():
-		animator.set("parameters/ground_air_transition/transition_request", "grounded")
-
-		if velocity.length() > 0:
-			if cur_speed == RUN_SPEED:
-				animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), 1.0, delta * 7.0))
+	if is_multiplayer_authority():
+		# Authority calculates and sets the sync variables
+		if is_on_floor():
+			sync_ground_air = "grounded"
+			
+			if velocity.length() > 0:
+				if cur_speed == RUN_SPEED:
+					sync_iwr_blend = lerp(sync_iwr_blend, 1.0, delta * 7.0)
+				else:
+					sync_iwr_blend = lerp(sync_iwr_blend, 0.0, delta * 7.0)
 			else:
-				animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), 0.0, delta * 7.0))
+				sync_iwr_blend = lerp(sync_iwr_blend, -1.0, delta * 7.0)
 		else:
-			animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), -1.0, delta * 7.0))
-	else:
-		animator.set("parameters/ground_air_transition/transition_request", "air")
+			sync_ground_air = "air"
+	
+	# Apply the synced values to the animator
+	apply_synced_animations()
+
+func apply_synced_animations():
+	# Both authority and remote clients apply the synced animation values
+	animator.set("parameters/ground_air_transition/transition_request", sync_ground_air)
+	animator.set("parameters/iwr_blend/blend_amount", sync_iwr_blend)
 
 func handle_movement(delta: float):
 	if not is_on_floor():

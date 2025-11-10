@@ -196,12 +196,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31854, 1.24682, -2.62733)
 move_speed = 3.0
 move_direction = Vector3(8, 0, 0)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../waiting_room/spawn_path")
-script = ExtResource("10_t7v2y")
-player_Scene = ExtResource("6_bl0du")
-_spawn_path = NodePath("../waiting_room/spawn_path")
-
 [node name="playerSpawnPoint" type="Node3D" parent="." groups=["respwan_point"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12326026, 1.3233819, 0)
 
@@ -306,3 +300,9 @@ layout_mode = 0
 offset_top = 25.0
 offset_right = 128.0
 offset_bottom = 65.0
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
+spawn_path = NodePath("../waiting_room/spawn_path")
+script = ExtResource("10_t7v2y")
+player_Scene = ExtResource("6_bl0du")
+_spawn_path = NodePath("../waiting_room/spawn_path")

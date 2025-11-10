@@ -225,12 +225,6 @@ offset_bottom = 84.0
 [node name="Marker3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.112726, 0)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../waiting_room/spawn_path")
-script = ExtResource("13_6ioyp")
-player_Scene = ExtResource("6_evi0p")
-_spawn_path = NodePath("../waiting_room/spawn_path")
-
 [node name="Marker3D2" type="Marker3D" parent="." groups=["respwan_point"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0115435, 0)
 
@@ -334,3 +328,9 @@ layout_mode = 0
 offset_top = 25.0
 offset_right = 128.0
 offset_bottom = 65.0
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
+spawn_path = NodePath("../waiting_room/spawn_path")
+script = ExtResource("13_6ioyp")
+player_Scene = ExtResource("6_evi0p")
+_spawn_path = NodePath("../waiting_room/spawn_path")

@@ -13,7 +13,7 @@ func _ready() -> void:
 		for pl in spawn_path.get_children():
 			if pl.is_multiplayer_authority() and pl.use_gamepad:
 				start_game.text = "Start Game\n[press R2 or RT]"
-func _randomize_spawn_pos():	
+func _randomize_spawn_pos():
 	var random_x = randf_range(spawn_path.global_position.x - 5, spawn_path.global_position.x + 5)
 	var random_z = randf_range(spawn_path.global_position.z - 5, spawn_path.global_position.z + 5)
 	var new_pos = Vector3(random_x, spawn_path.global_position.y, random_z)
