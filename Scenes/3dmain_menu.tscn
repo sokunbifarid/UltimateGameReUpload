@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=4 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=44 format=4 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
@@ -7,9 +7,11 @@
 [ext_resource type="Script" uid="uid://dngt76mtjnt3q" path="res://Scripts/plyers_numbers.gd" id="5_a1jyg"]
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="5_shoky"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="6_a1jyg"]
-[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="7_80bf7"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="8_ki4ed"]
-[ext_resource type="Script" uid="uid://0et50aqpwhs8" path="res://Scripts/arrows.gd" id="9_i4r5o"]
+[ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://Player_0/player.tscn" id="9_80bf7"]
+[ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="9_i4r5o"]
+[ext_resource type="PackedScene" uid="uid://bq08028jii6xi" path="res://Player_3/player.tscn" id="9_ki4ed"]
+[ext_resource type="Script" uid="uid://ry23jegyi5vy" path="res://Steam_Multiplayer/use_gamepad_multiplayer.gd" id="12_ki4ed"]
 
 [sub_resource type="Sky" id="Sky_cwrni"]
 
@@ -735,8 +737,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.61800385, 0, 0)
 [node name="Player" parent="Character_Selection/characters" instance=ExtResource("6_a1jyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49556077, 0)
 
-[node name="Player2" parent="Character_Selection/characters" instance=ExtResource("7_80bf7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.50357175, 0)
+[node name="Player2" parent="Character_Selection/characters" instance=ExtResource("9_ki4ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5337548, 0)
+
+[node name="Player3" parent="Character_Selection/characters" groups=["player"] instance=ExtResource("9_80bf7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51772, 0)
 
 [node name="arrows_container" type="Node3D" parent="Character_Selection"]
 transform = Transform3D(1.365, 0, 0, 0, 1.365, 0, 0, 0, 1.365, 0.43891144, 0, 0)
@@ -792,6 +797,69 @@ skeleton = NodePath("../../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Character_Selection/StaticBody3D"]
 transform = Transform3D(0.5446411, 0, 0.83866924, 0, 1, 0, -0.83866924, 0, 0.5446411, -0.028964996, 1.2771983, -0.112764835)
 shape = SubResource("BoxShape3D_q2chc")
+
+[node name="use_gamepad_?" type="Node3D" parent="Character_Selection"]
+
+[node name="select_no_players" type="Area3D" parent="Character_Selection/use_gamepad_?"]
+transform = Transform3D(0.5326648, 0, 0.1883964, 0, 0.565, 0, -0.1883964, 0, 0.5326648, -2.715084, 4.033536, -1.0366361)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character_Selection/use_gamepad_?/select_no_players"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_p50pd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character_Selection/use_gamepad_?/select_no_players"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_t0pxn")
+skeleton = NodePath("../../../..")
+
+[node name="Label3D" type="Label3D" parent="Character_Selection/use_gamepad_?/select_no_players"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Use Gamepad"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
+
+[node name="numbers" type="Node3D" parent="Character_Selection/use_gamepad_?"]
+transform = Transform3D(0.54989094, 0, -0.0109521, 0, 0.55, 0, 0.0109521, 0, 0.54989094, -0.795, 3.17, -0.585)
+script = ExtResource("12_ki4ed")
+
+[node name="yes" type="Area3D" parent="Character_Selection/use_gamepad_?/numbers"]
+transform = Transform3D(0.98393494, 0, 0.17852753, 0, 1.0000001, 0, -0.17852753, 0, 0.98393494, -0.111961365, 0.69738245, 0.005387306)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character_Selection/use_gamepad_?/numbers/yes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_a1jyg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character_Selection/use_gamepad_?/numbers/yes"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_shoky")
+skeleton = NodePath("../../../..")
+
+[node name="Label3D" type="Label3D" parent="Character_Selection/use_gamepad_?/numbers/yes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "NO"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
+
+[node name="no" type="Area3D" parent="Character_Selection/use_gamepad_?/numbers"]
+transform = Transform3D(0.983935, 0, 0.17852755, 0, 1.0000001, 0, -0.17852755, 0, 0.983935, -0.11003876, -0.64761806, 0.10181093)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Character_Selection/use_gamepad_?/numbers/no"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_a1jyg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character_Selection/use_gamepad_?/numbers/no"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_shoky")
+skeleton = NodePath("../../../..")
+
+[node name="Label3D" type="Label3D" parent="Character_Selection/use_gamepad_?/numbers/no"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Yes"
+font = SubResource("SystemFont_cwrni")
+font_size = 63
 
 [connection signal="input_event" from="MainMenu/QuitButton" to="." method="_on_quit_button_input_event"]
 [connection signal="input_event" from="MainMenu/OnlineButton" to="." method="_on_online_button_input_event"]

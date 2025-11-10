@@ -18,6 +18,7 @@ func _ready() -> void:
 	selected_level = ScenesGlobal.levels.pick_random()
 	var lv = selected_level.instantiate()
 	add_child(lv)
+	lv.make_local()
 	players["1"]["viewport"].add_child(LocalGlobal.player_1.instantiate())
 	players["2"]["viewport"].add_child(LocalGlobal.player_2.instantiate())
 	

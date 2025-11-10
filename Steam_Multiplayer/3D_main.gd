@@ -15,6 +15,8 @@ signal waiting_room_ready()
 @onready var refresh_lobbies: Area3D = $"../refresh_Lobbies"
 @onready var host_lobby: Area3D = $"../Host_Lobby"
 
+var use_gamepad: bool = false
+
 var lobby_id: int = 0
 var lobby_members: Array = []
 var lobby_members_max: int = 4

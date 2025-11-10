@@ -59,3 +59,17 @@ func update_players_ui():
 		var player_label = Label.new()
 		player_label.text = " " + str(player.steam_name)
 		players_names.add_child(player_label)
+func make_local():
+	"""Making it local, removing waiting level and adding enviroment"""
+	print("Make level local ...")
+	
+	# Remove waiting room environment
+	if world_environment and is_instance_valid(world_environment):
+		world_environment.queue_free()
+	
+	# Add game environment
+	if enviroment:
+		var env_instance = enviroment.instantiate()
+		add_child(env_instance)
+	if waiting_room:
+		waiting_room.queue_free()

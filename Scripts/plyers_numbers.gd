@@ -28,7 +28,6 @@ func _ready() -> void:
 	_2.mouse_exited.connect(_on_button_unhover.bind(_2))
 	_3.mouse_exited.connect(_on_button_unhover.bind(_3))
 	_4.mouse_exited.connect(_on_button_unhover.bind(_4))
-
 func _on_number_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int, num: String) -> void:
 	if event is InputEventMouseButton and event.pressed and not is_animating:
 		var new_y_pos: float = 0.0

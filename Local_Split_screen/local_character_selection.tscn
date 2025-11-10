@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://b556l2gh1l1bt"]
+[gd_scene load_steps=30 format=4 uid="uid://b556l2gh1l1bt"]
 
 [ext_resource type="Script" uid="uid://cunfwdd0dyo50" path="res://Local_Split_screen/local_character_selection.gd" id="1_m18g8"]
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="2_qeqtl"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="3_e5ees"]
-[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="4_ttdom"]
+[ext_resource type="PackedScene" uid="uid://bq08028jii6xi" path="res://Player_3/player.tscn" id="3_y8nly"]
+[ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://Player_0/player.tscn" id="4_1ksmu"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_s1rbn"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_q2lqv"]
 
@@ -369,7 +370,7 @@ subpixel_positioning = 0
 
 [node name="Character_Selection" type="Node3D" groups=["Selector"]]
 script = ExtResource("1_m18g8")
-characters = Array[PackedScene]([ExtResource("3_e5ees"), ExtResource("4_ttdom")])
+characters = Array[PackedScene]([ExtResource("3_e5ees"), ExtResource("3_y8nly"), ExtResource("4_1ksmu")])
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ov5p2")

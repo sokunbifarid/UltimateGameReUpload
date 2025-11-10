@@ -38,6 +38,7 @@ properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_cvnsp")
+use_gamepad = true
 
 [node name="Model" type="MeshInstance3D" parent="."]
 mesh = ExtResource("5_x3wgy")
@@ -87,7 +88,7 @@ label_settings = SubResource("LabelSettings_vgqql")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." groups=["Player"]]
 replication_config = SubResource("SceneReplicationConfig_3smsa")
 
 [node name="third_person_controller" type="Node3D" parent="."]

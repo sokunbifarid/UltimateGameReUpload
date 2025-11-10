@@ -1,10 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://if4y5d81dt3i"]
+[gd_scene load_steps=9 format=3 uid="uid://if4y5d81dt3i"]
 
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="1_iti4p"]
-[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="2_dtjkg"]
-[ext_resource type="PackedScene" uid="uid://cjuqudhfasqgm" path="res://Scenes/shark.tscn" id="3_eglq2"]
-[ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="4_7w7ni"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="5_btda1"]
+[ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://Player_0/player.tscn" id="2_dtjkg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dtjkg"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -29,10 +26,6 @@ uv1_triplanar = true
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_rsyfn"]
 data = PackedVector3Array(-25, 0.099999994, 25, 25, 0.099999994, 25, -25, -0.099999994, 25, 25, 0.099999994, 25, 25, -0.099999994, 25, -25, -0.099999994, 25, 25, 0.099999994, -25, -25, 0.099999994, -25, 25, -0.099999994, -25, -25, 0.099999994, -25, -25, -0.099999994, -25, 25, -0.099999994, -25, 25, 0.099999994, 25, 25, 0.099999994, -25, 25, -0.099999994, 25, 25, 0.099999994, -25, 25, -0.099999994, -25, 25, -0.099999994, 25, -25, 0.099999994, -25, -25, 0.099999994, 25, -25, -0.099999994, -25, -25, 0.099999994, 25, -25, -0.099999994, 25, -25, -0.099999994, -25, 25, 0.099999994, 25, -25, 0.099999994, 25, 25, 0.099999994, -25, -25, 0.099999994, 25, -25, 0.099999994, -25, 25, 0.099999994, -25, -25, -0.099999994, 25, 25, -0.099999994, 25, -25, -0.099999994, -25, 25, -0.099999994, 25, 25, -0.099999994, -25, -25, -0.099999994, -25)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_rsyfn"]
-height = 12.999512
-radius = 26.831055
-
 [node name="test_level" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -52,22 +45,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_eglq2")
 shape = SubResource("ConcavePolygonShape3D_rsyfn")
 
 [node name="Player" parent="." instance=ExtResource("2_dtjkg")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.285503, 12.751949, 2.994341)
-
-[node name="Shark" parent="." node_paths=PackedStringArray("patrol_area") instance=ExtResource("3_eglq2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.355976, 0)
-patrol_speed = 12.0
-patrol_area = NodePath("../Area3D")
-
-[node name="Area3D" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.500244, 0.154)
-shape = SubResource("CylinderShape3D_rsyfn")
-debug_color = Color(0.43188125, 0, 0.095111154, 0.57254905)
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../Marker3D")
-script = ExtResource("4_7w7ni")
-player_Scene = ExtResource("5_btda1")
-_spawn_path = NodePath("")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1349845, 0)

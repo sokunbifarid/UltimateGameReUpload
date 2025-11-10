@@ -49,7 +49,7 @@ func _ready() -> void:
 		else:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
-
+		third_person_controller.use_gamepad = use_gamepad
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
 		return
