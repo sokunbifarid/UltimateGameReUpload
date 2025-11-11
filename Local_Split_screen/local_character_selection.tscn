@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://cunfwdd0dyo50" path="res://Local_Split_screen/local_character_selection.gd" id="1_m18g8"]
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="2_qeqtl"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="3_e5ees"]
-[ext_resource type="PackedScene" uid="uid://bq08028jii6xi" path="res://Player_3/player.tscn" id="3_y8nly"]
-[ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://Player_0/player.tscn" id="4_1ksmu"]
+[ext_resource type="PackedScene" uid="uid://cgfrte6ksyo7v" path="res://Players/player_0.tscn" id="3_y8nly"]
+[ext_resource type="PackedScene" uid="uid://bmp5h1qas33b0" path="res://Players/player_1.tscn" id="4_1ksmu"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_s1rbn"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_q2lqv"]
 

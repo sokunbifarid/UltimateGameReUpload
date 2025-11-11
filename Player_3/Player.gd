@@ -4,16 +4,16 @@ signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
 
 @export var use_gamepad: bool = false
-@export var enable_running: bool = true
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
+
 #======================   Camera  ===================================
-@onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/Camera3D
-@onready var third_person_controller: Node3D = $SpringArmPivot
+@onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
+@onready var third_person_controller: Node3D = $third_person_controller
+@onready var animator: AnimationTree = $AnimationTree
 
 #=========================================================
-@onready var charater_mesh: Node3D = $Mesh
-@onready var animator: AnimationTree = $AnimationTree
+@export var charater_mesh: Node3D
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
@@ -25,7 +25,6 @@ const JUMP_VELOCITY = 4.5
 # Enhanced movement variables
 var can_move: bool = true
 var is_moving: bool = false
-var is_running: bool = false
 var cur_speed: float = 2
 var move_direction
 
@@ -42,17 +41,13 @@ var was_on_floor: bool = true
 
 var in_selection: bool = false
 
+# Animation sync variables (these will be synchronized)
+var sync_velocity: Vector3 = Vector3.ZERO
+var sync_is_on_floor: bool = true
+var sync_blend_amount: float = -1.0
+
 func _ready() -> void:
-	# CRITICAL FIX: Ensure valid scale to prevent determinant error
-	if scale.length_squared() < 0.001:
-		scale = Vector3.ONE
-		push_warning("Player %s had invalid scale, reset to ONE" % name)
-	
-	# Ensure transform is valid
-	if charater_mesh and charater_mesh.scale.length_squared() < 0.001:
-		charater_mesh.scale = Vector3.ONE
-	
-	# Setup camera for local player only
+	# Setup camera
 	if camera:
 		if is_multiplayer_authority():
 			camera.current = true
@@ -60,52 +55,71 @@ func _ready() -> void:
 		else:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
-	else:
-		push_error("Camera not found for player: %s" % name)
 	
-	# Setup third person controller
 	if third_person_controller:
 		third_person_controller.use_gamepad = use_gamepad
-	else:
-		push_error("Third person controller not found for player: %s" % name)
 
 func _physics_process(delta: float) -> void:
-	# Validate scale every frame (safety check)
+	# Validate scale every frame
 	if scale.length_squared() < 0.001:
 		scale = Vector3.ONE
-		push_error("Player %s scale became invalid during runtime!" % name)
+		push_error("Player %s scale became invalid!" % name)
 	
-	if !is_multiplayer_authority() or in_selection:
-		return
-
-	# Enhanced movement with polish
-	handle_movement(delta)
-	handle_jump()
-	move_and_slide()
-	update_movement_state_tracking(delta)
-	check_landing()
-	fall_damage()
-	check_fall()
-	animate(delta)
+	if is_multiplayer_authority():
+		# LOCAL PLAYER: Handle input and movement
+		if not in_selection:
+			handle_movement(delta)
+			handle_jump()
+			move_and_slide()
+			update_movement_state_tracking(delta)
+			check_landing()
+			fall_damage()
+			check_fall()
+		
+		# Update sync variables for network
+		sync_velocity = velocity
+		sync_is_on_floor = is_on_floor()
+		
+		# Animate based on local state
+		animate(delta)
+	else:
+		# REMOTE PLAYER: Use synced values for animation
+		velocity = sync_velocity
+		animate_remote(delta)
 
 func animate(delta):
+	"""Animation for local player"""
 	if is_on_floor():
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
-
-		if velocity.length() > 0:
+		
+		var horizontal_speed = Vector2(velocity.x, velocity.z).length()
+		
+		if horizontal_speed > 0.1:
 			if cur_speed == RUN_SPEED:
-				animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), 1.0, delta * 7.0))
+				sync_blend_amount = lerp(sync_blend_amount, 1.0, delta * 7.0)
 			else:
-				animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), 0.0, delta * 7.0))
+				sync_blend_amount = lerp(sync_blend_amount, 0.0, delta * 7.0)
 		else:
-			animator.set("parameters/iwr_blend/blend_amount", lerp(animator.get("parameters/iwr_blend/blend_amount"), -1.0, delta * 7.0))
+			sync_blend_amount = lerp(sync_blend_amount, -1.0, delta * 7.0)
+		
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
 	else:
 		animator.set("parameters/ground_air_transition/transition_request", "air")
+		sync_blend_amount = 0.0
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+
+func animate_remote(delta):
+	"""Animation for remote players using synced data"""
+	if sync_is_on_floor:
+		animator.set("parameters/ground_air_transition/transition_request", "grounded")
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+	else:
+		animator.set("parameters/ground_air_transition/transition_request", "air")
+		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
 
 func disable_camera():
@@ -121,7 +135,6 @@ func make_it_use_gamepad(val: bool):
 		third_person_controller.player_index = 0 if val == false else 1
 
 func handle_jump():
-	# Jump handling
 	if !use_gamepad:
 		if Input.is_action_just_pressed("Jump") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
@@ -136,55 +149,38 @@ func handle_third_person_movement(delta: float):
 	var input_dir = Vector2.ZERO
 
 	if use_gamepad:
-		# Left stick movement
-		input_dir.x = Input.get_action_strength("move_l") - Input.get_action_strength("move_r")
-		input_dir.y = Input.get_action_strength("move_up") - Input.get_action_strength("move_down")
+		input_dir.x = Input.get_action_strength("move_r") - Input.get_action_strength("move_l")
+		input_dir.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+		input_dir.x *= -1.0
 
-		# Apply deadzone
 		if input_dir.length() < 0.15:
 			input_dir = Vector2.ZERO
 		else:
 			input_dir = input_dir.normalized()
 	else:
-		# Keyboard movement
-		if Input.is_action_pressed("move_back"):
-			input_dir.y -= 1
 		if Input.is_action_pressed("move_forward"):
+			input_dir.y -= 1
+		if Input.is_action_pressed("move_back"):
 			input_dir.y += 1
 		if Input.is_action_pressed("move_left"):
 			input_dir.x += 1
 		if Input.is_action_pressed("move_right"):
 			input_dir.x -= 1
 
-	# Handle run toggle
-	if enable_running:
-		if use_gamepad:
-			# Gamepad: Toggle running on button press, stop when movement stops
-			if Input.is_action_just_pressed("make_run"):
-				is_running = !is_running
-			
-			# Stop running when movement stops
-			if input_dir == Vector2.ZERO:
-				is_running = false
-			
-			# Set speed based on running state
-			if is_running:
-				cur_speed = RUN_SPEED
-			else:
-				cur_speed = WALK_SPEED
+	# Check if running
+	if !use_gamepad:
+		if Input.is_action_pressed("run"):
+			cur_speed = RUN_SPEED
 		else:
-			# Keyboard: Hold to run (previous logic)
-			if Input.is_action_pressed("run"):
-				cur_speed = RUN_SPEED
-			else:
-				cur_speed = WALK_SPEED
+			cur_speed = WALK_SPEED
 	else:
+		# For gamepad, you might want to use analog stick magnitude or a button
 		cur_speed = WALK_SPEED
 
-	# Convert to 3D movement based on camera
+	# Convert to 3D movement
 	if third_person_controller:
 		var camera_basis = third_person_controller.global_transform.basis
-		move_direction = (camera_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		move_direction = (camera_basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
 	else:
 		move_direction = Vector3.ZERO
 
@@ -207,14 +203,9 @@ func handle_third_person_movement(delta: float):
 
 func face_direction(direction: Vector3, delta: float):
 	if direction != Vector3.ZERO and charater_mesh:
-		# Calculate target rotation
 		var target_rotation = atan2(direction.x, direction.z)
-		
-		# Smoothly rotate towards target with enhanced smoothing
 		var current_rotation = charater_mesh.rotation.y
-	
 		var new_rotation = lerp_angle(current_rotation, target_rotation, rotation_smoothing * delta)
-
 		charater_mesh.rotation.y = new_rotation
 
 func set_movements(movements: bool):
@@ -222,7 +213,6 @@ func set_movements(movements: bool):
 	can_move = movements
 
 func update_movement_state_tracking(delta: float):
-	# Update movement state based on actual velocity
 	var horizontal_speed = Vector2(velocity.x, velocity.z).length()
 	is_moving = horizontal_speed > 0.1
 

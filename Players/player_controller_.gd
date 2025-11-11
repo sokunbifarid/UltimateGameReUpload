@@ -6,16 +6,18 @@ signal OnUpdateScore(score)
 @export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
+
 #======================   Camera  ===================================
 @onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
 @onready var third_person_controller: Node3D = $third_person_controller
+@onready var animator: AnimationTree = $AnimationTree
 
 #=========================================================
-@onready var charater_mesh: MeshInstance3D = $Model
+@export var charater_mesh: Node3D
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
-const ROTATION_SPEED = 15.0  # Slightly faster rotation for better responsiveness
+const ROTATION_SPEED = 15.0
 const RUN_SPEED: float = 7
 const WALK_SPEED: float = 2
 const JUMP_VELOCITY = 4.5
@@ -27,7 +29,7 @@ var cur_speed: float = 2
 var move_direction
 
 # Smoothing and polish variables
-var health :int = 100
+var health: int = 100
 # State tracking for enhanced feel
 var movement_vector: Vector3 = Vector3.ZERO
 var target_velocity: Vector3 = Vector3.ZERO
@@ -39,9 +41,13 @@ var was_on_floor: bool = true
 
 var in_selection: bool = false
 
+# Animation sync variables (these will be synchronized)
+var sync_velocity: Vector3 = Vector3.ZERO
+var sync_is_on_floor: bool = true
+var sync_blend_amount: float = -1.0
+
 func _ready() -> void:
-	# Wait a frame to ensure multiplayer authority is properly set
-	await get_tree().process_frame
+	# Setup camera
 	if camera:
 		if is_multiplayer_authority():
 			camera.current = true
@@ -49,35 +55,86 @@ func _ready() -> void:
 		else:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
+	
+	if third_person_controller:
 		third_person_controller.use_gamepad = use_gamepad
-func _physics_process(delta: float) -> void:
-	if !is_multiplayer_authority() or in_selection:
-		return
 
-	# Enhanced movement with polish
-	handle_movement(delta)
-	handle_jump()
-	move_and_slide()
-	update_movement_state_tracking(delta)
-	check_landing()
-	fall_damage()
-	check_fall()
+func _physics_process(delta: float) -> void:
+	# Validate scale every frame
+	if scale.length_squared() < 0.001:
+		scale = Vector3.ONE
+		push_error("Player %s scale became invalid!" % name)
+	
+	if is_multiplayer_authority():
+		# LOCAL PLAYER: Handle input and movement
+		if not in_selection:
+			handle_movement(delta)
+			handle_jump()
+			move_and_slide()
+			update_movement_state_tracking(delta)
+			check_landing()
+			fall_damage()
+			check_fall()
+		
+		# Update sync variables for network
+		sync_velocity = velocity
+		sync_is_on_floor = is_on_floor()
+		
+		# Animate based on local state
+		animate(delta)
+	else:
+		# REMOTE PLAYER: Use synced values for animation
+		velocity = sync_velocity
+		animate_remote(delta)
+
+func animate(delta):
+	"""Animation for local player"""
+	if is_on_floor():
+		animator.set("parameters/ground_air_transition/transition_request", "grounded")
+		
+		var horizontal_speed = Vector2(velocity.x, velocity.z).length()
+		
+		if horizontal_speed > 0.1:
+			if cur_speed == RUN_SPEED:
+				sync_blend_amount = lerp(sync_blend_amount, 1.0, delta * 7.0)
+			else:
+				sync_blend_amount = lerp(sync_blend_amount, 0.0, delta * 7.0)
+		else:
+			sync_blend_amount = lerp(sync_blend_amount, -1.0, delta * 7.0)
+		
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+	else:
+		animator.set("parameters/ground_air_transition/transition_request", "air")
+		sync_blend_amount = 0.0
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+
+func animate_remote(delta):
+	"""Animation for remote players using synced data"""
+	if sync_is_on_floor:
+		animator.set("parameters/ground_air_transition/transition_request", "grounded")
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+	else:
+		animator.set("parameters/ground_air_transition/transition_request", "air")
+		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
 func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
+
 func disable_camera():
-	camera.queue_free()
+	if camera:
+		camera.queue_free()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	in_selection = true
-func make_it_use_gamepad(val:bool):
+
+func make_it_use_gamepad(val: bool):
 	use_gamepad = val
-	third_person_controller.use_gamepad = val
-	third_person_controller.player_index = 0 if val == false else 1
+	if third_person_controller:
+		third_person_controller.use_gamepad = val
+		third_person_controller.player_index = 0 if val == false else 1
+
 func handle_jump():
-	# Jump handling
 	if !use_gamepad:
 		if Input.is_action_just_pressed("Jump") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
@@ -86,27 +143,21 @@ func handle_jump():
 			velocity.y = JUMP_VELOCITY
 			
 func check_landing():
-
 	was_on_floor = is_on_floor()
 
 func handle_third_person_movement(delta: float):
 	var input_dir = Vector2.ZERO
 
 	if use_gamepad:
-		# Left stick movement
 		input_dir.x = Input.get_action_strength("move_r") - Input.get_action_strength("move_l")
 		input_dir.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-
-		# X inverted by default for correct third-person feel
 		input_dir.x *= -1.0
 
-		# Apply deadzone
 		if input_dir.length() < 0.15:
 			input_dir = Vector2.ZERO
 		else:
 			input_dir = input_dir.normalized()
 	else:
-		# Keyboard movement
 		if Input.is_action_pressed("move_forward"):
 			input_dir.y -= 1
 		if Input.is_action_pressed("move_back"):
@@ -116,10 +167,22 @@ func handle_third_person_movement(delta: float):
 		if Input.is_action_pressed("move_right"):
 			input_dir.x -= 1
 
-	# Convert to 3D movement based on camera
-	var camera_basis = third_person_controller.global_transform.basis
-	move_direction = (camera_basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
+	# Check if running
+	if !use_gamepad:
+		if Input.is_action_pressed("run"):
+			cur_speed = RUN_SPEED
+		else:
+			cur_speed = WALK_SPEED
+	else:
+		# For gamepad, you might want to use analog stick magnitude or a button
+		cur_speed = WALK_SPEED
 
+	# Convert to 3D movement
+	if third_person_controller:
+		var camera_basis = third_person_controller.global_transform.basis
+		move_direction = (camera_basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
+	else:
+		move_direction = Vector3.ZERO
 
 	# Movement with smoothing
 	if move_direction != Vector3.ZERO:
@@ -138,31 +201,21 @@ func handle_third_person_movement(delta: float):
 		if is_moving and velocity.length() < 0.1:
 			is_moving = false
 
-# PRESERVED: Original rotation function
 func face_direction(direction: Vector3, delta: float):
-	if direction != Vector3.ZERO:
-		# Calculate target rotation
+	if direction != Vector3.ZERO and charater_mesh:
 		var target_rotation = atan2(direction.x, direction.z)
-		
-		# Smoothly rotate towards target with enhanced smoothing
 		var current_rotation = charater_mesh.rotation.y
-	
 		var new_rotation = lerp_angle(current_rotation, target_rotation, rotation_smoothing * delta)
-
 		charater_mesh.rotation.y = new_rotation
 
-# PRESERVED: Original movement setter
 func set_movements(movements: bool):
 	velocity = Vector3.ZERO
 	can_move = movements
 
-# NEW: Additional utility functions for enhanced feel
 func update_movement_state_tracking(delta: float):
-	# Update movement state based on actual velocity
 	var horizontal_speed = Vector2(velocity.x, velocity.z).length()
 	is_moving = horizontal_speed > 0.1
 
-# NEW: Get current movement info (useful for other systems)
 func get_movement_speed() -> float:
 	return Vector2(velocity.x, velocity.z).length()
 
@@ -175,16 +228,25 @@ func is_airborne() -> bool:
 
 func fall_damage():
 	if global_position.y < -10:
-		position = get_tree().get_first_node_in_group("respwan_point").position
+		var respawn = get_tree().get_first_node_in_group("respwan_point")
+		if respawn:
+			position = respawn.position
 
 func check_fall():
 	if global_position.y < -10:
-		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position
+		var respawn = get_tree().get_first_node_in_group("respwan_point")
+		if respawn:
+			self.global_position = respawn.global_position
 		
 func increase_score(value):
 	pass
+
 func take_damage(value):
-	position = get_tree().get_first_node_in_group("respwan_point").position
+	var respawn = get_tree().get_first_node_in_group("respwan_point")
+	if respawn:
+		position = respawn.position
+
 func move_to_level():
-	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1,1),0,randf_range(-1,1))
-	
+	var respawn = get_tree().get_first_node_in_group("respwan_point")
+	if respawn:
+		self.global_position = respawn.position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))

@@ -1,6 +1,5 @@
 extends Node3D
 
-@export var camera: Camera3D
 @export var player_index: int = 0  # Which player is this selection screen for (0 or 1)
 
 @export var characters : Array[PackedScene]
