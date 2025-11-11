@@ -6,6 +6,14 @@ extends Node
 
 func _ready() -> void:
 	_randomize_spawn_pos()
+
+	var random_x = randf_range(spawn_path.global_position.x - 1, spawn_path.global_position.x + 1)
+	var random_z = randf_range(spawn_path.global_position.z - 1, spawn_path.global_position.z + 1)
+	var new_pos = Vector3(random_x, spawn_path.global_position.y, random_z)
+	
+	spawn_path.global_position = new_pos
+	
+	
 	if Multiplayer and !Multiplayer.is_host:
 		$start_game.queue_free()
 	
@@ -18,6 +26,8 @@ func _randomize_spawn_pos():
 	var random_z = randf_range(spawn_path.global_position.z - 5, spawn_path.global_position.z + 5)
 	var new_pos = Vector3(random_x, spawn_path.global_position.y, random_z)
 	spawn_path.global_position = new_pos
+	#if MultiplayerGlobal.selected_player.use_gamepad:
+		#start_game.text = "Start Game\n[press R2 or RT]"
 func _on_start_game_pressed():
 	# Host triggers the level shift
 	if Multiplayer and Multiplayer.is_host:
@@ -46,8 +56,8 @@ func update_start_button():
 	# Enable button when at least 2 players, or customize this logic
 	if player_count >= 2:
 		start_game.disabled = false
-		start_game.text = "Start Game\npress R2 or RT"
-
+		start_game.text = "Start Game (%d/%d)" % [player_count, max_players]
+		start_game.text += "\n[Press Enter]"
 		if Input.is_action_just_pressed("enter_game") :
 			_on_start_game_pressed()
 	else:

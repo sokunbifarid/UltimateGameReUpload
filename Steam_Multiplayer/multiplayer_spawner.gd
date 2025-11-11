@@ -9,8 +9,11 @@ var is_local : bool = false
 var players = {}
 
 func _ready() -> void:
+
+	
 	if is_local: return
 	spawn_function = spawnPlayer
+	
 	# Wait for multiplayer to be set up
 	if multiplayer.multiplayer_peer:
 		_setup_spawner()

@@ -203,7 +203,7 @@ move_speed = 3.0
 move_direction = Vector3(8, 0, 0)
 
 [node name="playerSpawnPoint" type="Node3D" parent="." groups=["respwan_point"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12326026, 1.3233819, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3233819, 0)
 
 [node name="waiting_room" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
