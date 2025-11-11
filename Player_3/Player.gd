@@ -43,8 +43,16 @@ var was_on_floor: bool = true
 var in_selection: bool = false
 
 func _ready() -> void:
-	# Wait a frame to ensure multiplayer authority is properly set
-	await get_tree().process_frame
+	# CRITICAL FIX: Ensure valid scale to prevent determinant error
+	if scale.length_squared() < 0.001:
+		scale = Vector3.ONE
+		push_warning("Player %s had invalid scale, reset to ONE" % name)
+	
+	# Ensure transform is valid
+	if charater_mesh and charater_mesh.scale.length_squared() < 0.001:
+		charater_mesh.scale = Vector3.ONE
+	
+	# Setup camera for local player only
 	if camera:
 		if is_multiplayer_authority():
 			camera.current = true
@@ -52,8 +60,21 @@ func _ready() -> void:
 		else:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
-	third_person_controller.use_gamepad = use_gamepad
+	else:
+		push_error("Camera not found for player: %s" % name)
+	
+	# Setup third person controller
+	if third_person_controller:
+		third_person_controller.use_gamepad = use_gamepad
+	else:
+		push_error("Third person controller not found for player: %s" % name)
+
 func _physics_process(delta: float) -> void:
+	# Validate scale every frame (safety check)
+	if scale.length_squared() < 0.001:
+		scale = Vector3.ONE
+		push_error("Player %s scale became invalid during runtime!" % name)
+	
 	if !is_multiplayer_authority() or in_selection:
 		return
 
@@ -88,14 +109,16 @@ func handle_movement(delta: float):
 	handle_third_person_movement(delta)
 
 func disable_camera():
-	camera.queue_free()
+	if camera:
+		camera.queue_free()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	in_selection = true
 
 func make_it_use_gamepad(val: bool):
 	use_gamepad = val
-	third_person_controller.use_gamepad = val
-	third_person_controller.player_index = 0 if val == false else 1
+	if third_person_controller:
+		third_person_controller.use_gamepad = val
+		third_person_controller.player_index = 0 if val == false else 1
 
 func handle_jump():
 	# Jump handling
@@ -159,8 +182,11 @@ func handle_third_person_movement(delta: float):
 		cur_speed = WALK_SPEED
 
 	# Convert to 3D movement based on camera
-	var camera_basis = third_person_controller.global_transform.basis
-	move_direction = (camera_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if third_person_controller:
+		var camera_basis = third_person_controller.global_transform.basis
+		move_direction = (camera_basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	else:
+		move_direction = Vector3.ZERO
 
 	# Movement with smoothing
 	if move_direction != Vector3.ZERO:
@@ -180,7 +206,7 @@ func handle_third_person_movement(delta: float):
 			is_moving = false
 
 func face_direction(direction: Vector3, delta: float):
-	if direction != Vector3.ZERO:
+	if direction != Vector3.ZERO and charater_mesh:
 		# Calculate target rotation
 		var target_rotation = atan2(direction.x, direction.z)
 		
@@ -212,17 +238,25 @@ func is_airborne() -> bool:
 
 func fall_damage():
 	if global_position.y < -10:
-		position = get_tree().get_first_node_in_group("respwan_point").position
+		var respawn = get_tree().get_first_node_in_group("respwan_point")
+		if respawn:
+			position = respawn.position
 
 func check_fall():
 	if global_position.y < -10:
-		self.global_position = get_tree().get_first_node_in_group("respwan_point").global_position
+		var respawn = get_tree().get_first_node_in_group("respwan_point")
+		if respawn:
+			self.global_position = respawn.global_position
 		
 func increase_score(value):
 	pass
 
 func take_damage(value):
-	position = get_tree().get_first_node_in_group("respwan_point").position
+	var respawn = get_tree().get_first_node_in_group("respwan_point")
+	if respawn:
+		position = respawn.position
 
 func move_to_level():
-	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))
+	var respawn = get_tree().get_first_node_in_group("respwan_point")
+	if respawn:
+		self.global_position = respawn.position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))

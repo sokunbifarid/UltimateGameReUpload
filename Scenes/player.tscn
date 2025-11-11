@@ -89,8 +89,6 @@ offset_bottom = 123.0
 text = "Score: 500"
 label_settings = SubResource("LabelSettings_vgqql")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-
 [node name="third_person_controller" type="Node3D" parent="."]
 transform = Transform3D(-0.9999539, 0, 0.009599213, 0, 1, 0, -0.009599213, 0, -0.9999539, 0, 0, 0)
 script = ExtResource("7_8erm5")

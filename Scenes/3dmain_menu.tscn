@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="8_ki4ed"]
 [ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://Player_0/player.tscn" id="9_80bf7"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="9_i4r5o"]
-[ext_resource type="PackedScene" uid="uid://bq08028jii6xi" path="res://Player_3/player.tscn" id="9_ki4ed"]
+[ext_resource type="PackedScene" uid="uid://cgfrte6ksyo7v" path="res://Players/player_0.tscn" id="9_ki4ed"]
 [ext_resource type="Script" uid="uid://ry23jegyi5vy" path="res://Steam_Multiplayer/use_gamepad_multiplayer.gd" id="12_ki4ed"]
 
 [sub_resource type="Sky" id="Sky_cwrni"]
@@ -737,11 +737,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.61800385, 0, 0)
 [node name="Player" parent="Character_Selection/characters" instance=ExtResource("6_a1jyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49556077, 0)
 
-[node name="Player2" parent="Character_Selection/characters" instance=ExtResource("9_ki4ed")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5337548, 0)
-
 [node name="Player3" parent="Character_Selection/characters" groups=["player"] instance=ExtResource("9_80bf7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51772, 0)
+
+[node name="Player2" parent="Character_Selection/characters" instance=ExtResource("9_ki4ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5246973, 0)
 
 [node name="arrows_container" type="Node3D" parent="Character_Selection"]
 transform = Transform3D(1.365, 0, 0, 0, 1.365, 0, 0, 0, 1.365, 0.43891144, 0, 0)

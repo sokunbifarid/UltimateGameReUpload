@@ -11,7 +11,7 @@ signal OnUpdateScore(score)
 @onready var third_person_controller: Node3D = $third_person_controller
 
 #=========================================================
-@onready var charater_mesh: MeshInstance3D = $Model
+@onready var charater_mesh: Node3D = $rhead
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
