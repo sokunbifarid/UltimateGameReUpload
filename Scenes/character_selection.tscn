@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="1_mdkri"]
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="1_mng1v"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="2_235bc"]
-[ext_resource type="PackedScene" uid="uid://ba0b4v76xhfls" path="res://Player/Scenes/player.tscn" id="3_mdkri"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="2_235bc"]
+[ext_resource type="PackedScene" path="res://Player/Scenes/player.tscn" id="3_mdkri"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_3nbr6"]
-[ext_resource type="Script" uid="uid://0et50aqpwhs8" path="res://Scripts/arrows.gd" id="6_btth6"]
+[ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_btth6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3nbr6"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)

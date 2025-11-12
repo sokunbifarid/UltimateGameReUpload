@@ -7,7 +7,7 @@
 [ext_resource type="ArrayMesh" uid="uid://bocjqigsytkyn" path="res://Models/Platform/block-grass-large-tall.obj" id="3_evi0p"]
 [ext_resource type="ArrayMesh" uid="uid://sfpkxlk61sjg" path="res://Models/Platform/block-grass-large.obj" id="4_lsmp6"]
 [ext_resource type="ArrayMesh" uid="uid://cc5gyq8lwp7hh" path="res://Models/Platform/block-grass-overhang-low.obj" id="5_xrdnt"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="6_evi0p"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="6_evi0p"]
 [ext_resource type="PackedScene" uid="uid://cjuqudhfasqgm" path="res://Scenes/shark.tscn" id="6_uy8f0"]
 [ext_resource type="PackedScene" uid="uid://d1n3slt2234do" path="res://Scenes/enemy.tscn" id="7_lsmp6"]
 [ext_resource type="PackedScene" uid="uid://btxebr50qp1hf" path="res://Scenes/coin.tscn" id="8_xrdnt"]

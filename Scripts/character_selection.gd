@@ -93,6 +93,8 @@ func setup_initial_positions() -> void:
 func get_selected_player():
 	"""Returns the scene of the currently selected character"""
 	if in_front_char != null:
+		var name_str = str(in_front_char.name)
+		MultiplayerGlobal.selected_player_num = int(name_str.substr(name_str.length() - 1, 1))
 		return player_scenes.get(in_front_char)
 	return null
 

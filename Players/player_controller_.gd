@@ -10,7 +10,7 @@ signal OnUpdateScore(score)
 #======================   Camera  ===================================
 @onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
 @onready var third_person_controller: Node3D = $third_person_controller
-@onready var animator: AnimationTree = $AnimationTree
+@onready var animator: AnimationTree = $Mesh/AnimationTree
 
 #=========================================================
 @export var charater_mesh: Node3D
@@ -58,6 +58,15 @@ func _ready() -> void:
 	
 	if third_person_controller:
 		third_person_controller.use_gamepad = use_gamepad
+func select_player():
+	if !in_selection:
+		match  MultiplayerGlobal.selected_player_num:
+			1:
+				print("Going with player 1") 
+			2:
+				print("Going with player 2") 
+			3:
+				print("Going with player 3") 
 
 func _physics_process(delta: float) -> void:
 	# Validate scale every frame

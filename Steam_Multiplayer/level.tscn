@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://6kp8gixwjrk2" path="res://Steam_Multiplayer/waiiting_room.gd" id="1_3fvjc"]
 [ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="1_7d8o2"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="3_3fvjc"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="3_3fvjc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0seqp"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)

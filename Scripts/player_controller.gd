@@ -12,7 +12,11 @@ signal OnUpdateScore(score)
 
 #=========================================================
 @onready var charater_mesh: MeshInstance3D = $Model
-
+@onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
+var mesh : Node3D
+var animator
+var sync_blend_amount: float = -1.0
+var start_animate: bool = false
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
 const ROTATION_SPEED = 15.0  # Slightly faster rotation for better responsiveness
@@ -50,10 +54,30 @@ func _ready() -> void:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
+	select_player()
+func select_player():
+	if !in_selection:
+		match  MultiplayerGlobal.selected_player_num:
+			1:
+				print("Doing Nothing")
+			2:
+				mesh = MultiplayerGlobal.players_meshes[2].instantiate()
+				add_child(mesh)
+				animator = mesh.get_node("AnimationTree")
+				start_animate = true
+				if charater_mesh:
+					charater_mesh.queue_free()
+			3:
+				mesh = MultiplayerGlobal.players_meshes[3].instantiate()
+				add_child(mesh)
+				animator = mesh.get_node("AnimationTree")
+				start_animate = true
+				if charater_mesh:
+					charater_mesh.queue_free()
+
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
 		return
-
 	# Enhanced movement with polish
 	handle_movement(delta)
 	handle_jump()
@@ -62,6 +86,29 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
+	if start_animate:
+		animate(delta)
+
+func animate(delta):
+	"""Animation for local player"""
+	if is_on_floor():
+		animator.set("parameters/ground_air_transition/transition_request", "grounded")
+		
+		var horizontal_speed = Vector2(velocity.x, velocity.z).length()
+		
+		if horizontal_speed > 0.1:
+			if cur_speed == RUN_SPEED:
+				sync_blend_amount = lerp(sync_blend_amount, 1.0, delta * 7.0)
+			else:
+				sync_blend_amount = lerp(sync_blend_amount, 0.0, delta * 7.0)
+		else:
+			sync_blend_amount = lerp(sync_blend_amount, -1.0, delta * 7.0)
+		
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+	else:
+		animator.set("parameters/ground_air_transition/transition_request", "air")
+		sync_blend_amount = 0.0
+		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
 
 func handle_movement(delta: float):
 	if not is_on_floor():
@@ -145,12 +192,14 @@ func face_direction(direction: Vector3, delta: float):
 		var target_rotation = atan2(direction.x, direction.z)
 		
 		# Smoothly rotate towards target with enhanced smoothing
-		var current_rotation = charater_mesh.rotation.y
+		var current_rotation = charater_mesh.rotation.y if !start_animate else mesh.rotation.y
 	
 		var new_rotation = lerp_angle(current_rotation, target_rotation, rotation_smoothing * delta)
-
-		charater_mesh.rotation.y = new_rotation
-
+		
+		if !start_animate:
+			charater_mesh.rotation.y = new_rotation
+		else:
+			mesh.rotation.y = new_rotation
 # PRESERVED: Original movement setter
 func set_movements(movements: bool):
 	velocity = Vector3.ZERO

@@ -44,9 +44,6 @@ func _on_peer_connected(id: int):
 		print("HOST: Peer %s connected, spawning their player" % id)
 		spawn(id)
 
-#func _process(delta: float) -> void:
-	#label.text = "Players: " + str(players.keys())
-
 func spawnPlayer(peer_id):
 	# Prevent duplicate spawns
 	if players.has(peer_id):
@@ -54,11 +51,10 @@ func spawnPlayer(peer_id):
 		return players[peer_id]
 	
 	print("Spawning player for peer ID: %s" % peer_id)
-	var p = MultiplayerGlobal.selected_player.instantiate()
+	var p = preload("res://Players/player.tscn").instantiate()
 	p.use_gamepad = Multiplayer.use_gamepad
 	p.name = "Player_" + str(peer_id)
 	p.set_multiplayer_authority(peer_id)
-	
 	players[peer_id] = p
 	return p
 

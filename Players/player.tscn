@@ -1,0 +1,107 @@
+[gd_scene load_steps=10 format=3 uid="uid://ce48elb3fsyic"]
+
+[ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Scripts/player_controller.gd" id="1_ey0s5"]
+[ext_resource type="ArrayMesh" uid="uid://xmt2xitb40xe" path="res://Models/Characters/character-male-d.obj" id="2_5k41c"]
+[ext_resource type="Script" uid="uid://dbdpgchc4cwmk" path="res://Scripts/player_visual.gd" id="3_bnt45"]
+[ext_resource type="Script" uid="uid://cwq3dfxk7my27" path="res://Scripts/player_ui.gd" id="4_x03v5"]
+[ext_resource type="Texture2D" uid="uid://dj0jvwa25owq1" path="res://Sprites/hud_heartFull.png" id="5_4rf5a"]
+[ext_resource type="Script" uid="uid://cqq4suxgli1rd" path="res://camera/camera.gd" id="6_hn4mw"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3smsa"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:scale")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Model:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath("Model:scale")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Model:position")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
+radius = 0.169431
+height = 0.697453
+
+[sub_resource type="LabelSettings" id="LabelSettings_vgqql"]
+font_size = 38
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.709804)
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
+script = ExtResource("1_ey0s5")
+use_gamepad = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_3smsa")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+mesh = ExtResource("2_5k41c")
+script = ExtResource("3_bnt45")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, -5.82077e-11, 0, -5.82077e-11, 1, -1.86265e-09, 0, 0, 1, 0.0052205, 0.340762, -0.0278564)
+shape = SubResource("CapsuleShape3D_lsmp6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+script = ExtResource("4_x03v5")
+
+[node name="HealthContainer" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 317.0
+offset_bottom = 63.0
+
+[node name="Heart" type="TextureRect" parent="CanvasLayer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("5_4rf5a")
+
+[node name="Heart2" type="TextureRect" parent="CanvasLayer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("5_4rf5a")
+
+[node name="Heart3" type="TextureRect" parent="CanvasLayer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("5_4rf5a")
+
+[node name="Heart4" type="TextureRect" parent="CanvasLayer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("5_4rf5a")
+
+[node name="Heart5" type="TextureRect" parent="CanvasLayer/HealthContainer"]
+layout_mode = 2
+texture = ExtResource("5_4rf5a")
+
+[node name="ScoreText" type="Label" parent="CanvasLayer"]
+offset_left = 23.0
+offset_top = 79.0
+offset_right = 261.0
+offset_bottom = 123.0
+text = "Score: 500"
+label_settings = SubResource("LabelSettings_vgqql")
+
+[node name="third_person_controller" type="Node3D" parent="."]
+transform = Transform3D(-0.9999539, 0, 0.009599213, 0, 1, 0, -0.009599213, 0, -0.9999539, 0, 0, 0)
+script = ExtResource("6_hn4mw")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="third_person_controller"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.9325174, -0.0812451)
+spring_length = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="third_person_controller/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62268e-07, 0, 3)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 547.0
+offset_top = 10.0
+offset_right = 587.0
+offset_bottom = 33.0

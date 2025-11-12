@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dcikloa5uqb3q" path="res://Scenes/lobbies_container.gd" id="2_wtcdj"]
 [ext_resource type="Script" uid="uid://dngt76mtjnt3q" path="res://Scripts/plyers_numbers.gd" id="5_a1jyg"]
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="5_shoky"]
-[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Scenes/player.tscn" id="6_a1jyg"]
+[ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="6_a1jyg"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="8_ki4ed"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="9_i4r5o"]
 [ext_resource type="PackedScene" uid="uid://cgfrte6ksyo7v" path="res://Players/player_0.tscn" id="9_ki4ed"]
@@ -734,7 +734,7 @@ mouse_sensitivity = 0.01
 [node name="characters" type="Node3D" parent="Character_Selection"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.61800385, 0, 0)
 
-[node name="Player" parent="Character_Selection/characters" instance=ExtResource("6_a1jyg")]
+[node name="Player1" parent="Character_Selection/characters" instance=ExtResource("6_a1jyg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49556077, 0)
 
 [node name="Player2" parent="Character_Selection/characters" instance=ExtResource("9_ki4ed")]
