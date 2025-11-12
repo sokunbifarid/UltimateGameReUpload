@@ -38,7 +38,6 @@ shadow_color = Color(0, 0, 0, 0.709804)
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_ey0s5")
-use_gamepad = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_3smsa")

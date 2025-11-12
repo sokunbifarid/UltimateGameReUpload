@@ -41,8 +41,8 @@ func _on_start_game_pressed():
 	else:
 		print("ERROR: Only host can start the game!")
 
-func _process(delta: float) -> void:
-	update_start_button()
+#func _process(delta: float) -> void:
+	#update_start_button()
 
 
 func update_start_button():

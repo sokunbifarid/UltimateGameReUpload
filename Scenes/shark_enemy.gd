@@ -1,78 +1,123 @@
 extends CharacterBody3D
-@onready var up: RayCast3D = $avoidence_ray/up
-@onready var down: RayCast3D = $avoidence_ray/down
-
-@onready var front: RayCast3D = $avoidence_ray/front
-@onready var left: RayCast3D = $avoidence_ray/left
-@onready var right: RayCast3D = $avoidence_ray/right
-@export var attack_area: Area3D
 
 # Movement settings
 @export var patrol_speed: float = 3.0
+@export var chase_speed: float = 8.0
 @export var rotation_speed: float = 3.0
-@export var avoidance_strength: float = 2.0
+@export var vertical_avoidance_strength: float = 5.0
+
+# Detection settings
+@export var detection_range: float = 15.0
+@export var lose_interest_range: float = 25.0
+
+# Combat settings
+@export var bite_damage: int = 25
+@export var bite_distance: float = 2.0
+@export var attack_cooldown: float = 3.0
 
 # Patrol settings
-@export var patrol_area: Area3D
+@export var patrol_radius: float = 15.0
+@export var num_patrol_points: int = 6
 
-# Attack settings
-@export var attack_damage: float = 10.0
-@export var attack_cooldown: float = 2.0
-@export var attack_speed: float = 6.0
+@onready var player_ray = $PlayerRay
+@onready var obstacle_ray_forward = RayCast3D.new()
+@onready var obstacle_ray_up = RayCast3D.new()
+@onready var obstacle_ray_down = RayCast3D.new()
 
-var patrol_target: Vector3
-var patrol_timer: float = 0.0
-var change_direction_interval: float = 5.0
+# State
+enum State { PATROL, CHASE, ATTACK }
+var current_state: State = State.PATROL
 
-# Attack state
-enum Shark_State { PATROL, ATTACKING, COOLDOWN }
-var current_state: Shark_State = Shark_State.PATROL
-var player_in_range: Node3D = null
-var cooldown_timer: float = 0.0
-var normal_rotation_speed : float 
-var attack_rot_speed = 5
+var player: Node3D
+var can_attack: bool = true
+var spawn_position: Vector3
+var patrol_points: Array[Vector3] = []
+var current_patrol_point: int = 0
+
 func _ready() -> void:
-	normal_rotation_speed = rotation_speed
-	_set_new_patrol_target()
+	player = get_tree().get_first_node_in_group("Player")
+	spawn_position = global_position
 	
-	# Connect attack area signals
-	if attack_area:
-		attack_area.body_entered.connect(_on_attack_area_entered)
-		attack_area.body_exited.connect(_on_attack_area_exited)
+	# Setup obstacle avoidance
+	_setup_obstacle_raycasts()
+	
+	# Generate patrol points
+	_setup_patrol_points()
+	
+	print("[Shark] Ready - Patrol points: ", patrol_points.size())
+
+func _setup_obstacle_raycasts() -> void:
+	# Forward obstacle detection
+	add_child(obstacle_ray_forward)
+	obstacle_ray_forward.enabled = true
+	obstacle_ray_forward.target_position = Vector3(0, 0, -3.0)
+	obstacle_ray_forward.collision_mask = 1
+	
+	# Upward obstacle detection
+	add_child(obstacle_ray_up)
+	obstacle_ray_up.enabled = true
+	obstacle_ray_up.target_position = Vector3(0, 3.0, 0)
+	obstacle_ray_up.collision_mask = 1
+	
+	# Downward obstacle detection
+	add_child(obstacle_ray_down)
+	obstacle_ray_down.enabled = true
+	obstacle_ray_down.target_position = Vector3(0, -3.0, 0)
+	obstacle_ray_down.collision_mask = 1
+	
+	print("[Shark] Obstacle avoidance setup")
+
+func _setup_patrol_points() -> void:
+	# Create circular patrol pattern around spawn
+	for i in range(num_patrol_points):
+		var angle = (TAU / num_patrol_points) * i
+		var point = spawn_position + Vector3(
+			cos(angle) * patrol_radius,
+			0,
+			sin(angle) * patrol_radius
+		)
+		patrol_points.append(point)
 
 func _physics_process(delta):
-	match current_state:
-		Shark_State.PATROL:
-			_handle_patrol(delta)
-		Shark_State.ATTACKING:
-			_handle_attack(delta)
-		Shark_State.COOLDOWN:
-			_handle_cooldown(delta)
-
-func _handle_patrol(delta):
-	if rotation_speed != normal_rotation_speed:
-		rotation_speed  = normal_rotation_speed
-	patrol_timer += delta
-	
-	# Check if player is in range and can attack
-	if player_in_range != null:
-		current_state = Shark_State.ATTACKING
+	if player == null:
+		player = get_tree().get_first_node_in_group("Player")
 		return
 	
-	# Change direction periodically or when reaching target
-	if patrol_timer >= change_direction_interval or global_position.distance_to(patrol_target) < 2.0:
-		_set_new_patrol_target()
-		patrol_timer = 0.0
+	var distance_to_player = global_position.distance_to(player.global_position)
+	
+	# Check if can see player
+	player_ray.target_position = player.global_position - global_position
+	player_ray.force_raycast_update()
+	var can_see_player = player_ray.is_colliding() and player_ray.get_collider() == player
+	
+	# State machine
+	match current_state:
+		State.PATROL:
+			_handle_patrol(delta)
+			# Switch to chase if player detected
+			if can_see_player and distance_to_player <= detection_range:
+				print("[Shark] Player detected - chasing!")
+				current_state = State.CHASE
 		
-	# Move towards patrol target
-	var direction = (patrol_target - global_position).normalized()
+		State.CHASE:
+			_handle_chase(delta, distance_to_player)
+			# Switch to attack if close enough
+			if distance_to_player <= bite_distance and can_attack:
+				print("[Shark] Attack range!")
+				current_state = State.ATTACK
+			# Return to patrol if lost sight or too far
+			elif not can_see_player or distance_to_player > lose_interest_range:
+				print("[Shark] Lost player - returning to patrol")
+				current_state = State.PATROL
+		
+		State.ATTACK:
+			_handle_attack(delta, distance_to_player)
+			# Return to chase after attack
+			if not can_attack or distance_to_player > bite_distance:
+				current_state = State.CHASE
 	
-	# Apply avoidance
-	var avoidance = _get_avoidance_vector()
-	if avoidance.length() > 0:
-		direction = (direction + avoidance * avoidance_strength).normalized()
-	
-	velocity = direction * patrol_speed
+	# Apply obstacle avoidance
+	_apply_obstacle_avoidance()
 	
 	move_and_slide()
 	
@@ -80,176 +125,89 @@ func _handle_patrol(delta):
 	if velocity.length() > 0.1:
 		_rotate_towards(velocity.normalized(), delta)
 
-func _handle_attack(delta):
-	if rotation_speed == normal_rotation_speed:
-		rotation_speed = attack_rot_speed
-	if player_in_range == null:
-		# Player left range, go back to patrol
-		current_state = Shark_State.PATROL
+func _handle_patrol(delta: float) -> void:
+	if patrol_points.is_empty():
+		velocity = Vector3.ZERO
 		return
 	
-	# Move towards player
-	var direction = (player_in_range.global_position - global_position).normalized()
-	velocity = direction * attack_speed
+	var target = patrol_points[current_patrol_point]
 	
-	move_and_slide()
+	# Move to next patrol point when close
+	if global_position.distance_to(target) < 2.0:
+		current_patrol_point = (current_patrol_point + 1) % patrol_points.size()
+		target = patrol_points[current_patrol_point]
 	
-	# Face player
-	_rotate_towards(direction, delta)
-	
-	# Check if close enough to hit
-	var distance = global_position.distance_to(player_in_range.global_position)
-	if distance < 2.0:  # Attack range
-		_perform_attack()
-
-func _perform_attack():
-	if player_in_range and player_in_range.has_method("take_damage"):
-		player_in_range.take_damage(attack_damage)
-	
-	# Go into cooldown
-	current_state = Shark_State.COOLDOWN
-	cooldown_timer = 0.0
-
-func _handle_cooldown(delta):
-	cooldown_timer += delta
-	
-	# Continue patrol movement during cooldown
-	var direction = (patrol_target - global_position).normalized()
-	var avoidance = _get_avoidance_vector()
-	if avoidance.length() > 0:
-		direction = (direction + avoidance * avoidance_strength).normalized()
-	
+	var direction = (target - global_position).normalized()
 	velocity = direction * patrol_speed
-	move_and_slide()
-	
-	if velocity.length() > 0.1:
-		_rotate_towards(velocity.normalized(), delta)
-	
-	# Check if cooldown is over
-	if cooldown_timer >= attack_cooldown:
-		current_state = Shark_State.PATROL
-		cooldown_timer = 0.0
 
-func _get_avoidance_vector() -> Vector3:
+func _handle_chase(delta: float, distance: float) -> void:
+	var direction = (player.global_position - global_position).normalized()
+	velocity = direction * chase_speed
+
+func _handle_attack(delta: float, distance: float) -> void:
+	# Slow down during attack
+	velocity = velocity * 0.3
+	
+	# Deal damage
+	if can_attack and distance <= bite_distance:
+		_deal_damage()
+
+func _deal_damage() -> void:
+	print("[Shark] BITE! Dealing ", bite_damage, " damage")
+	
+	if player.has_method("take_damage"):
+		player.take_damage(bite_damage)
+	
+	# Start cooldown
+	can_attack = false
+	print("[Shark] Attack cooldown started (", attack_cooldown, "s)")
+	
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+	print("[Shark] Ready to attack again!")
+
+func _apply_obstacle_avoidance() -> void:
+	# Update raycast directions
+	var forward = -global_transform.basis.z
+	obstacle_ray_forward.target_position = forward * 3.0
+	
+	obstacle_ray_forward.force_raycast_update()
+	obstacle_ray_up.force_raycast_update()
+	obstacle_ray_down.force_raycast_update()
+	
 	var avoidance = Vector3.ZERO
 	
-	# Check front - if blocked, try to go around
-	if _is_ray_blocked(front):
-		var left_clear = not _is_ray_blocked(left)
-		var right_clear = not _is_ray_blocked(right)
+	# Avoid obstacles ahead
+	if obstacle_ray_forward.is_colliding():
+		var collision_normal = obstacle_ray_forward.get_collision_normal()
+		avoidance += collision_normal * vertical_avoidance_strength
 		
-		if left_clear and right_clear:
-			# Both sides clear, pick one randomly
-			avoidance += -global_transform.basis.x if randf() > 0.5 else global_transform.basis.x
-		elif left_clear:
-			# Only left is clear
-			avoidance += -global_transform.basis.x * 2.0
-		elif right_clear:
-			# Only right is clear
-			avoidance += global_transform.basis.x * 2.0
-		else:
-			# Both blocked, go back and pick new target
-			_set_new_patrol_target()
-			patrol_timer = 0.0
-			avoidance += global_transform.basis.z * 2.0
+		# Try to go up or down
+		if not obstacle_ray_up.is_colliding():
+			avoidance.y += vertical_avoidance_strength
+		elif not obstacle_ray_down.is_colliding():
+			avoidance.y -= vertical_avoidance_strength
 	
-	# Check up - avoid ceiling
-	if _is_ray_blocked(up):
-		avoidance += -global_transform.basis.y * 1.5
+	# Avoid ceiling
+	if obstacle_ray_up.is_colliding():
+		avoidance.y -= vertical_avoidance_strength * 0.5
 	
-	# Check down - avoid floor
-	if _is_ray_blocked(down):
-		avoidance += global_transform.basis.y * 1.5
+	# Avoid floor
+	if obstacle_ray_down.is_colliding():
+		var distance_to_floor = global_position.distance_to(obstacle_ray_down.get_collision_point())
+		if distance_to_floor < 1.5:
+			avoidance.y += vertical_avoidance_strength * 0.5
 	
-	# Side avoidance (subtle steering)
-	if _is_ray_blocked(left):
-		avoidance += global_transform.basis.x * 0.5
-	
-	if _is_ray_blocked(right):
-		avoidance += -global_transform.basis.x * 0.5
-	
-	return avoidance
-
-func _is_ray_blocked(ray: RayCast3D) -> bool:
-	if not ray.is_colliding():
-		return false
-	
-	var collider = ray.get_collider()
-	if collider and collider.is_in_group("Player"):
-		return false
-	
-	return true
-
-func _on_attack_area_entered(body: Node3D):
-	if body.is_in_group("Player"):
-		player_in_range = body
-
-func _on_attack_area_exited(body: Node3D):
-	if body.is_in_group("Player") and body == player_in_range:
-		player_in_range = null
-
-func _set_new_patrol_target() -> void:
-	if patrol_area == null:
-		return
-	
-	# Get the CollisionShape3D from the Area3D
-	var collision_shape = patrol_area.get_child(0) as CollisionShape3D
-	if collision_shape == null:
-		return
-	
-	var shape = collision_shape.shape
-	
-	# Get the CollisionShape3D global position
-	var glo_pos : Vector3 = collision_shape.global_position
-	
-	# Generate random point based on shape type
-	if shape is CylinderShape3D:
-		var radius = shape.radius
-		var height = shape.height
-		var min_y = glo_pos.y - height/2
-		var max_y = glo_pos.y + height/2
-		var min_x = glo_pos.x - radius
-		var max_x = glo_pos.x + radius
-		var min_z = glo_pos.z - radius
-		var max_z = glo_pos.z + radius
-		
-		patrol_target = Vector3(
-			randf_range(min_x, max_x),
-			randf_range(min_y, max_y),
-			randf_range(min_z, max_z)
-		)
-	elif shape is BoxShape3D:
-		var box_size = shape.size
-		var min_x = glo_pos.x - box_size.x / 2
-		var max_x = glo_pos.x + box_size.x / 2
-		var min_y = glo_pos.y - box_size.y / 2
-		var max_y = glo_pos.y + box_size.y / 2
-		var min_z = glo_pos.z - box_size.z / 2
-		var max_z = glo_pos.z + box_size.z / 2
-		
-		patrol_target = Vector3(
-			randf_range(min_x, max_x),
-			randf_range(min_y, max_y),
-			randf_range(min_z, max_z)
-		)
-	elif shape is SphereShape3D:
-		var radius = shape.radius
-		var min_x = glo_pos.x - radius
-		var max_x = glo_pos.x + radius
-		var min_y = glo_pos.y - radius
-		var max_y = glo_pos.y + radius
-		var min_z = glo_pos.z - radius
-		var max_z = glo_pos.z + radius
-		
-		patrol_target = Vector3(
-			randf_range(min_x, max_x),
-			randf_range(min_y, max_y),
-			randf_range(min_z, max_z)
-		)
+	# Apply avoidance
+	if avoidance.length() > 0:
+		velocity += avoidance
 
 func _rotate_towards(direction: Vector3, delta: float) -> void:
 	if direction.length() < 0.01:
 		return
 	
-	var target_transform = global_transform.looking_at(global_position + direction, Vector3.UP)
+	var target_pos = global_position + direction
+	target_pos.y = global_position.y
+	
+	var target_transform = global_transform.looking_at(target_pos, Vector3.UP)
 	global_transform = global_transform.interpolate_with(target_transform, rotation_speed * delta)

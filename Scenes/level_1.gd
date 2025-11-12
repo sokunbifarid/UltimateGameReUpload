@@ -15,8 +15,8 @@ func _ready() -> void:
 	
 	level_spawn_point.global_position = new_pos
 
-func _process(delta: float) -> void:
-	update_players_ui()
+#func _process(delta: float) -> void:
+	#update_players_ui()
 
 
 @rpc("authority", "call_local", "reliable")

@@ -52,7 +52,7 @@ func spawnPlayer(peer_id):
 	
 	print("Spawning player for peer ID: %s" % peer_id)
 	var p = preload("res://Players/player.tscn").instantiate()
-	p.use_gamepad = Multiplayer.use_gamepad
+	#p.use_gamepad = Multiplayer.use_gamepad
 	p.name = "Player_" + str(peer_id)
 	p.set_multiplayer_authority(peer_id)
 	players[peer_id] = p

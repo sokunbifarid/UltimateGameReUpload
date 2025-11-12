@@ -67,6 +67,7 @@ func select_player():
 				start_animate = true
 				if charater_mesh:
 					charater_mesh.queue_free()
+
 			3:
 				mesh = MultiplayerGlobal.players_meshes[3].instantiate()
 				add_child(mesh)

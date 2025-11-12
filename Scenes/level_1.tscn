@@ -200,12 +200,10 @@ move_direction = Vector3(7, 1.5, 0)
 [node name="Enemy2" parent="Enemies" instance=ExtResource("7_lsmp6")]
 transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629, 0.319145, 2.07795, -16.27)
 
-[node name="Shark" parent="Enemies" node_paths=PackedStringArray("attack_area", "patrol_area") instance=ExtResource("6_uy8f0")]
+[node name="Shark" parent="Enemies" instance=ExtResource("6_uy8f0")]
 transform = Transform3D(-0.99867576, 0, 0.051447123, 0, 1, 0, -0.051447123, 0, -0.99867576, -2.411614, 3.2227674, -8.89399)
-attack_area = NodePath("../attack_area")
 patrol_speed = 1.0
 rotation_speed = 1.0
-patrol_area = NodePath("../patrol_area")
 attack_cooldown = 5.0
 
 [node name="patrol_area" type="Area3D" parent="Enemies"]
