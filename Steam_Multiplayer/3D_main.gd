@@ -55,7 +55,6 @@ func _ready() -> void:
 	open_lobby_list()
 
 func _on_3D_lobby_match_list(lobbies):
-	print("Lobbies: ",lobbies)
 	lobbies_refreshed.emit(lobbies)
 	
 func _process(_delta: float) -> void:

@@ -82,6 +82,7 @@ func change_character(num: int):
 		add_child(mesh)
 		animator = mesh.get_node("AnimationTree")
 		start_animate = true
+
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
 		return

@@ -30,16 +30,16 @@ func spawnPlayer(peer_id):
 	
 	print("Spawning player for peer ID: %s" % peer_id)
 	var p = player_Scene.instantiate()
-	p.name = str(peer_id)  # IMPORTANT: Use just the ID as name
+	p.name = str(peer_id)  # IMPORTANT: Just the ID, not "Player_123"
 	p.set_multiplayer_authority(peer_id)
 	
-	# Get the character selection for this peer
+	# ✨ Get the character selection for this peer
 	var character_num = MultiplayerGlobal.player_character_selections.get(peer_id, 1)
-	p.mesh_num = character_num  # Set before adding to tree
+	print("Player %s spawning with character %s" % [peer_id, character_num])
+	p.mesh_num = character_num
 	
 	players[peer_id] = p
 	return p
-
 
 func _setup_spawner():
 	print("Setting up spawner, authority: %s, unique_id: %s" % [is_multiplayer_authority(), multiplayer.get_unique_id()])

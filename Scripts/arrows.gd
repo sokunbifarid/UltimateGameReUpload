@@ -24,9 +24,13 @@ func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Ve
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			if continue_btn:
 				if !is_local:
-					@warning_ignore("shadowed_global_identifier", "unused_variable")
-					var char = get_tree().get_first_node_in_group("Selector").in_front_char
+					#var char = get_tree().get_first_node_in_group("Selector").in_front_char
 					MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group("Selector").get_selected_player()
+					
+					# ✨ NEW: Store and broadcast character selection
+					var selected_character_num = get_tree().get_first_node_in_group("Selector").get_selected_character_number()
+					MultiplayerGlobal.set_my_character_selection(selected_character_num)
+					
 					get_tree().get_first_node_in_group("Main_menu").move_camera_to_online_menu()
 				else:
 					if last_player:
@@ -42,7 +46,6 @@ func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Ve
 						if player_2_text:
 							move_player_text(true)
 						move_camera()
-
 			elif direction == Direction.LEFT:
 				if is_local:
 					get_tree().get_first_node_in_group("Selector").left_click(player_num)

@@ -90,6 +90,16 @@ func setup_initial_positions() -> void:
 	if in_left_char:
 		in_left_char.position.x = -spacing
 
+func get_selected_character_number() -> int:
+	"""Returns the character number (1, 2, or 3) of the currently selected character"""
+	if in_front_char != null:
+		var name_str = str(in_front_char.name)
+		# Extract the number from the character name
+		# Assuming names are like "Player1", "Player2", "Player3"
+		var num = int(name_str.substr(name_str.length() - 1, 1))
+		return num
+	return 1  # Default to character 1
+
 func get_selected_player():
 	"""Returns the scene of the currently selected character"""
 	if in_front_char != null:
