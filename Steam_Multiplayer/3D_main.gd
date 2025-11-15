@@ -55,6 +55,7 @@ func _ready() -> void:
 	open_lobby_list()
 
 func _on_3D_lobby_match_list(lobbies):
+	print("Lobbies: ",lobbies)
 	lobbies_refreshed.emit(lobbies)
 	
 func _process(_delta: float) -> void:
@@ -238,18 +239,3 @@ func get_lobby_members() -> void:
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	print("Lobby members array: ", lobby_members)
-
-#func leave_lobby() -> void:
-	#if lobby_id != 0:
-		#print("Leaving lobby...")
-		#Steam.leaveLobby(lobby_id)
-		#
-		#lobby_id = 0
-		#is_host = false
-		#has_spawned_level = false
-		#lobby_members.clear()
-		#
-		#host.disabled = false
-		#host.show()
-		#refresh.show()
-		#$LobbyContainer/Lobbies.show()

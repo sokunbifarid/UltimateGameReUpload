@@ -1,9 +1,8 @@
-[gd_scene load_steps=25 format=4 uid="uid://ce705c0ystq6c"]
+[gd_scene load_steps=24 format=4 uid="uid://ce705c0ystq6c"]
 
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="1_mdkri"]
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="1_mng1v"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="2_235bc"]
-[ext_resource type="PackedScene" path="res://Player/Scenes/player.tscn" id="3_mdkri"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_3nbr6"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_btth6"]
 
@@ -287,9 +286,6 @@ current = true
 
 [node name="Player" parent="characters" instance=ExtResource("2_235bc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50509393, 0)
-
-[node name="Player2" parent="characters" instance=ExtResource("3_mdkri")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.516, 0)
 
 [node name="arrows_container" type="Node3D" parent="."]
 

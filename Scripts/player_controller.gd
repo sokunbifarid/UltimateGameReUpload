@@ -3,6 +3,15 @@ extends CharacterBody3D
 signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
 
+@onready var multiplayer_synchronizer: MultiplayerSynchronizer = $MultiplayerSynchronizer
+
+@onready var armature: Node3D = $Mesh/Armature
+@onready var skeleton_3d: Skeleton3D = $Mesh/Armature/Skeleton3D
+@onready var beta_joints: MeshInstance3D = $Mesh/Armature/Skeleton3D/Beta_Joints
+@onready var beta_surface: MeshInstance3D = $Mesh/Armature/Skeleton3D/Beta_Surface
+@onready var animation_player: AnimationPlayer = $Mesh/AnimationPlayer
+@onready var animation_tree: AnimationTree = $Mesh/AnimationTree
+
 @export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
@@ -55,26 +64,57 @@ func _ready() -> void:
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
 	select_player()
+
 func select_player():
 	if !in_selection:
-		match  MultiplayerGlobal.selected_player_num:
+		match MultiplayerGlobal.selected_player_num:
 			1:
-				print("Doing Nothing")
+				var model_path = get_node("Model")
+				# Configure synchronizer to track position, rotation, and scale
+				multiplayer_synchronizer.root_path = get_path_to(model_path)
+				
+				# Add properties to sync if not already configured
+				var sync_properties = [
+					"position",
+					"rotation",
+					"scale"
+				]
+				
+				multiplayer_synchronizer.replication_config = SceneReplicationConfig.new()
+				var node_path_str = str(model_path.get_path())
+				for property in sync_properties:
+					multiplayer_synchronizer.replication_config.add_property(node_path_str + ":" + property)
+				
+				print("Player %s: Syncing node %s" % [name, model_path.name])
+				# Update sync configuration after mesh change
 			2:
-				mesh = MultiplayerGlobal.players_meshes[2].instantiate()
-				add_child(mesh)
-				animator = mesh.get_node("AnimationTree")
-				start_animate = true
-				if charater_mesh:
-					charater_mesh.queue_free()
-
+				# Sync mesh selection across network
+				if is_multiplayer_authority():
+					sync_mesh_selection.rpc(2)
+				else:
+					setup_player_mesh(2)
 			3:
-				mesh = MultiplayerGlobal.players_meshes[3].instantiate()
-				add_child(mesh)
-				animator = mesh.get_node("AnimationTree")
-				start_animate = true
-				if charater_mesh:
-					charater_mesh.queue_free()
+				# Sync mesh selection across network
+				if is_multiplayer_authority():
+					sync_mesh_selection.rpc(3)
+				else:
+					setup_player_mesh(3)
+
+@rpc("any_peer", "call_local", "reliable")
+func sync_mesh_selection(player_num: int):
+	"""Synchronize mesh selection across all clients"""
+	setup_player_mesh(player_num)
+
+func setup_player_mesh(player_num: int):
+	"""Setup the player mesh based on selection"""
+	if player_num == 2 or player_num == 3:
+		mesh = MultiplayerGlobal.players_meshes[player_num].instantiate()
+		add_child(mesh)
+		animator = mesh.get_node("AnimationTree")
+		start_animate = true
+		if charater_mesh:
+			charater_mesh.queue_free()
+		print("Player %s: Mesh %d loaded" % [name, player_num])
 
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
@@ -116,14 +156,17 @@ func handle_movement(delta: float):
 		velocity += get_gravity() * delta
 	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
+
 func disable_camera():
 	camera.queue_free()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	in_selection = true
+
 func make_it_use_gamepad(val:bool):
 	use_gamepad = val
 	third_person_controller.use_gamepad = val
 	third_person_controller.player_index = 0 if val == false else 1
+
 func handle_jump():
 	# Jump handling
 	if !use_gamepad:
@@ -134,7 +177,6 @@ func handle_jump():
 			velocity.y = JUMP_VELOCITY
 			
 func check_landing():
-
 	was_on_floor = is_on_floor()
 
 func handle_third_person_movement(delta: float):
@@ -201,6 +243,7 @@ func face_direction(direction: Vector3, delta: float):
 			charater_mesh.rotation.y = new_rotation
 		else:
 			mesh.rotation.y = new_rotation
+
 # PRESERVED: Original movement setter
 func set_movements(movements: bool):
 	velocity = Vector3.ZERO
@@ -233,8 +276,9 @@ func check_fall():
 		
 func increase_score(value):
 	pass
+
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
+
 func move_to_level():
 	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1,1),0,randf_range(-1,1))
-	
