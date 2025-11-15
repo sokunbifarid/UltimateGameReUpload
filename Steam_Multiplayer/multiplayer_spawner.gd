@@ -22,6 +22,25 @@ func _ready() -> void:
 		await get_tree().create_timer(0.5).timeout
 		_setup_spawner()
 
+func spawnPlayer(peer_id):
+	# Prevent duplicate spawns
+	if players.has(peer_id):
+		print("WARNING: Player %s already exists, skipping spawn" % peer_id)
+		return players[peer_id]
+	
+	print("Spawning player for peer ID: %s" % peer_id)
+	var p = player_Scene.instantiate()
+	p.name = str(peer_id)  # IMPORTANT: Use just the ID as name
+	p.set_multiplayer_authority(peer_id)
+	
+	# Get the character selection for this peer
+	var character_num = MultiplayerGlobal.player_character_selections.get(peer_id, 1)
+	p.mesh_num = character_num  # Set before adding to tree
+	
+	players[peer_id] = p
+	return p
+
+
 func _setup_spawner():
 	print("Setting up spawner, authority: %s, unique_id: %s" % [is_multiplayer_authority(), multiplayer.get_unique_id()])
 	
@@ -44,19 +63,19 @@ func _on_peer_connected(id: int):
 		print("HOST: Peer %s connected, spawning their player" % id)
 		spawn(id)
 
-func spawnPlayer(peer_id):
-	# Prevent duplicate spawns
-	if players.has(peer_id):
-		print("WARNING: Player %s already exists, skipping spawn" % peer_id)
-		return players[peer_id]
-	
-	print("Spawning player for peer ID: %s" % peer_id)
-	var p = preload("res://Players/player.tscn").instantiate()
-	#p.use_gamepad = Multiplayer.use_gamepad
-	p.name = "Player_" + str(peer_id)
-	p.set_multiplayer_authority(peer_id)
-	players[peer_id] = p
-	return p
+#func spawnPlayer(peer_id):
+	## Prevent duplicate spawns
+	#if players.has(peer_id):
+		#print("WARNING: Player %s already exists, skipping spawn" % peer_id)
+		#return players[peer_id]
+	#
+	#print("Spawning player for peer ID: %s" % peer_id)
+	#var p = preload("res://Players/player.tscn").instantiate()
+	##p.use_gamepad = Multiplayer.use_gamepad
+	#p.name = "Player_" + str(peer_id)
+	#p.set_multiplayer_authority(peer_id)
+	#players[peer_id] = p
+	#return p
 
 func remove_player(peer_id):
 	print("Removing player for peer ID: %s" % peer_id)

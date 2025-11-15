@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://ce48elb3fsyic"]
 
-[ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Scripts/player_controller.gd" id="1_ey0s5"]
+[ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Players/player_controller.gd" id="1_ey0s5"]
 [ext_resource type="ArrayMesh" uid="uid://xmt2xitb40xe" path="res://Models/Characters/character-male-d.obj" id="2_5k41c"]
 [ext_resource type="Script" uid="uid://dbdpgchc4cwmk" path="res://Scripts/player_visual.gd" id="3_bnt45"]
 [ext_resource type="Script" uid="uid://cwq3dfxk7my27" path="res://Scripts/player_ui.gd" id="4_x03v5"]
@@ -26,6 +26,9 @@ properties/4/replication_mode = 1
 properties/5/path = NodePath("Model:position")
 properties/5/spawn = true
 properties/5/replication_mode = 1
+properties/6/path = NodePath(".:mesh_num")
+properties/6/spawn = true
+properties/6/replication_mode = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
 radius = 0.169431
