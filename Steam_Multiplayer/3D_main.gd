@@ -148,10 +148,6 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		get_tree().change_scene_to_packed(level)  # Uncomment this line
 		has_spawned_level = true
 		
-		#if not has_spawned_level:
-			#print("HOST: Spawning level...")
-			#ms.spawn(level.resource_path)
-			#has_spawned_level = true
 		
 	else:
 		print("Failed to create lobby. Error code: %s" % connect)

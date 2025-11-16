@@ -21,7 +21,7 @@ signal OnUpdateScore(score)
 var mesh 
 @export var animator : AnimationTree
 var sync_blend_amount: float = -1.0
-var start_animate: bool = false
+@export var start_animate: bool = false
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
 const ROTATION_SPEED = 15.0  # Slightly faster rotation for better responsiveness
@@ -57,7 +57,6 @@ func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
 	multir_spawner.set_multiplayer_authority(str(name).to_int())
-	my_id =  multiplayer.get_unique_id()
 	await get_tree().process_frame
 	
 	# Apply character model based on mesh_num (already set by spawner)
@@ -86,15 +85,17 @@ func change_character(num: int):
 		if num != 1:
 			animator = mesh.get_node("AnimationTree")
 			start_animate = true
+			
+			my_id = multiplayer.get_unique_id()
 			if Multiplayer.is_host:
-				MultiplayerGlobal.add_new_player_anim(multiplayer.get_unique_id(),synced_grounded,synced_blend)
+				MultiplayerGlobal.add_new_player_anim(my_id,synced_grounded,synced_blend)
 			else:
-				rpc_id(1, "handle_server_data",multiplayer.get_unique_id(), synced_grounded,synced_blend)
-
+				
+				rpc_id(1, "handle_server_data",my_id, synced_grounded,synced_blend)
 # This function runs on the server
 @rpc("any_peer", "reliable")
 func handle_server_data(id,synced_grounded_,sync_blend_amount_):
-	if not multiplayer.is_server():
+	if not Multiplayer.is_host:
 		return  # Security: only server should process this
 	
 	print("Server received data from peer %d: %s , %s" % [id, synced_grounded_,sync_blend_amount_])
@@ -128,7 +129,6 @@ func _physics_process(delta: float) -> void:
 	fall_damage()
 	check_fall()
 	update_animation_data(multiplayer.get_unique_id(), synced_grounded,synced_blend)
-	send_anims_data_to_clients_only(MultiplayerGlobal.player_animations)
 	if is_multiplayer_authority():
 		if start_animate:
 			animate_local(delta)
@@ -137,26 +137,53 @@ func _physics_process(delta: float) -> void:
 			synced_grounded = is_on_floor()
 	if Multiplayer.is_host:
 		print(MultiplayerGlobal.player_animations)
+		send_anims_data_to_clients_only(MultiplayerGlobal.player_animations)
 		
-
+	my_id = multiplayer.get_unique_id()
+	
 # Only runs on clients, NOT on server
 @rpc("authority", "reliable")
 func receive_aims_data_from_host(anims_data: Dictionary):
+	if mesh_num == 1: return
+	
+	print("Running on player: ", self.name, " (My ID: ", multiplayer.get_unique_id(), ")")
+	
 	for player_ in get_tree().get_nodes_in_group("Player"):
-		if player_ == self: continue
-		if !anims_data.has(multiplayer.get_unique_id()):
+		print("  Checking player: ", player_.name, " (ID: ", player_.my_id, ")")
+		
+		# Skip self
+		if player_.my_id == multiplayer.get_unique_id():
+			print("    -> Skipping self")
 			continue
+		
+		# Check if animation data exists for THIS player (not yourself)
+		if !anims_data.has(player_.my_id):
+			print("    -> No data for this player")
+			continue
+		
+		print("    -> Applying animation!")
+		
+		# Apply the animation data
 		var this_anim_data : Array = anims_data[player_.my_id]
 		player_.synced_grounded = this_anim_data[0]
 		player_.synced_blend = this_anim_data[1]
+		
 		# Remote players - apply synced animation
 		if player_.start_animate and player_.animator:
 			player_.animate_remote()
-	
+			print("    -> Animation applied successfully")
+		else:
+			print("    -> Can't animate (start_animate: ", player_.start_animate, ")")
+				
 # Server sends to all clients (but doesn't run locally)
 func send_anims_data_to_clients_only(anims_data: Dictionary):
 	if Multiplayer.is_host:
-		rpc("receive_aims_data_from_host", anims_data)
+		# Call RPC on EACH player node individually
+		for player in get_tree().get_nodes_in_group("Player"):
+			print(player.is_multiplayer_authority() ,"and", player.multiplayer.get_unique_id() != 1)
+			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() != 1:
+				# This is a remote client's player
+				player.rpc("receive_aims_data_from_host", anims_data)
 		
 func animate_local(delta):
 	"""Animation for local player"""
@@ -182,11 +209,9 @@ func animate_local(delta):
 func animate_remote():
 	"""Animation for remote players using synced data"""
 	if synced_grounded:
-		print(synced_blend)
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
 		animator.set("parameters/iwr_blend/blend_amount", synced_blend)
 	else:
-		print("IN AIR")
 		animator.set("parameters/ground_air_transition/transition_request", "air")
 		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
@@ -314,4 +339,3 @@ func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
 func move_to_level():
 	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1,1),0,randf_range(-1,1))
-	
