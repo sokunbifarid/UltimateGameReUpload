@@ -18,6 +18,9 @@ properties/2/replication_mode = 1
 properties/3/path = NodePath(".:mesh_num")
 properties/3/spawn = true
 properties/3/replication_mode = 1
+properties/4/path = NodePath(".:my_id")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k6ps1"]
 properties/0/path = NodePath(".:synced_blend")

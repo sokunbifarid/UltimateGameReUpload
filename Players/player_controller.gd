@@ -52,12 +52,12 @@ var in_selection: bool = false
 # Synced properties
 @export var synced_blend: float = -1.0
 @export var synced_grounded: bool = true
-
+@export var my_id : int
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
 	multir_spawner.set_multiplayer_authority(str(name).to_int())
-	
+	my_id =  multiplayer.get_unique_id()
 	await get_tree().process_frame
 	
 	# Apply character model based on mesh_num (already set by spawner)
@@ -144,7 +144,9 @@ func _physics_process(delta: float) -> void:
 func receive_aims_data_from_host(anims_data: Dictionary):
 	for player_ in get_tree().get_nodes_in_group("Player"):
 		if player_ == self: continue
-		var this_anim_data : Array = anims_data[multiplayer.get_unique_id()]
+		if !anims_data.has(multiplayer.get_unique_id()):
+			continue
+		var this_anim_data : Array = anims_data[player_.my_id]
 		player_.synced_grounded = this_anim_data[0]
 		player_.synced_blend = this_anim_data[1]
 		# Remote players - apply synced animation

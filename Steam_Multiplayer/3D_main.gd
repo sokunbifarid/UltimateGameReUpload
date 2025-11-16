@@ -65,18 +65,58 @@ func spawn_level(data):
 	return scene.instantiate()
 
 func _on_host_connected():
-	if lobby_id == 0:
-		if steam_id == 0:
-			print("ERROR: Cannot create lobby - Steam not initialized properly!")
-			return
-			
-		print("Creating lobby...")
-		is_host = true
-		Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
-		#host.disabled = true
-	else:
-		print("Already in a lobby: %s" % lobby_id)
+	# Check if already in a lobby
+	if lobby_id != 0:
+		print("Already in lobby %s, leaving first..." % lobby_id)
+		leave_current_lobby()
+		await get_tree().create_timer(0.5).timeout  # Wait for clean disconnect
+	
+	# Now create new lobby
+	if steam_id == 0:
+		print("ERROR: Cannot create lobby - Steam not initialized properly!")
+		return
+	
+	print("Creating lobby...")
+	is_host = true
+	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
 
+# Leave current lobby
+func leave_current_lobby():
+	if lobby_id == 0:
+		print("Not in any lobby")
+		return
+	
+	print("Leaving lobby: %s" % lobby_id)
+	
+	# Disconnect multiplayer peer
+	if multiplayer.multiplayer_peer:
+		multiplayer.multiplayer_peer.close()
+		multiplayer.multiplayer_peer = null
+		print("Disconnected from multiplayer peer")
+	
+	# Leave Steam lobby
+	Steam.leaveLobby(lobby_id)
+	
+	# Reset state
+	lobby_id = 0
+	lobby_members.clear()
+	is_host = false
+	has_spawned_level = false
+	
+	print("Successfully left lobby")
+
+# Join a different lobby (with leave check)
+func join_lobby(this_lobby_id: int):
+	# Leave current lobby first if in one
+	if lobby_id != 0 and lobby_id != this_lobby_id:
+		print("Leaving current lobby before joining new one...")
+		leave_current_lobby()
+		await get_tree().create_timer(0.5).timeout  # Wait for clean disconnect
+	
+	print("Attempting to join lobby %s" % this_lobby_id)
+	lobby_members.clear()
+	is_host = false
+	Steam.joinLobby(this_lobby_id)
 func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 	print("Lobby created callback - connect: %s, lobby_id: %s" % [connect, this_lobby_id])
 	
@@ -116,11 +156,7 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 	else:
 		print("Failed to create lobby. Error code: %s" % connect)
 
-func join_lobby(this_lobby_id: int):
-	print("Attempting to join lobby %s" % this_lobby_id)
-	lobby_members.clear()
-	is_host = false
-	Steam.joinLobby(this_lobby_id)
+
 
 func _on_lobby_joined(this_lobby_id: int, _permissions: int, _locked: bool, response: int) -> void:
 	print("Lobby joined callback - lobby_id: %s, response: %s" % [this_lobby_id, response])
