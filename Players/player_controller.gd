@@ -19,7 +19,7 @@ signal OnUpdateScore(score)
 
 
 var mesh 
-@export var animator : AnimationTree
+var animator : AnimationTree
 var sync_blend_amount: float = -1.0
 @export var start_animate: bool = false
 ''' ======================= Movement Code =================================='''
@@ -79,19 +79,33 @@ func change_character(num: int):
 		return  # Only authority can spawn
 
 	# Spawn new character
-	if num in MultiplayerGlobal.players_meshes:
-		mesh = MultiplayerGlobal.players_meshes[num].instantiate()
-		add_child(mesh)  # Spawner auto-syncs this spawn!
-		if num != 1:
-			animator = mesh.get_node("AnimationTree")
-			start_animate = true
-			
-			my_id = multiplayer.get_unique_id()
-			if Multiplayer.is_host:
-				MultiplayerGlobal.add_new_player_anim(my_id,synced_grounded,synced_blend)
-			else:
-				
-				rpc_id(1, "handle_server_data",my_id, synced_grounded,synced_blend)
+	if num == 1 :
+		$Mesh.queue_free() 
+		$Mesh2.queue_free()
+		mesh =  $Node3D
+	elif num == 2:
+		$Mesh.queue_free() 
+		$Node3D.queue_free()
+		mesh =  $Mesh2
+		animator = $Mesh2.get_node("AnimationTree")
+		print("got animator : ", animator)
+		start_animate = true
+
+	elif num == 3:
+		$Node3D.queue_free()
+		$Mesh2.queue_free()
+		mesh =  $Mesh
+		animator = $Mesh.get_node("AnimationTree")
+		print("got animator : ", animator)
+		start_animate = true
+		
+	#add_child(mesh)  # Spawner auto-syncs this spawn!
+	if num != 1:
+		my_id = multiplayer.get_unique_id()
+		if Multiplayer.is_host:
+			MultiplayerGlobal.add_new_player_anim(my_id,synced_grounded,synced_blend)
+		else:
+			rpc_id(1, "handle_server_data",my_id, synced_grounded,synced_blend)
 # This function runs on the server
 @rpc("any_peer", "reliable")
 func handle_server_data(id,synced_grounded_,sync_blend_amount_):
@@ -170,18 +184,19 @@ func receive_aims_data_from_host(anims_data: Dictionary):
 		
 		# Remote players - apply synced animation
 		if player_.start_animate and player_.animator:
+			print("playuing on ",player_.name)
 			player_.animate_remote()
 			print("    -> Animation applied successfully")
 		else:
 			print("    -> Can't animate (start_animate: ", player_.start_animate, ")")
-				
+			print("    -> Can't animate (animator: ", player_.animator, ")")
 # Server sends to all clients (but doesn't run locally)
 func send_anims_data_to_clients_only(anims_data: Dictionary):
 	if Multiplayer.is_host:
 		# Call RPC on EACH player node individually
 		for player in get_tree().get_nodes_in_group("Player"):
 			print(player.is_multiplayer_authority() ,"and", player.multiplayer.get_unique_id() != 1)
-			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() != 1:
+			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() == 1:
 				# This is a remote client's player
 				player.rpc("receive_aims_data_from_host", anims_data)
 		
