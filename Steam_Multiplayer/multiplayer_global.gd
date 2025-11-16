@@ -2,7 +2,7 @@ extends Node
 
 var player_character_selections: Dictionary = {}  # {peer_id: character_num}
 var selected_level : PackedScene 
-var selected_player : PackedScene = preload("res://Players/player.tscn")
+var selected_player : int = 1
 var selected_lobby 
 var selected_player_num : int = 1 
 var joined_lobby_id

@@ -98,13 +98,13 @@ func _physics_process(delta: float) -> void:
 		animate(delta)
 		
 	## Send data to all players
-	#rpc("chat_message", self.name, "hola amigos" + " " + str(mesh_num))
+	rpc("chat_message", multiplayer.get_unique_id(), " hola amigos" + " " + str(mesh_num))
 
 # Receive the message
 @rpc("any_peer")
 func chat_message(sender: String, text: String):
-	multiplayer.get_unique_id()
-	print(sender + ": " + text )
+	MultiplayerGlobal.set_my_character_selection(MultiplayerGlobal.selected_player_num)
+	print(sender+" sent "+str(MultiplayerGlobal.selected_player_num) +" "+text)
 
 func animate(delta):
 	"""Animation for local player"""

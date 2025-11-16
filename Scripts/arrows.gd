@@ -25,13 +25,12 @@ func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Ve
 			if continue_btn:
 				if !is_local:
 					#var char = get_tree().get_first_node_in_group("Selector").in_front_char
-					MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group("Selector").get_selected_player()
-					
+					MultiplayerGlobal.selected_player = get_tree().get_first_node_in_group("Selector").get_selected_character_number()
 					# ✨ NEW: Store and broadcast character selection
 					var selected_character_num = get_tree().get_first_node_in_group("Selector").get_selected_character_number()
 					MultiplayerGlobal.set_my_character_selection(selected_character_num)
-					
 					get_tree().get_first_node_in_group("Main_menu").move_camera_to_online_menu()
+
 				else:
 					if last_player:
 						LocalGlobal.player_2 = get_tree().get_first_node_in_group("Selector").get_selected_character(2)
