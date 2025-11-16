@@ -19,7 +19,7 @@ signal OnUpdateScore(score)
 
 
 var mesh 
-var animator
+@export var animator : AnimationTree
 var sync_blend_amount: float = -1.0
 var start_animate: bool = false
 ''' ======================= Movement Code =================================='''
@@ -64,6 +64,7 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		mesh_num = MultiplayerGlobal.selected_player_num
 		change_character(mesh_num)
+		
 	
 	if camera:
 		if is_multiplayer_authority():
@@ -85,6 +86,20 @@ func change_character(num: int):
 		if num != 1:
 			animator = mesh.get_node("AnimationTree")
 			start_animate = true
+			if Multiplayer.is_host:
+				MultiplayerGlobal.add_new_player_anim(multiplayer.get_unique_id(),synced_grounded,sync_blend_amount)
+			else:
+				rpc_id(1, "handle_server_data",multiplayer.get_unique_id(), synced_grounded,sync_blend_amount)
+
+# This function runs on the server
+@rpc("any_peer", "reliable")
+func handle_server_data(id,synced_grounded_,sync_blend_amount_):
+	if not multiplayer.is_server():
+		return  # Security: only server should process this
+	
+	print("Server received data from peer %d: %s , %s" % [id, synced_grounded_,sync_blend_amount_])
+	
+	MultiplayerGlobal.add_new_player_anim(id,synced_grounded_,sync_blend_amount_)
 
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
@@ -108,7 +123,8 @@ func _physics_process(delta: float) -> void:
 		# Remote players - apply synced animation
 		if start_animate and animator:
 			animate_remote()
-
+	if Multiplayer.is_host:
+		print(MultiplayerGlobal.player_animations)
 func animate_local(delta):
 	"""Animation for local player"""
 	if is_on_floor():
@@ -133,9 +149,11 @@ func animate_local(delta):
 func animate_remote():
 	"""Animation for remote players using synced data"""
 	if synced_grounded:
+		print(synced_blend)
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
 		animator.set("parameters/iwr_blend/blend_amount", synced_blend)
 	else:
+		print("IN AIR")
 		animator.set("parameters/ground_air_transition/transition_request", "air")
 		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 

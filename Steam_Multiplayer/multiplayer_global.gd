@@ -13,6 +13,12 @@ var players_meshes: Dictionary = {
 	3:preload("res://Players/blue_player.tscn")
 }
 
+# player_id : [is_grounded, blend_amount]
+var player_animations : Dictionary = {
+}
+
+func add_new_player_anim(player_id,is_grounded,blend_amount):
+	player_animations[player_id] = [is_grounded,blend_amount]
 
 func set_my_character_selection(character_num: int):
 	var my_id = multiplayer.get_unique_id()
