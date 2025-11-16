@@ -16,6 +16,7 @@ signal OnUpdateScore(score)
 @onready var charater_mesh: MeshInstance3D = $Model
 @onready var model_sync: MultiplayerSynchronizer = $model_sync
 @onready var player_sync: MultiplayerSynchronizer = $player_sync
+@onready var multir_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 
 var mesh : Node3D
@@ -52,11 +53,14 @@ var in_selection: bool = false
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	model_sync.set_multiplayer_authority(str(name).to_int())
+	player_sync.set_multiplayer_authority(str(name).to_int())
+	model_sync.set_multiplayer_authority(str(name).to_int())
 	
 	await get_tree().process_frame
 	
 	# Apply character model based on mesh_num (already set by spawner)
-	change_character(mesh_num)
+	if is_multiplayer_authority():
+		change_character(mesh_num)
 	
 	if camera:
 		if is_multiplayer_authority():
@@ -68,21 +72,24 @@ func _ready() -> void:
 		third_person_controller.use_gamepad = use_gamepad
 
 func change_character(num: int):
+	if not is_multiplayer_authority():
+		return  # Only authority can spawn
+	
+	
 	if num == 1:
 		print("Using default character")
 		return
-	
-	if mesh:
-		mesh.queue_free()
-	
+
+	# Remove old character if exists
 	if charater_mesh:
-		charater_mesh.queue_free()
+		charater_mesh.queue_free()  # Spawner auto-syncs this deletion!
 	if model_sync:
 		model_sync.queue_free()
-
+		
+	# Spawn new character
 	if num in MultiplayerGlobal.players_meshes:
 		mesh = MultiplayerGlobal.players_meshes[num].instantiate()
-		add_child(mesh)
+		add_child(mesh)  # Spawner auto-syncs this spawn!
 		animator = mesh.get_node("AnimationTree")
 		start_animate = true
 
@@ -101,7 +108,7 @@ func _physics_process(delta: float) -> void:
 		animate(delta)
 		
 	## Send data to all players
-	rpc("chat_message", multiplayer.get_unique_id(), " hola amigos" + " " + str(mesh_num))
+	#rpc("chat_message", multiplayer.get_unique_id(), " hola amigos" + " " + str(mesh_num))
 
 # Receive the message
 @rpc("any_peer")

@@ -50,6 +50,10 @@ replication_config = SubResource("SceneReplicationConfig_3smsa")
 [node name="player_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ey0s5")
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://53riigr01eqc", "uid://7sq4v875jlsx")
+spawn_path = NodePath("..")
+
 [node name="Model" type="MeshInstance3D" parent="."]
 mesh = ExtResource("2_5k41c")
 script = ExtResource("3_bnt45")
