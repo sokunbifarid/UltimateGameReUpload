@@ -13,13 +13,11 @@ signal OnUpdateScore(score)
 @onready var third_person_controller: Node3D = $third_person_controller
 
 #=========================================================
-@onready var charater_mesh: MeshInstance3D = $Model
-@onready var model_sync: MultiplayerSynchronizer = $model_sync
 @onready var player_sync: MultiplayerSynchronizer = $player_sync
 @onready var multir_spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 
-var mesh : Node3D
+var mesh 
 var animator
 var sync_blend_amount: float = -1.0
 var start_animate: bool = false
@@ -52,9 +50,8 @@ var in_selection: bool = false
 
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
-	model_sync.set_multiplayer_authority(str(name).to_int())
 	player_sync.set_multiplayer_authority(str(name).to_int())
-	model_sync.set_multiplayer_authority(str(name).to_int())
+	multir_spawner.set_multiplayer_authority(str(name).to_int())
 	
 	await get_tree().process_frame
 	
@@ -74,24 +71,14 @@ func _ready() -> void:
 func change_character(num: int):
 	if not is_multiplayer_authority():
 		return  # Only authority can spawn
-	
-	
-	if num == 1:
-		print("Using default character")
-		return
 
-	# Remove old character if exists
-	if charater_mesh:
-		charater_mesh.queue_free()  # Spawner auto-syncs this deletion!
-	if model_sync:
-		model_sync.queue_free()
-		
 	# Spawn new character
 	if num in MultiplayerGlobal.players_meshes:
 		mesh = MultiplayerGlobal.players_meshes[num].instantiate()
 		add_child(mesh)  # Spawner auto-syncs this spawn!
-		animator = mesh.get_node("AnimationTree")
-		start_animate = true
+		if num != 1:
+			animator = mesh.get_node("AnimationTree")
+			start_animate = true
 
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
@@ -219,14 +206,12 @@ func face_direction(direction: Vector3, delta: float):
 		var target_rotation = atan2(direction.x, direction.z)
 		
 		# Smoothly rotate towards target with enhanced smoothing
-		var current_rotation = charater_mesh.rotation.y if !start_animate else mesh.rotation.y
+		var current_rotation = mesh.rotation.y
 	
 		var new_rotation = lerp_angle(current_rotation, target_rotation, rotation_smoothing * delta)
 		
-		if !start_animate:
-			charater_mesh.rotation.y = new_rotation
-		else:
-			mesh.rotation.y = new_rotation
+		mesh.rotation.y = new_rotation
+
 # PRESERVED: Original movement setter
 func set_movements(movements: bool):
 	velocity = Vector3.ZERO

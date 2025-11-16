@@ -1,22 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://ce48elb3fsyic"]
+[gd_scene load_steps=8 format=3 uid="uid://ce48elb3fsyic"]
 
 [ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Players/player_controller.gd" id="1_ey0s5"]
-[ext_resource type="ArrayMesh" uid="uid://xmt2xitb40xe" path="res://Models/Characters/character-male-d.obj" id="2_5k41c"]
-[ext_resource type="Script" uid="uid://dbdpgchc4cwmk" path="res://Scripts/player_visual.gd" id="3_bnt45"]
 [ext_resource type="Script" uid="uid://cwq3dfxk7my27" path="res://Scripts/player_ui.gd" id="4_x03v5"]
 [ext_resource type="Texture2D" uid="uid://dj0jvwa25owq1" path="res://Sprites/hud_heartFull.png" id="5_4rf5a"]
 [ext_resource type="Script" uid="uid://cqq4suxgli1rd" path="res://camera/camera.gd" id="6_hn4mw"]
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_3smsa"]
-properties/0/path = NodePath("Model:rotation")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath("Model:scale")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-properties/2/path = NodePath("Model:position")
-properties/2/spawn = true
-properties/2/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ey0s5"]
 properties/0/path = NodePath(".:position")
@@ -44,19 +31,12 @@ shadow_color = Color(0, 0, 0, 0.709804)
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_ey0s5")
 
-[node name="model_sync" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_3smsa")
-
 [node name="player_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ey0s5")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://53riigr01eqc", "uid://7sq4v875jlsx")
+_spawnable_scenes = PackedStringArray("uid://53riigr01eqc", "uid://7sq4v875jlsx", "uid://dcqhtfjbdsoxj")
 spawn_path = NodePath("..")
-
-[node name="Model" type="MeshInstance3D" parent="."]
-mesh = ExtResource("2_5k41c")
-script = ExtResource("3_bnt45")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, -5.82077e-11, 0, -5.82077e-11, 1, -1.86265e-09, 0, 0, 1, 0.0052205, 0.340762, -0.0278564)
