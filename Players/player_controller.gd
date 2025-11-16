@@ -14,7 +14,8 @@ signal OnUpdateScore(score)
 
 #=========================================================
 @onready var charater_mesh: MeshInstance3D = $Model
-@onready var multi_sync: MultiplayerSynchronizer = $MultiplayerSynchronizer
+@onready var model_sync: MultiplayerSynchronizer = $model_sync
+@onready var player_sync: MultiplayerSynchronizer = $player_sync
 
 
 var mesh : Node3D
@@ -50,7 +51,7 @@ var in_selection: bool = false
 
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
-	multi_sync.set_multiplayer_authority(str(name).to_int())
+	model_sync.set_multiplayer_authority(str(name).to_int())
 	
 	await get_tree().process_frame
 	
@@ -76,7 +77,9 @@ func change_character(num: int):
 	
 	if charater_mesh:
 		charater_mesh.queue_free()
-	
+	if model_sync:
+		model_sync.queue_free()
+
 	if num in MultiplayerGlobal.players_meshes:
 		mesh = MultiplayerGlobal.players_meshes[num].instantiate()
 		add_child(mesh)
