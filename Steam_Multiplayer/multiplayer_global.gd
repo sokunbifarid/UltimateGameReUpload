@@ -17,6 +17,9 @@ var players_meshes: Dictionary = {
 var player_animations : Dictionary = {
 }
 
+func update_animations_data(id,is_grounded,blend_amount):
+	player_animations[id] = [is_grounded,blend_amount]
+
 func add_new_player_anim(player_id,is_grounded,blend_amount):
 	player_animations[player_id] = [is_grounded,blend_amount]
 
