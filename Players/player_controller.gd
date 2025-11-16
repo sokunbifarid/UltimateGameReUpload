@@ -15,6 +15,7 @@ signal OnUpdateScore(score)
 #=========================================================
 @onready var player_sync: MultiplayerSynchronizer = $player_sync
 @onready var multir_spawner: MultiplayerSpawner = $MultiplayerSpawner
+@onready var anim_sync: MultiplayerSynchronizer = $anim_sync
 
 
 var mesh 
@@ -48,6 +49,10 @@ var was_on_floor: bool = true
 var in_selection: bool = false
 @export var mesh_num: int = 1
 
+# Synced properties
+@export var synced_blend: float = -1.0
+@export var synced_grounded: bool = true
+
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
@@ -57,6 +62,7 @@ func _ready() -> void:
 	
 	# Apply character model based on mesh_num (already set by spawner)
 	if is_multiplayer_authority():
+		mesh_num = MultiplayerGlobal.selected_player_num
 		change_character(mesh_num)
 	
 	if camera:
@@ -91,19 +97,19 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
-	if start_animate:
-		animate(delta)
+	if is_multiplayer_authority():
 		
-	## Send data to all players
-	#rpc("chat_message", multiplayer.get_unique_id(), " hola amigos" + " " + str(mesh_num))
+		if start_animate:
+			animate_local(delta)
+			# Update synced values
+			synced_blend = sync_blend_amount
+			synced_grounded = is_on_floor()
+	else:
+		# Remote players - apply synced animation
+		if start_animate and animator:
+			animate_remote()
 
-# Receive the message
-@rpc("any_peer")
-func chat_message(sender: String, text: String):
-	MultiplayerGlobal.set_my_character_selection(MultiplayerGlobal.selected_player_num)
-	print(sender+" sent "+str(MultiplayerGlobal.selected_player_num) +" "+text)
-
-func animate(delta):
+func animate_local(delta):
 	"""Animation for local player"""
 	if is_on_floor():
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
@@ -123,6 +129,15 @@ func animate(delta):
 		animator.set("parameters/ground_air_transition/transition_request", "air")
 		sync_blend_amount = 0.0
 		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
+
+func animate_remote():
+	"""Animation for remote players using synced data"""
+	if synced_grounded:
+		animator.set("parameters/ground_air_transition/transition_request", "grounded")
+		animator.set("parameters/iwr_blend/blend_amount", synced_blend)
+	else:
+		animator.set("parameters/ground_air_transition/transition_request", "air")
+		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
 func handle_movement(delta: float):
 	if not is_on_floor():

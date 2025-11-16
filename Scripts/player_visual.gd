@@ -1,9 +1,7 @@
 extends MeshInstance3D
 
-@export var rotate_rate : float = 20.0
-var target_y_rot : float = 0
 
-@onready var player : CharacterBody3D = get_parent()
+@onready var player : CharacterBody3D = get_parent().get_parent()
 
 func _process (delta):
 

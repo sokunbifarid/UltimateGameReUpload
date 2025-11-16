@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ce48elb3fsyic"]
+[gd_scene load_steps=9 format=3 uid="uid://ce48elb3fsyic"]
 
 [ext_resource type="Script" uid="uid://b82cfax4l7ul3" path="res://Players/player_controller.gd" id="1_ey0s5"]
 [ext_resource type="Script" uid="uid://cwq3dfxk7my27" path="res://Scripts/player_ui.gd" id="4_x03v5"]
@@ -19,6 +19,14 @@ properties/3/path = NodePath(".:mesh_num")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_k6ps1"]
+properties/0/path = NodePath(".:synced_blend")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:synced_grounded")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
 radius = 0.169431
 height = 0.697453
@@ -33,6 +41,9 @@ script = ExtResource("1_ey0s5")
 
 [node name="player_sync" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ey0s5")
+
+[node name="anim_sync" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_k6ps1")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://53riigr01eqc", "uid://7sq4v875jlsx", "uid://dcqhtfjbdsoxj")

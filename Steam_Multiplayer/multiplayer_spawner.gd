@@ -31,43 +31,7 @@ func _setup_spawner():
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(remove_player)
 	else:
-		print("CLIENT: Requesting existing players from host...")
-		rpc_id(1, "request_existing_players")
-
-@rpc("any_peer")
-func request_existing_players():
-	var requesting_client = multiplayer.get_remote_sender_id()
-	print("HOST: Client %s requesting existing players" % requesting_client)
-	
-	for peer_id in players.keys():
-		var character_num = MultiplayerGlobal.player_character_selections.get(peer_id, 1)
-		print("  -> Sending existing player %s (character %s) to client %s" % [peer_id, character_num, requesting_client])
-		rpc_id(requesting_client, "receive_existing_player", peer_id, character_num)
-
-@rpc("authority", "call_remote")
-func receive_existing_player(peer_id: int, character_num: int):
-	print("CLIENT: Received existing player %s with character %s" % [peer_id, character_num])
-	
-	if players.has(peer_id):
-		print("  -> Already exists, skipping")
-		return
-	
-	var p = player_Scene.instantiate()
-	p.name = str(peer_id)
-	p.set_multiplayer_authority(peer_id)
-	
-	# Add to scene FIRST
-	get_node(_spawn_path.get_path()).add_child(p)
-	players[peer_id] = p
-	
-	# Set mesh_num AFTER adding to tree
-	await get_tree().process_frame  # Wait one frame to ensure _ready() has run
-	if p.has_method("set"):
-		p.set("mesh_num", character_num)
-	else:
-		p.mesh_num = character_num
-	
-	print("  -> Successfully spawned existing player %s" % peer_id)
+		print("waiting for host to spawn my character")
 
 func _on_peer_connected(id: int):
 	if is_multiplayer_authority():
