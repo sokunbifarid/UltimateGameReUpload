@@ -53,6 +53,7 @@ var in_selection: bool = false
 @export var synced_blend: float = -1.0
 @export var synced_grounded: bool = true
 @export var my_id : int
+
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
@@ -61,13 +62,13 @@ func _ready() -> void:
 	
 	# Apply character model based on mesh_num (already set by spawner)
 	if is_multiplayer_authority():
-		
-
 		mesh_num = MultiplayerGlobal.selected_player_num
-		change_character(mesh_num)
-
-		# Send to all peers except yourself
-		rpc("other_change_my_character",mesh_num)
+		print("Player ", name, " setting mesh_num to: ", mesh_num)
+		if get_parent().has_method("new_player_joined"):
+			get_parent().new_player_joined(self)
+		# Change locally first
+		apply_character_mesh(mesh_num)
+		
 		
 	
 	if camera:
@@ -79,69 +80,86 @@ func _ready() -> void:
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
 
-# The function wiil only run on other players
-@rpc("any_peer", "call_remote")
-func other_change_my_character(_mesh_num):
-	var sender_id = multiplayer.get_remote_sender_id()
-	rpc_id(sender_id,change_character(_mesh_num))
+func change_mesh():
+	apply_character_mesh(mesh_num)
 
-@rpc("any_peer", "reliable")
-func change_character(num: int):
-	if not is_multiplayer_authority():
-		return  # Only authority can spawn
-
-	# Spawn new character
-	if num == 1 :
-		$Mesh.queue_free() 
-		$Mesh2.queue_free()
-		mesh =  $Node3D
-	elif num == 2:
-		$Mesh.queue_free() 
-		$Node3D.queue_free()
-		mesh =  $Mesh2
-		animator = $Mesh2.get_node("AnimationTree")
-		print("got animator : ", animator)
-		start_animate = true
-
-	elif num == 3:
-		$Node3D.queue_free()
-		$Mesh2.queue_free()
-		mesh =  $Mesh
-		animator = $Mesh.get_node("AnimationTree")
-		print("got animator : ", animator)
-		start_animate = true
+# Local function that actually changes the mesh (not an RPC)
+func apply_character_mesh(num: int):
+	print("Applying character mesh: ", num, " on player: ", name)
+	
+	# Store the mesh number
+	mesh_num = num
+	
+	# Clear existing meshes safely
+	if num == 1:
+		if has_node("Mesh"):
+			$Mesh.queue_free()
+		if has_node("Mesh2"):
+			$Mesh2.queue_free()
+		if has_node("Node3D"):
+			mesh = $Node3D
+			mesh.visible = true
+		start_animate = false
+		print("Set to Node3D mesh (no animation)")
 		
-	#add_child(mesh)  # Spawner auto-syncs this spawn!
-	if num != 1:
+	elif num == 2:
+		if has_node("Mesh"):
+			$Mesh.queue_free()
+		if has_node("Node3D"):
+			$Node3D.queue_free()
+		if has_node("Mesh2"):
+			mesh = $Mesh2
+			mesh.visible = true
+			if mesh.has_node("AnimationTree"):
+				animator = mesh.get_node("AnimationTree")
+				print("Got animator for Mesh2: ", animator)
+				start_animate = true
+		
+	elif num == 3:
+		if has_node("Node3D"):
+			$Node3D.queue_free()
+		if has_node("Mesh2"):
+			$Mesh2.queue_free()
+		if has_node("Mesh"):
+			mesh = $Mesh
+			mesh.visible = true
+			if mesh.has_node("AnimationTree"):
+				animator = mesh.get_node("AnimationTree")
+				print("Got animator for Mesh: ", animator)
+				start_animate = true
+	
+	# Register animation data if needed (only on authority)
+	if num != 1 and is_multiplayer_authority():
 		my_id = multiplayer.get_unique_id()
 		if Multiplayer.is_host:
-			MultiplayerGlobal.add_new_player_anim(my_id,synced_grounded,synced_blend)
+			MultiplayerGlobal.add_new_player_anim(my_id, synced_grounded, synced_blend)
 		else:
-			rpc_id(1, "handle_server_data",my_id, synced_grounded,synced_blend)
+			rpc_id(1, "handle_server_data", my_id, synced_grounded, synced_blend)
+	
+	print("Character mesh applied successfully on player: ", name)
+
 # This function runs on the server
-@rpc("any_peer", "reliable")
-func handle_server_data(id,synced_grounded_,sync_blend_amount_):
+@rpc("any_peer", "call_remote", "reliable")
+func handle_server_data(id: int, synced_grounded_: bool, sync_blend_amount_: float):
 	if not Multiplayer.is_host:
 		return  # Security: only server should process this
 	
-	print("Server received data from peer %d: %s , %s" % [id, synced_grounded_,sync_blend_amount_])
+	print("Server received data from peer %d: %s, %s" % [id, synced_grounded_, sync_blend_amount_])
 	
-	MultiplayerGlobal.add_new_player_anim(id,synced_grounded_,sync_blend_amount_)
+	MultiplayerGlobal.add_new_player_anim(id, synced_grounded_, sync_blend_amount_)
 
-func update_animation_data(id,grounded,blend_value):
+func update_animation_data(id: int, grounded: bool, blend_value: float):
 	if Multiplayer.is_host:
 		MultiplayerGlobal.update_animations_data(
-			multiplayer.get_unique_id(),synced_grounded,synced_blend
+			multiplayer.get_unique_id(), synced_grounded, synced_blend
 		)
 	else:
-		rpc_id(1, "update_client_animations_date",multiplayer.get_unique_id(), synced_grounded,synced_blend)
+		rpc_id(1, "update_client_animations_date", multiplayer.get_unique_id(), synced_grounded, synced_blend)
 
 # This function runs on the server
-@rpc("any_peer", "reliable")
-func update_client_animations_date(id,grounded,blend_value):
-	MultiplayerGlobal.update_animations_data(
-			id,grounded,blend_value
-		)
+@rpc("any_peer", "call_remote", "reliable")
+func update_client_animations_date(id: int, grounded: bool, blend_value: float):
+	MultiplayerGlobal.update_animations_data(id, grounded, blend_value)
 	
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
@@ -154,40 +172,36 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
-	update_animation_data(multiplayer.get_unique_id(), synced_grounded,synced_blend)
+	update_animation_data(multiplayer.get_unique_id(), synced_grounded, synced_blend)
+	
 	if is_multiplayer_authority():
 		if start_animate:
 			animate_local(delta)
 			# Update synced values
 			synced_blend = sync_blend_amount
 			synced_grounded = is_on_floor()
+	
 	if Multiplayer.is_host:
-		print(MultiplayerGlobal.player_animations)
 		send_anims_data_to_clients_only(MultiplayerGlobal.player_animations)
 		
 	my_id = multiplayer.get_unique_id()
 	
 # Only runs on clients, NOT on server
-@rpc("authority", "reliable")
+@rpc("authority", "call_remote", "reliable")
 func receive_aims_data_from_host(anims_data: Dictionary):
-	if mesh_num == 1: return
+	if mesh_num == 1: 
+		return
 	
 	print("Running on player: ", self.name, " (My ID: ", multiplayer.get_unique_id(), ")")
 	
 	for player_ in get_tree().get_nodes_in_group("Player"):
-		print("  Checking player: ", player_.name, " (ID: ", player_.my_id, ")")
-		
 		# Skip self
 		if player_.my_id == multiplayer.get_unique_id():
-			print("    -> Skipping self")
 			continue
 		
 		# Check if animation data exists for THIS player (not yourself)
 		if !anims_data.has(player_.my_id):
-			print("    -> No data for this player")
 			continue
-		
-		print("    -> Applying animation!")
 		
 		# Apply the animation data
 		var this_anim_data : Array = anims_data[player_.my_id]
@@ -196,24 +210,22 @@ func receive_aims_data_from_host(anims_data: Dictionary):
 		
 		# Remote players - apply synced animation
 		if player_.start_animate and player_.animator:
-			print("playuing on ",player_.name)
 			player_.animate_remote()
-			print("    -> Animation applied successfully")
-		else:
-			print("    -> Can't animate (start_animate: ", player_.start_animate, ")")
-			print("    -> Can't animate (animator: ", player_.animator, ")")
+
 # Server sends to all clients (but doesn't run locally)
 func send_anims_data_to_clients_only(anims_data: Dictionary):
 	if Multiplayer.is_host:
 		# Call RPC on EACH player node individually
 		for player in get_tree().get_nodes_in_group("Player"):
-			print(player.is_multiplayer_authority() ,"and", player.multiplayer.get_unique_id() != 1)
-			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() == 1:
+			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() != 1:
 				# This is a remote client's player
 				player.rpc("receive_aims_data_from_host", anims_data)
 		
 func animate_local(delta):
 	"""Animation for local player"""
+	if not animator:
+		return
+		
 	if is_on_floor():
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
 		
@@ -235,6 +247,9 @@ func animate_local(delta):
 
 func animate_remote():
 	"""Animation for remote players using synced data"""
+	if not animator:
+		return
+		
 	if synced_grounded:
 		animator.set("parameters/ground_air_transition/transition_request", "grounded")
 		animator.set("parameters/iwr_blend/blend_amount", synced_blend)
@@ -247,14 +262,17 @@ func handle_movement(delta: float):
 		velocity += get_gravity() * delta
 	# Handle movement based on camera mode
 	handle_third_person_movement(delta)
+
 func disable_camera():
 	camera.queue_free()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	in_selection = true
-func make_it_use_gamepad(val:bool):
+
+func make_it_use_gamepad(val: bool):
 	use_gamepad = val
 	third_person_controller.use_gamepad = val
 	third_person_controller.player_index = 0 if val == false else 1
+
 func handle_jump():
 	# Jump handling
 	if !use_gamepad:
@@ -265,7 +283,6 @@ func handle_jump():
 			velocity.y = JUMP_VELOCITY
 			
 func check_landing():
-
 	was_on_floor = is_on_floor()
 
 func handle_third_person_movement(delta: float):
@@ -299,7 +316,6 @@ func handle_third_person_movement(delta: float):
 	var camera_basis = third_person_controller.global_transform.basis
 	move_direction = (camera_basis * Vector3(input_dir.x, 0, -input_dir.y)).normalized()
 
-
 	# Movement with smoothing
 	if move_direction != Vector3.ZERO:
 		target_velocity = Vector3(move_direction.x * cur_speed, velocity.y, move_direction.z * cur_speed)
@@ -319,7 +335,7 @@ func handle_third_person_movement(delta: float):
 
 # PRESERVED: Original rotation function
 func face_direction(direction: Vector3, delta: float):
-	if direction != Vector3.ZERO:
+	if direction != Vector3.ZERO and mesh:
 		# Calculate target rotation
 		var target_rotation = atan2(direction.x, direction.z)
 		
@@ -358,11 +374,13 @@ func fall_damage():
 
 func check_fall():
 	if global_position.y < -10:
-		self.global_position =  get_tree().get_first_node_in_group("respwan_point").global_position
+		self.global_position = get_tree().get_first_node_in_group("respwan_point").global_position
 		
 func increase_score(value):
 	pass
+
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
+
 func move_to_level():
-	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1,1),0,randf_range(-1,1))
+	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))

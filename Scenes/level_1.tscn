@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://fipqc70kew4o"]
+[gd_scene load_steps=33 format=3 uid="uid://fipqc70kew4o"]
 
 [ext_resource type="Script" uid="uid://dt6pk1wono6xv" path="res://Scenes/level_1.gd" id="1_6r07y"]
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_vk57k"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://sg8envxv2q4c" path="res://Scenes/level_2.tscn" id="10_chwpn"]
 [ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="13_6ioyp"]
 [ext_resource type="Script" uid="uid://6kp8gixwjrk2" path="res://Steam_Multiplayer/waiiting_room.gd" id="14_oovug"]
+[ext_resource type="Script" uid="uid://cqya6yernpv6k" path="res://Steam_Multiplayer/playersin_lobby_controller.gd" id="16_8i23i"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wrinw"]
 points = PackedVector3Array(-0.960469, 0, -0.712585, 1.02225, 0.375568, 0.798547, 0.925047, 0.343508, -0.956875, -0.976889, 0.5, 0.756357, 0.805516, 0, 0.929408, -0.756168, 0.5, -0.976887, -0.867297, -2.77556e-17, 0.898544, 0.867436, -2.77556e-17, -0.898544, 0.75631, 0.5, 0.976887, 0.976834, 0.5, -0.756357, -0.798522, 0.375563, 1.02226, -0.7124, 0, -0.960466, -1.02208, 0.407556, -0.766558, 0.960414, 2.77556e-17, -0.712585, 0.733024, 0.439086, -1.02003, -1.02226, 0.375563, 0.798516, 0.960414, 0, 0.712585, 0.798479, 0.375565, 1.02228, -0.7124, 0, 0.960466, -0.798521, 0.375563, -1.02226, -0.960469, 2.77556e-17, 0.712585, 0.712539, 0, -0.960466, 1.02225, 0.375568, -0.798547, 0.976834, 0.5, 0.756357, -0.756168, 0.5, 0.976887, -0.976889, 0.5, -0.756357, 0.75631, 0.5, -0.976887, -0.95686, 0.343507, -0.925082, 0.712539, 0, 0.960466, 0.956845, 0.343511, 0.925121, 0.798479, 0.375565, -1.02228, -0.867297, -2.77556e-17, -0.898544)
@@ -297,6 +298,7 @@ offset_bottom = 91.0
 
 [node name="spawn_path" type="Node3D" parent="waiting_room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
+script = ExtResource("16_8i23i")
 
 [node name="start_game" type="Button" parent="waiting_room"]
 anchors_preset = 3
