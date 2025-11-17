@@ -248,11 +248,14 @@ func receive_animation_data(anims_data: Dictionary):
 			continue
 		
 		# Find the player node
-		var player_node = sync_manager.get_node_or_null(str(player_id))
-		if not player_node:
-			print("Player with id %d not found. Node: %s" % [int(player_id), str(player_node)])
-			continue
-		
+		var player_node = null
+		var players = get_tree().get_nodes_in_group("Player")
+		for p in players:
+			if p.name == str(player_id):
+				player_node = p
+				break
+		if !player_node:	print("Could not find player for animation sync ", player_id)
+
 		# Skip if they don't have animation
 		if player_node.mesh_num == 1 or not player_node.start_animate or not player_node.animator:
 			print("This Player mesh num is : ",player_node.mesh_num, " start animation is : ",player_node.start_animate," animator is : ",player_node.animator)

@@ -73,7 +73,14 @@ func receive_existing_player_mesh(player_id: int, mesh_num: int):
 	players_data[player_id]["mesh_num"] = mesh_num
 	
 	# Apply the mesh
-	var player_node = get_node_or_null(str(player_id))
+	var players = get_tree().get_nodes_in_group("Player")
+
+	var player_node = null
+	for p in players:
+		if p.name == str(player_id):
+			player_node = p
+			break
+
 	if player_node and player_node.has_method("apply_character_mesh"):
 		print("Manager: Applying mesh ", mesh_num, " to player ", player_id)
 		player_node.apply_character_mesh(mesh_num)
