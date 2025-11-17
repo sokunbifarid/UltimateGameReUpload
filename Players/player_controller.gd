@@ -188,6 +188,7 @@ func update_client_animations_date(id: int, grounded: bool, blend_value: float):
 func _physics_process(delta: float) -> void:
 	if !is_multiplayer_authority() or in_selection:
 		return
+	
 	# Enhanced movement with polish
 	handle_movement(delta)
 	handle_jump()
@@ -196,55 +197,79 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
-	update_animation_data(multiplayer.get_unique_id(), synced_grounded, synced_blend)
 	
-	if is_multiplayer_authority():
-		if start_animate:
-			animate_local(delta)
-			# Update synced values
-			synced_blend = sync_blend_amount
-			synced_grounded = is_on_floor()
-	
-	if Multiplayer.is_host:
-		send_anims_data_to_clients_only(MultiplayerGlobal.player_animations)
+	# Local player animation
+	if is_multiplayer_authority() and start_animate:
+		animate_local(delta)
+		# Update synced values
+		synced_blend = sync_blend_amount
+		synced_grounded = is_on_floor()
 		
-	my_id = multiplayer.get_unique_id()
+		# Send to server/host
+		if Multiplayer.is_host:
+			# If we're the host, update directly
+			MultiplayerGlobal.update_animations_data(
+				multiplayer.get_unique_id(), 
+				synced_grounded, 
+				synced_blend
+			)
+		else:
+			# If we're a client, send to host
+			rpc_id(1, "update_server_animation_data", 
+				multiplayer.get_unique_id(), 
+				synced_grounded, 
+				synced_blend
+			)
+
+# NEW: Server receives animation updates from clients
+@rpc("any_peer", "call_remote", "reliable")
+func update_server_animation_data(id: int, grounded: bool, blend_value: float):
+	if not Multiplayer.is_host:
+		return  # Security: only server should process this
 	
-# Only runs on clients, NOT on server
-@rpc("authority", "call_remote", "reliable")
-func receive_aims_data_from_host(anims_data: Dictionary):
-	if mesh_num == 1: 
+	# Update the global animation data
+	MultiplayerGlobal.update_animations_data(id, grounded, blend_value)
+# Add this function to your player.gd script
+
+# Receive animation data from host (runs on clients only)
+@rpc("authority", "call_remote", "unreliable")
+func receive_animation_data(anims_data: Dictionary):
+	# Skip if this is a non-animated mesh
+	if mesh_num == 1 or not start_animate or not animator:
 		return
 	
-	print("Running on player: ", self.name, " (My ID: ", multiplayer.get_unique_id(), ")")
+	# Get this player's peer ID
+	var my_peer_id = int(name)  # Player node name is their peer ID
 	
-	for player_ in get_tree().get_nodes_in_group("Player"):
-		# Skip self
-		if player_.my_id == multiplayer.get_unique_id():
+	# Apply animation data for all OTHER players
+	for player_id in anims_data:
+		# Skip self - we animate locally
+		if player_id == my_peer_id:
 			continue
 		
-		# Check if animation data exists for THIS player (not yourself)
-		if !anims_data.has(player_.my_id):
+		# Find the player node
+		var player_node = get_parent().get_node_or_null(str(player_id))
+		if not player_node:
+			continue
+		
+		# Skip if they don't have animation
+		if player_node.mesh_num == 1 or not player_node.start_animate or not player_node.animator:
 			continue
 		
 		# Apply the animation data
-		var this_anim_data : Array = anims_data[player_.my_id]
-		player_.synced_grounded = this_anim_data[0]
-		player_.synced_blend = this_anim_data[1]
+		var anim_array = anims_data[player_id]
+		var is_grounded = anim_array[0]
+		var blend_value = anim_array[1]
 		
-		# Remote players - apply synced animation
-		if player_.start_animate and player_.animator:
-			player_.animate_remote()
+		# Apply to their animator
+		if is_grounded:
+			player_node.animator.set("parameters/ground_air_transition/transition_request", "grounded")
+			player_node.animator.set("parameters/iwr_blend/blend_amount", blend_value)
+		else:
+			player_node.animator.set("parameters/ground_air_transition/transition_request", "air")
+			player_node.animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
-# Server sends to all clients (but doesn't run locally)
-func send_anims_data_to_clients_only(anims_data: Dictionary):
-	if Multiplayer.is_host:
-		# Call RPC on EACH player node individually
-		for player in get_tree().get_nodes_in_group("Player"):
-			if player.is_multiplayer_authority() and player.multiplayer.get_unique_id() != 1:
-				# This is a remote client's player
-				player.rpc("receive_aims_data_from_host", anims_data)
-		
+
 func animate_local(delta):
 	"""Animation for local player"""
 	if not animator:
@@ -269,17 +294,6 @@ func animate_local(delta):
 		sync_blend_amount = 0.0
 		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
 
-func animate_remote():
-	"""Animation for remote players using synced data"""
-	if not animator:
-		return
-		
-	if synced_grounded:
-		animator.set("parameters/ground_air_transition/transition_request", "grounded")
-		animator.set("parameters/iwr_blend/blend_amount", synced_blend)
-	else:
-		animator.set("parameters/ground_air_transition/transition_request", "air")
-		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
 func handle_movement(delta: float):
 	if not is_on_floor():
