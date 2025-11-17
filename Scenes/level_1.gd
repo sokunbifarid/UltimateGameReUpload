@@ -37,6 +37,7 @@ func shift_to_level():
 	if multiplayer_spawner and level_spawn_point:
 		multiplayer_spawner.spawn_path = level_spawn_point.get_path()
 	
+	
 	# Move all players from waiting room to level
 	if waiting_spawn_path and level_spawn_point:
 		for player in waiting_spawn_path.get_children():
@@ -44,10 +45,12 @@ func shift_to_level():
 				print("Moving player %s to level spawn" % player.name)
 				player.move_to_level()
 				player.reparent(level_spawn_point)
+		level_spawn_point.players_data =  waiting_spawn_path.players_data
 	
+
 	# Remove waiting room
-	if waiting_room and is_instance_valid(waiting_room):
-		waiting_room.queue_free()
+	#if waiting_room and is_instance_valid(waiting_room):
+		#waiting_room.queue_free()
 	
 	print("Level transition complete!")
 func update_players_ui():

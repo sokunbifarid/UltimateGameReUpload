@@ -21,13 +21,13 @@ func _ready() -> void:
 		for pl in spawn_path.get_children():
 			if pl.is_multiplayer_authority() and pl.use_gamepad:
 				start_game.text = "Start Game\n[press R2 or RT]"
+
 func _randomize_spawn_pos():
 	var random_x = randf_range(spawn_path.global_position.x - 5, spawn_path.global_position.x + 5)
 	var random_z = randf_range(spawn_path.global_position.z - 5, spawn_path.global_position.z + 5)
 	var new_pos = Vector3(random_x, spawn_path.global_position.y, random_z)
 	spawn_path.global_position = new_pos
-	#if MultiplayerGlobal.selected_player.use_gamepad:
-		#start_game.text = "Start Game\n[press R2 or RT]"
+
 func _on_start_game_pressed():
 	# Host triggers the level shift
 	if Multiplayer and Multiplayer.is_host:
@@ -41,8 +41,8 @@ func _on_start_game_pressed():
 	else:
 		print("ERROR: Only host can start the game!")
 
-#func _process(delta: float) -> void:
-	#update_start_button()
+func _process(delta: float) -> void:
+	update_start_button()
 
 
 func update_start_button():

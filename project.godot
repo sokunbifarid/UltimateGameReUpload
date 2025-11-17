@@ -33,6 +33,7 @@ respwan_point=""
 multiplayer_spawner=""
 level_controller=""
 Player="for anything with player"
+Players_sync_manager=""
 
 [input]
 

@@ -53,8 +53,9 @@ var in_selection: bool = false
 @export var synced_blend: float = -1.0
 @export var synced_grounded: bool = true
 @export var my_id : int
-
+var sync_manager : Node
 func _ready() -> void:
+	sync_manager = get_tree().get_first_node_in_group("Players_sync_manager")
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
 	multir_spawner.set_multiplayer_authority(str(name).to_int())
@@ -78,9 +79,8 @@ func _ready() -> void:
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
 		# Register with manager (this handles all syncing)
-		var manager = get_parent()
-		if manager and manager.has_method("register_player"):
-			manager.register_player(self, int(name), mesh_num)
+		if sync_manager and sync_manager.has_method("register_player"):
+			sync_manager.register_player(self, int(name), mesh_num)
 
 # Request all existing players to send their mesh data
 func request_all_player_meshes():
@@ -197,7 +197,9 @@ func _physics_process(delta: float) -> void:
 	check_landing()
 	fall_damage()
 	check_fall()
-	
+	if Multiplayer.is_host:
+		receive_animation_data(MultiplayerGlobal.player_animations)
+
 	# Local player animation
 	if is_multiplayer_authority() and start_animate:
 		animate_local(delta)
@@ -232,11 +234,8 @@ func update_server_animation_data(id: int, grounded: bool, blend_value: float):
 # Add this function to your player.gd script
 
 # Receive animation data from host (runs on clients only)
-@rpc("authority", "call_remote", "unreliable")
+@rpc("any_peer","call_remote", "unreliable")
 func receive_animation_data(anims_data: Dictionary):
-	# Skip if this is a non-animated mesh
-	if mesh_num == 1 or not start_animate or not animator:
-		return
 	
 	# Get this player's peer ID
 	var my_peer_id = int(name)  # Player node name is their peer ID
@@ -245,22 +244,25 @@ func receive_animation_data(anims_data: Dictionary):
 	for player_id in anims_data:
 		# Skip self - we animate locally
 		if player_id == my_peer_id:
+			print("player id and my id is same ",player_id," == ",my_peer_id)
 			continue
 		
 		# Find the player node
-		var player_node = get_parent().get_node_or_null(str(player_id))
+		var player_node = sync_manager.get_node_or_null(str(player_id))
 		if not player_node:
+			print("Player with id %d not found. Node: %s" % [int(player_id), str(player_node)])
 			continue
 		
 		# Skip if they don't have animation
 		if player_node.mesh_num == 1 or not player_node.start_animate or not player_node.animator:
+			print("This Player mesh num is : ",player_node.mesh_num, " start animation is : ",player_node.start_animate," animator is : ",player_node.animator)
 			continue
 		
 		# Apply the animation data
 		var anim_array = anims_data[player_id]
 		var is_grounded = anim_array[0]
 		var blend_value = anim_array[1]
-		
+		print("This player anim array is ",anim_array)
 		# Apply to their animator
 		if is_grounded:
 			player_node.animator.set("parameters/ground_air_transition/transition_request", "grounded")
@@ -268,7 +270,6 @@ func receive_animation_data(anims_data: Dictionary):
 		else:
 			player_node.animator.set("parameters/ground_air_transition/transition_request", "air")
 			player_node.animator.set("parameters/iwr_blend/blend_amount", 0.0)
-
 
 func animate_local(delta):
 	"""Animation for local player"""

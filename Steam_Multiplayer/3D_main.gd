@@ -273,3 +273,7 @@ func get_lobby_members() -> void:
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	print("Lobby members array: ", lobby_members)
+
+func get_current_player_count():
+	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
+	return num_of_members

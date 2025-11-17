@@ -1,4 +1,4 @@
-extends Node3D
+extends Node
 
 # Store player data: {player_id: {mesh_num: int, player_node: Node}}
 var players_data: Dictionary = {}
@@ -31,7 +31,14 @@ func sync_new_player_mesh(player_id: int, mesh_num: int):
 		players_data[player_id]["mesh_num"] = mesh_num
 		
 		# Apply the mesh if player node exists
-		var player_node = get_node_or_null(str(player_id))
+		var players = get_tree().get_nodes_in_group("Player")
+
+		var player_node = null
+		for p in players:
+			if p.name == str(player_id):
+				player_node = p
+				break
+
 		print("found character : ", player_node)
 		if player_node and player_node.has_method("apply_character_mesh"):
 			print("Applying ", mesh_num)
@@ -81,6 +88,7 @@ func unregister_player(player_id: int):
 
 # ANIMATION SYNC - Host broadcasts animation data to all clients
 func _process(delta: float) -> void:
+	
 	# Only host broadcasts animation data
 	if Multiplayer.is_host:
 		# Send animation data to all clients every frame
@@ -101,12 +109,8 @@ func broadcast_animation_data():
 	
 	# Get all player nodes in the scene
 	var all_players = get_tree().get_nodes_in_group("Player")
-	
 	# Send animation data to each CLIENT's player node
 	for player_node in all_players:
-		# Only send to players that are NOT the host's authority
-		# (i.e., send to client-controlled players only)
-		if player_node.is_multiplayer_authority():
-			# This player is controlled by a client, send them the data
-			player_node.rpc("receive_animation_data", anim_data)
-			print("Sending animation data to player: ", player_node.name)
+		# Send animation data to all players in lobby , including the host
+		player_node.rpc("receive_animation_data", anim_data)
+		#print("Sending animation data to player: ", player_node.name)

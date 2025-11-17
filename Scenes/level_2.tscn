@@ -271,7 +271,6 @@ offset_bottom = 91.0
 
 [node name="spawn_path" type="Node3D" parent="waiting_room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
-script = ExtResource("15_q0ycs")
 
 [node name="start_game" type="Button" parent="waiting_room"]
 anchors_preset = 3
@@ -307,3 +306,6 @@ layout_mode = 0
 offset_top = 25.0
 offset_right = 128.0
 offset_bottom = 65.0
+
+[node name="player_sync_manager" type="Node" parent="." groups=["Players_sync_manager"]]
+script = ExtResource("15_q0ycs")
