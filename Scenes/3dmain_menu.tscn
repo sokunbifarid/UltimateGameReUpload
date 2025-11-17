@@ -411,7 +411,7 @@ size = Vector3(3.002777, 2.3216553, 3.59272)
 script = ExtResource("1_cwrni")
 
 [node name="MainCamera" type="Camera3D" parent="."]
-transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 23.7, 0.57, 7.45)
+transform = Transform3D(0.998888, 0, -0.0471413, 0, 1, 0, 0.0471413, 0, 0.998888, 3.7, 0.57, 7.45)
 
 [node name="RayCast3D" type="RayCast3D" parent="MainCamera"]
 transform = Transform3D(0.998888, 0, 0.0471413, 0, 1, 0, -0.0471413, 0, 0.998888, -3.68944, -1.10027, -5.28978)

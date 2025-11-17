@@ -53,7 +53,7 @@ var in_selection: bool = false
 @export var synced_blend: float = -1.0
 @export var synced_grounded: bool = true
 @export var my_id : int
-
+var mesh_changed: bool = false
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
@@ -79,17 +79,24 @@ func _ready() -> void:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
+	
+	if get_parent().has_method("sync_mesh"):
+			get_parent().sync_mesh()
 
 func change_mesh():
-	apply_character_mesh(mesh_num)
-
+	if mesh_changed: return
+	if !mesh_num:
+		apply_character_mesh(MultiplayerGlobal.selected_player_num)
+	else:
+		apply_character_mesh(mesh_num)
+	return [mesh_num,MultiplayerGlobal.selected_player_num]
 # Local function that actually changes the mesh (not an RPC)
 func apply_character_mesh(num: int):
 	print("Applying character mesh: ", num, " on player: ", name)
 	
 	# Store the mesh number
 	mesh_num = num
-	
+	mesh_changed = true
 	# Clear existing meshes safely
 	if num == 1:
 		if has_node("Mesh"):
