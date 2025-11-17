@@ -53,7 +53,7 @@ var in_selection: bool = false
 @export var synced_blend: float = -1.0
 @export var synced_grounded: bool = true
 @export var my_id : int
-var mesh_changed: bool = false
+
 func _ready() -> void:
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
@@ -64,11 +64,9 @@ func _ready() -> void:
 	if is_multiplayer_authority():
 		mesh_num = MultiplayerGlobal.selected_player_num
 		print("Player ", name, " setting mesh_num to: ", mesh_num)
-		if get_parent().has_method("new_player_joined"):
-			get_parent().new_player_joined(self)
+		
 		# Change locally first
 		apply_character_mesh(mesh_num)
-		
 		
 	
 	if camera:
@@ -79,24 +77,43 @@ func _ready() -> void:
 			camera.current = false
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
-	
-	if get_parent().has_method("sync_mesh"):
-			get_parent().sync_mesh()
+		# Register with manager (this handles all syncing)
+		var manager = get_parent()
+		if manager and manager.has_method("register_player"):
+			manager.register_player(self, int(name), mesh_num)
 
-func change_mesh():
-	if mesh_changed: return
-	if !mesh_num:
-		apply_character_mesh(MultiplayerGlobal.selected_player_num)
-	else:
-		apply_character_mesh(mesh_num)
-	return [mesh_num,MultiplayerGlobal.selected_player_num]
-# Local function that actually changes the mesh (not an RPC)
+# Request all existing players to send their mesh data
+func request_all_player_meshes():
+	print("Player ", name, " requesting all player meshes")
+	# Ask all other players to send their mesh info
+	rpc("send_my_mesh_to_requester")
+
+# When someone requests mesh info, send your mesh back to them
+@rpc("any_peer", "call_remote", "reliable")
+func send_my_mesh_to_requester():
+	var requester_id = multiplayer.get_remote_sender_id()
+	print("Player ", name, " sending mesh info (", mesh_num, ") to requester: ", requester_id)
+	
+	# Send my mesh info back to the requester only
+	rpc_id(requester_id, "receive_player_mesh", int(name), mesh_num)
+
+# Receive another player's mesh info
+@rpc("any_peer", "call_remote", "reliable")
+func receive_player_mesh(player_id: int, player_mesh_num: int):
+	print("Received mesh info: Player ", player_id, " has mesh ", player_mesh_num)
+	
+	# Find that player's node and update their mesh
+	var player_node = get_tree().root.get_node_or_null("Main/" + str(player_id))
+	if player_node and player_node != self:
+		player_node.apply_character_mesh(player_mesh_num)
+
+# Local function that actually changes the mesh (can be called by manager)
 func apply_character_mesh(num: int):
 	print("Applying character mesh: ", num, " on player: ", name)
 	
 	# Store the mesh number
 	mesh_num = num
-	mesh_changed = true
+	
 	# Clear existing meshes safely
 	if num == 1:
 		if has_node("Mesh"):
