@@ -91,7 +91,7 @@ func _on_3D_lobby_match_list(these_lobbies: Array) -> void:
 		curr_pos.y += 1.5
 	
 	print("Total lobbies displayed: ", lobbies_container.get_child_count() - 1)
-
+	emit_signal("Multiplayer.notification","Total lobbies displayed: "+ str(lobbies_container.get_child_count() - 1))
 func _on_area_3d_input_event(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int, this_lobby: int, num_members: int, max_members: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		# Check if lobby is full before attempting to join

@@ -1,7 +1,7 @@
 extends Node
 
 signal lobbies_refreshed(lobbies)
-
+signal notification(mesg : String)
 @export var level : PackedScene
 
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
@@ -77,6 +77,7 @@ func _on_host_connected():
 		return
 	
 	print("Creating lobby...")
+	notification.emit("Creating lobby...")
 	is_host = true
 	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, lobby_members_max)
 
@@ -114,6 +115,7 @@ func join_lobby(this_lobby_id: int):
 		await get_tree().create_timer(0.5).timeout  # Wait for clean disconnect
 	
 	print("Attempting to join lobby %s" % this_lobby_id)
+	notification.emit("join lobby %s" % Steam.getLobbyData(this_lobby_id,"name"))
 	lobby_members.clear()
 	is_host = false
 	Steam.joinLobby(this_lobby_id)
@@ -253,6 +255,7 @@ func _on_persona_change(this_steam_id: int, _flag: int) -> void:
 func open_lobby_list():
 	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	print("Requesting a lobby list")
+	notification.emit("Requesting a lobby list")
 	Steam.requestLobbyList()
 
 

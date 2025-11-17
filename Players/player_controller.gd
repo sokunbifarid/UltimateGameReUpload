@@ -61,8 +61,13 @@ func _ready() -> void:
 	
 	# Apply character model based on mesh_num (already set by spawner)
 	if is_multiplayer_authority():
+		
+
 		mesh_num = MultiplayerGlobal.selected_player_num
 		change_character(mesh_num)
+
+		# Send to all peers except yourself
+		rpc("other_change_my_character",mesh_num)
 		
 	
 	if camera:
@@ -74,6 +79,13 @@ func _ready() -> void:
 			print("Player %s: Camera disabled (REMOTE)" % name)
 		third_person_controller.use_gamepad = use_gamepad
 
+# The function wiil only run on other players
+@rpc("any_peer", "call_remote")
+func other_change_my_character(_mesh_num):
+	var sender_id = multiplayer.get_remote_sender_id()
+	rpc_id(sender_id,change_character(_mesh_num))
+
+@rpc("any_peer", "reliable")
 func change_character(num: int):
 	if not is_multiplayer_authority():
 		return  # Only authority can spawn
