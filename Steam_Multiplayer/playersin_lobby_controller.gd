@@ -101,9 +101,9 @@ func _process(delta: float) -> void:
 		# Send animation data to all clients every frame
 		broadcast_animation_data()
 		
-		# Debug print every 60 frames
-		if Engine.get_physics_frames() % 60 == 0:
-			print("Players animations : ", MultiplayerGlobal.player_animations)
+		## Debug print every 60 frames
+		#if Engine.get_physics_frames() % 60 == 0:
+			#print("Players animations : ", MultiplayerGlobal.player_animations)
 
 # Host sends animation data to all clients
 func broadcast_animation_data():

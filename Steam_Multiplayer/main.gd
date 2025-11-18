@@ -269,7 +269,7 @@ func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
 	
-	print("Getting %s lobby members..." % num_of_members)
+	#print("Getting %s lobby members..." % num_of_members)
 	
 	for this_member in range(0, num_of_members):
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
@@ -278,8 +278,7 @@ func get_lobby_members() -> void:
 		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
-	print("Lobby members array: ", lobby_members)
-
+	
 func leave_lobby() -> void:
 	if lobby_id != 0:
 		print("Leaving lobby...")

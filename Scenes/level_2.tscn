@@ -61,13 +61,13 @@ albedo_color = Color(0.43634963, 0.09542277, 0.023212835, 1)
 [node name="Main" type="Node3D" node_paths=PackedStringArray("level_spawn_point") groups=["level_controller"]]
 script = ExtResource("1_bl0du")
 enviroment = ExtResource("1_vcilj")
-level_spawn_point = NodePath("playerSpawnPoint")
+level_spawn_point = NodePath("playerSpwanPoint")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../waiting_room/spawn_path")
+spawn_path = NodePath("../playerSpwanPoint")
 script = ExtResource("10_t7v2y")
 player_Scene = ExtResource("6_bl0du")
-_spawn_path = NodePath("../waiting_room/spawn_path")
+_spawn_path = NodePath("../playerSpwanPoint")
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -203,8 +203,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.31854, 1.24682, -2.62733)
 move_speed = 3.0
 move_direction = Vector3(8, 0, 0)
 
-[node name="playerSpawnPoint" type="Node3D" parent="." groups=["respwan_point"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3233819, 0)
+[node name="marker_pos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4373875, 0)
+
+[node name="playerSpwanPoint" type="Node3D" parent="." groups=["respwan_point"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.485907, 0)
 
 [node name="waiting_room" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
@@ -269,9 +272,6 @@ offset_top = 68.0
 offset_right = 195.0
 offset_bottom = 91.0
 
-[node name="spawn_path" type="Node3D" parent="waiting_room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
-
 [node name="start_game" type="Button" parent="waiting_room"]
 anchors_preset = 3
 anchor_left = 1.0
@@ -286,6 +286,10 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Start Game
 [press Enter["
+
+[node name="Timer" type="Timer" parent="waiting_room"]
+wait_time = 5.0
+one_shot = true
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

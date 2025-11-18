@@ -42,43 +42,43 @@ radius = 10.508301
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_oovug"]
 radius = 2.043457
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_0seqp"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8i23i"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[sub_resource type="Sky" id="Sky_6ioyp"]
-sky_material = SubResource("ProceduralSkyMaterial_0seqp")
+[sub_resource type="Sky" id="Sky_3fvjc"]
+sky_material = SubResource("ProceduralSkyMaterial_8i23i")
 
-[sub_resource type="Environment" id="Environment_2qlfx"]
+[sub_resource type="Environment" id="Environment_8yhm2"]
 background_mode = 2
-sky = SubResource("Sky_6ioyp")
+sky = SubResource("Sky_3fvjc")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_0seqp"]
+[sub_resource type="BoxMesh" id="BoxMesh_pjppf"]
 size = Vector3(50, 0.5, 50)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3fvjc"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yltlr"]
 albedo_color = Color(0.38170326, 0.38170323, 0.38170323, 1)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3fvjc"]
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_6ssoq"]
 data = PackedVector3Array(-25, 0.25, 25, 25, 0.25, 25, -25, -0.25, 25, 25, 0.25, 25, 25, -0.25, 25, -25, -0.25, 25, 25, 0.25, -25, -25, 0.25, -25, 25, -0.25, -25, -25, 0.25, -25, -25, -0.25, -25, 25, -0.25, -25, 25, 0.25, 25, 25, 0.25, -25, 25, -0.25, 25, 25, 0.25, -25, 25, -0.25, -25, 25, -0.25, 25, -25, 0.25, -25, -25, 0.25, 25, -25, -0.25, -25, -25, 0.25, 25, -25, -0.25, 25, -25, -0.25, -25, 25, 0.25, 25, -25, 0.25, 25, 25, 0.25, -25, -25, 0.25, 25, -25, 0.25, -25, 25, 0.25, -25, -25, -0.25, 25, 25, -0.25, 25, -25, -0.25, -25, 25, -0.25, 25, 25, -0.25, -25, -25, -0.25, -25)
 
-[sub_resource type="BoxMesh" id="BoxMesh_2qlfx"]
+[sub_resource type="BoxMesh" id="BoxMesh_imks0"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mt0ga"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dlmop"]
 albedo_color = Color(0.43634963, 0.09542277, 0.023212835, 1)
 
 [node name="Main" type="Node3D" node_paths=PackedStringArray("level_spawn_point") groups=["level_controller"]]
 script = ExtResource("1_6r07y")
 enviroment = ExtResource("2_6ioyp")
-level_spawn_point = NodePath("Marker3D")
+level_spawn_point = NodePath("playerSpwanPoint")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path") groups=["multiplayer_spawner"]]
-spawn_path = NodePath("../waiting_room/spawn_path")
+spawn_path = NodePath("../playerSpwanPoint")
 script = ExtResource("13_6ioyp")
 player_Scene = ExtResource("6_evi0p")
-_spawn_path = NodePath("../waiting_room/spawn_path")
+_spawn_path = NodePath("../playerSpwanPoint")
 
 [node name="Platforms" type="Node" parent="."]
 
@@ -221,98 +221,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.442513, -3.7612815)
 shape = SubResource("CylinderShape3D_oovug")
 debug_color = Color(0.88251704, 0.28736204, 0.4558378, 0.41960785)
 
-[node name="Label" type="Label" parent="."]
-offset_left = 638.0
-offset_top = 61.0
-offset_right = 678.0
-offset_bottom = 84.0
+[node name="marker_pos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4373875, 0)
 
-[node name="Marker3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.112726, 0)
-
-[node name="Marker3D2" type="Marker3D" parent="." groups=["respwan_point"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0115435, 0)
-
-[node name="waiting_room" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
-script = ExtResource("14_oovug")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="waiting_room"]
-environment = SubResource("Environment_2qlfx")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="waiting_room"]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
-
-[node name="floor" type="MeshInstance3D" parent="waiting_room"]
-mesh = SubResource("BoxMesh_0seqp")
-surface_material_override/0 = SubResource("StandardMaterial3D_3fvjc")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="waiting_room/floor"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="waiting_room/floor/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_3fvjc")
-
-[node name="boxes" type="Node3D" parent="waiting_room"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2932835, 0.75, -4.07098)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2634687, 0.75, 8.557474)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.51183, 0.75, 7.326103)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.257103, 0.75, -11.785713)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.571556, 0.74999905, -15.097141)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.225113, 0.74999905, 19.819706)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="waiting_room/boxes"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.785496, 0.75, 17.683731)
-mesh = SubResource("BoxMesh_2qlfx")
-surface_material_override/0 = SubResource("StandardMaterial3D_mt0ga")
-
-[node name="Label" type="Label" parent="waiting_room"]
-offset_left = 155.0
-offset_top = 68.0
-offset_right = 195.0
-offset_bottom = 91.0
-
-[node name="spawn_path" type="Node3D" parent="waiting_room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.335869, 0)
-
-[node name="start_game" type="Button" parent="waiting_room"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -167.0
-offset_top = -115.0
-offset_right = -30.0
-offset_bottom = -35.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Start Game
-[press Enter]"
+[node name="playerSpwanPoint" type="Node3D" parent="." groups=["respwan_point"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.485907, 0)
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -336,3 +249,85 @@ offset_bottom = 65.0
 
 [node name="player_sync_manager" type="Node" parent="." groups=["Players_sync_manager"]]
 script = ExtResource("16_8i23i")
+
+[node name="waiting_room" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.824102, 0)
+script = ExtResource("14_oovug")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="waiting_room"]
+environment = SubResource("Environment_8yhm2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="waiting_room"]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="floor" type="MeshInstance3D" parent="waiting_room"]
+mesh = SubResource("BoxMesh_pjppf")
+surface_material_override/0 = SubResource("StandardMaterial3D_yltlr")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="waiting_room/floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="waiting_room/floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_6ssoq")
+
+[node name="boxes" type="Node3D" parent="waiting_room"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2932835, 0.75, -4.07098)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.2634687, 0.75, 8.557474)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.51183, 0.75, 7.326103)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.257103, 0.75, -11.785713)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.571556, 0.74999905, -15.097141)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.225113, 0.74999905, 19.819706)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="waiting_room/boxes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.785496, 0.75, 17.683731)
+mesh = SubResource("BoxMesh_imks0")
+surface_material_override/0 = SubResource("StandardMaterial3D_dlmop")
+
+[node name="Label" type="Label" parent="waiting_room"]
+offset_left = 155.0
+offset_top = 68.0
+offset_right = 195.0
+offset_bottom = 91.0
+
+[node name="start_game" type="Button" parent="waiting_room"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -115.0
+offset_right = -30.0
+offset_bottom = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Start Game
+[press Enter["
+
+[node name="Timer" type="Timer" parent="waiting_room"]
+wait_time = 5.0
+one_shot = true

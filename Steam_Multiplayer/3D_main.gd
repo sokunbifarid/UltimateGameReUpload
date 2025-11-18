@@ -3,7 +3,7 @@ extends Node
 signal lobbies_refreshed(lobbies)
 signal notification(mesg : String)
 @export var level : PackedScene
-
+@export var levels : Array[PackedScene]
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
 
 var lobby_id: int = 0
@@ -13,6 +13,13 @@ var steam_id: int = 0
 var steam_username: String = ""
 var is_host: bool = false
 var has_spawned_level: bool = false
+
+
+# Cache the player count instead of calling Steam every frame
+var cached_player_count: int = 0
+var last_lobby_update_time: float = 0.0
+const LOBBY_UPDATE_INTERVAL: float = 0.5  # Update every 0.5 seconds instead of every frame
+
 
 func _ready() -> void:
 
@@ -56,10 +63,15 @@ func _ready() -> void:
 
 func _on_3D_lobby_match_list(lobbies):
 	lobbies_refreshed.emit(lobbies)
-	
+
 func _process(_delta: float) -> void:
 	Steam.run_callbacks()
-
+	
+	# Update player count periodically, not every frame
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if current_time - last_lobby_update_time >= LOBBY_UPDATE_INTERVAL:
+		_update_cached_player_count()
+		last_lobby_update_time = current_time
 func spawn_level(data):
 	var scene = load(data) as PackedScene
 	return scene.instantiate()
@@ -126,10 +138,12 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		lobby_id = this_lobby_id
 		print("Created a lobby: %s" % lobby_id)
 		
+		MultiplayerGlobal.selected_level = levels.pick_random()
+		
 		Steam.setLobbyJoinable(lobby_id, true)
 		Steam.setLobbyData(lobby_id, "name", str(steam_username + "'s Lobby"))
 		Steam.setLobbyData(lobby_id, "mode", "game")
-		Steam.setLobbyData(lobby_id, "level", level.resource_path)
+		Steam.setLobbyData(lobby_id, "level", MultiplayerGlobal.selected_level.resource_path)
 
 		# Create host peer
 		var peer = SteamMultiplayerPeer.new()
@@ -146,8 +160,7 @@ func _on_lobby_created(connect: int, this_lobby_id: int) -> void:
 		
 		get_lobby_members()
 		
-		MultiplayerGlobal.selected_level = level
-		get_tree().change_scene_to_packed(level)  # Uncomment this line
+		get_tree().change_scene_to_packed(MultiplayerGlobal.selected_level)  # Uncomment this line
 		has_spawned_level = true
 		
 		
@@ -246,6 +259,8 @@ func _on_lobby_chat_update(this_lobby_id: int, change_id: int, making_change_id:
 		print("%s did... something." % changer_name)
 	
 	get_lobby_members()
+	# Immediately update cached count when lobby changes
+	_update_cached_player_count()
 
 func _on_persona_change(this_steam_id: int, _flag: int) -> void:
 	if lobby_id > 0:
@@ -263,7 +278,7 @@ func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
 	
-	print("Getting %s lobby members..." % num_of_members)
+	#print("Getting %s lobby members..." % num_of_members)
 	
 	for this_member in range(0, num_of_members):
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
@@ -272,8 +287,31 @@ func get_lobby_members() -> void:
 		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
-	print("Lobby members array: ", lobby_members)
+	# Update cached count when we get lobby members
+	cached_player_count = num_of_members
+
+
 
 func get_current_player_count():
+	# Return cached value instead of calling Steam every time
+	return cached_player_count
+
+func _update_cached_player_count():
+	"""Update the cached player count periodically"""
+	if lobby_id > 0:
+		cached_player_count = Steam.getNumLobbyMembers(lobby_id)
+
+func get_current_players():
+	lobby_members.clear()
 	var num_of_members: int = Steam.getNumLobbyMembers(lobby_id)
-	return num_of_members
+	
+	#print("Getting %s lobby members..." % num_of_members)
+	
+	for this_member in range(0, num_of_members):
+		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
+		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
+		
+		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
+		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
+	
+	return lobby_members

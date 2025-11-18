@@ -2,8 +2,8 @@ extends MultiplayerSpawner
 
 @export var player_Scene : PackedScene
 @export var _spawn_path : Node3D
-@onready var label: Label = $"../Label"
-@onready var player_spawn_point: Node3D = $"../Node3D"
+#@onready var label: Label = $"../Label"
+#@onready var player_spawn_point: Node3D = $"../Node3D"
 
 var is_local : bool = false
 var players = {}

@@ -254,8 +254,9 @@ func receive_animation_data(anims_data: Dictionary):
 			if p.name == str(player_id):
 				player_node = p
 				break
-		if !player_node:	print("Could not find player for animation sync ", player_id)
-
+		if !player_node:
+				print("Could not find player for animation sync ", player_id)
+				continue
 		# Skip if they don't have animation
 		if player_node.mesh_num == 1 or not player_node.start_animate or not player_node.animator:
 			print("This Player mesh num is : ",player_node.mesh_num, " start animation is : ",player_node.start_animate," animator is : ",player_node.animator)
@@ -424,5 +425,8 @@ func increase_score(value):
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
 
-func move_to_level():
-	self.global_position = get_tree().get_first_node_in_group("respwan_point").position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))
+func go_to_level():
+	print("moving to new spawn point")
+	var spwan_point = get_tree().get_first_node_in_group("respwan_point")
+	self.global_position = spwan_point.position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))
+	print(spwan_point," ", spwan_point.position)
