@@ -52,7 +52,7 @@ func _start_game():
 		var level_controller = get_tree().get_first_node_in_group("level_controller")
 		print(level_controller)
 		if level_controller:
-			level_controller.move_to_level()
+			level_controller.move_to_level.rpc()
 
 func _input(event: InputEvent) -> void:
 	

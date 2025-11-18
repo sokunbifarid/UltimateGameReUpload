@@ -28,8 +28,9 @@ properties/5/path = NodePath("rhead:scale")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" groups=["Player"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("charater_mesh") groups=["Player"]]
 script = ExtResource("1_j211o")
+charater_mesh = NodePath("Mesh")
 
 [node name="Mesh" parent="." instance=ExtResource("2_j211o")]
 

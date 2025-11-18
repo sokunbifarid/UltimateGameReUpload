@@ -47,54 +47,24 @@ var sync_is_on_floor: bool = true
 var sync_blend_amount: float = -1.0
 
 func _ready() -> void:
-	# Setup camera
-	if camera:
-		if is_multiplayer_authority():
-			camera.current = true
-			print("Player %s: Camera enabled (LOCAL)" % name)
-		else:
-			camera.current = false
-			print("Player %s: Camera disabled (REMOTE)" % name)
-	
 	if third_person_controller:
 		third_person_controller.use_gamepad = use_gamepad
-func select_player():
-	if !in_selection:
-		match  MultiplayerGlobal.selected_player_num:
-			1:
-				print("Going with player 1") 
-			2:
-				print("Going with player 2") 
-			3:
-				print("Going with player 3") 
 
 func _physics_process(delta: float) -> void:
-	# Validate scale every frame
-	if scale.length_squared() < 0.001:
-		scale = Vector3.ONE
-		push_error("Player %s scale became invalid!" % name)
+
 	
-	if is_multiplayer_authority():
-		# LOCAL PLAYER: Handle input and movement
-		if not in_selection:
-			handle_movement(delta)
-			handle_jump()
-			move_and_slide()
-			update_movement_state_tracking(delta)
-			check_landing()
-			fall_damage()
-			check_fall()
+	if not in_selection:
+		handle_movement(delta)
+		handle_jump()
+		move_and_slide()
+		update_movement_state_tracking(delta)
+		check_landing()
+		fall_damage()
+		check_fall()
 		
-		# Update sync variables for network
-		sync_velocity = velocity
-		sync_is_on_floor = is_on_floor()
 		
 		# Animate based on local state
 		animate(delta)
-	else:
-		# REMOTE PLAYER: Use synced values for animation
-		velocity = sync_velocity
-		animate_remote(delta)
 
 func animate(delta):
 	"""Animation for local player"""
@@ -117,14 +87,6 @@ func animate(delta):
 		sync_blend_amount = 0.0
 		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
 
-func animate_remote(delta):
-	"""Animation for remote players using synced data"""
-	if sync_is_on_floor:
-		animator.set("parameters/ground_air_transition/transition_request", "grounded")
-		animator.set("parameters/iwr_blend/blend_amount", sync_blend_amount)
-	else:
-		animator.set("parameters/ground_air_transition/transition_request", "air")
-		animator.set("parameters/iwr_blend/blend_amount", 0.0)
 
 func handle_movement(delta: float):
 	if not is_on_floor():

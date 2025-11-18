@@ -5,6 +5,7 @@ extends Node3D
 @onready var refresh_lobbies: Area3D = $refresh_Lobbies
 @onready var lobby: Node3D = $lobbies_container/lobby
 @onready var lobbies_container: Node3D = $lobbies_container
+@onready var timer: Timer = $refresh_Lobbies/Timer
 
 var curr_pos = Vector2.ZERO
 
@@ -13,6 +14,9 @@ func _ready() -> void:
 	refresh_lobbies.input_event.connect(_on_refresh_lobbies_pressed)
 	host_lobby.input_event.connect(_on_host_lobby_pressed)
 	Multiplayer.lobbies_refreshed.connect(_on_3D_lobby_match_list)
+
+	timer.timeout.connect(func():
+		Multiplayer.open_lobby_list())
 
 func _on_refresh_lobbies_pressed(camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:

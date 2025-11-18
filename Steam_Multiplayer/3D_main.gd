@@ -5,7 +5,7 @@ signal notification(mesg : String)
 @export var level : PackedScene
 @export var levels : Array[PackedScene]
 @onready var ms: MultiplayerSpawner = $MultiplayerSpawner
-
+var use_gamepad: bool = false
 var lobby_id: int = 0
 var lobby_members: Array = []
 var lobby_members_max: int = 10
@@ -284,7 +284,6 @@ func get_lobby_members() -> void:
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		
-		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	# Update cached count when we get lobby members
@@ -311,7 +310,6 @@ func get_current_players():
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		
-		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	return lobby_members

@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=4 uid="uid://b0flbcapsm0ca"]
+[gd_scene load_steps=44 format=4 uid="uid://b0flbcapsm0ca"]
 
 [ext_resource type="Script" uid="uid://bmgqwg6mhg6nd" path="res://Scripts/mainmenu3d.gd" id="1_cwrni"]
 [ext_resource type="ArrayMesh" uid="uid://br7iuur1lf4la" path="res://Models/Platform/block-snow-large-tall.obj" id="1_t0pxn"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://dngt76mtjnt3q" path="res://Scripts/plyers_numbers.gd" id="5_a1jyg"]
 [ext_resource type="Script" uid="uid://b81ddmj0jgvwm" path="res://Scripts/character_selection.gd" id="5_shoky"]
 [ext_resource type="PackedScene" uid="uid://ce48elb3fsyic" path="res://Players/player.tscn" id="6_a1jyg"]
-[ext_resource type="Script" uid="uid://c2yaw6ho0f2nw" path="res://Steam_Multiplayer/notification.gd" id="6_i4r5o"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="8_ki4ed"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="9_i4r5o"]
 [ext_resource type="PackedScene" uid="uid://cgfrte6ksyo7v" path="res://Players/player_0.tscn" id="9_ki4ed"]
@@ -515,6 +514,10 @@ text = "Resfresh Lobbies"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 
+[node name="Timer" type="Timer" parent="OnlineMenu/refresh_Lobbies"]
+wait_time = 3.0
+autostart = true
+
 [node name="Main_Menu" type="Area3D" parent="OnlineMenu"]
 transform = Transform3D(0.8138417, 0, 0.5810865, 0, 1, 0, -0.5810865, 0, 0.8138417, -2.3488781, -2.3213499, -4.7683716e-07)
 
@@ -653,22 +656,6 @@ skeleton = NodePath("../../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.511466)
 modulate = Color(0.905882, 0.25098, 0.231373, 1)
 text = "4"
-font = SubResource("SystemFont_cwrni")
-font_size = 63
-
-[node name="notification" type="Node3D" parent="OnlineMenu"]
-transform = Transform3D(0.9998799, 0.0062030856, 0.014202355, 0, 0.91640466, -0.4002531, -0.015497908, 0.40020502, 0.9162946, 4.562, 4.671, 0.251)
-script = ExtResource("6_i4r5o")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="OnlineMenu/notification"]
-transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
-mesh = SubResource("BoxMesh_wtcdj")
-skeleton = NodePath("../../..")
-
-[node name="Label3D" type="Label3D" parent="OnlineMenu/notification"]
-transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, -0.2178545, 0.13102269, 0.537271)
-modulate = Color(0.905882, 0.25098, 0.231373, 1)
-text = "No internet"
 font = SubResource("SystemFont_cwrni")
 font_size = 63
 

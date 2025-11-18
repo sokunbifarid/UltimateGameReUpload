@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://b556l2gh1l1bt"]
+[gd_scene load_steps=31 format=4 uid="uid://b556l2gh1l1bt"]
 
 [ext_resource type="Script" uid="uid://cunfwdd0dyo50" path="res://Local_Split_screen/local_character_selection.gd" id="1_m18g8"]
 [ext_resource type="Texture2D" uid="uid://8wkfruwv660x" path="res://addons/kenney_prototype_textures/dark/texture_04.png" id="2_qeqtl"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cgfrte6ksyo7v" path="res://Players/player_0.tscn" id="3_y8nly"]
 [ext_resource type="PackedScene" uid="uid://bmp5h1qas33b0" path="res://Players/player_1.tscn" id="4_1ksmu"]
 [ext_resource type="PackedScene" uid="uid://ct7snbbp5yub3" path="res://Scenes/arrows.tscn" id="5_s1rbn"]
+[ext_resource type="Script" uid="uid://dgyyyisnsgqng" path="res://Local_Split_screen/Main_menu_btn.gd" id="6_1ksmu"]
 [ext_resource type="Script" uid="uid://bsdfv2hvrd0c2" path="res://Scripts/arrows.gd" id="6_q2lqv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3nbr6"]
@@ -30,6 +31,16 @@ uv1_triplanar = true
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_mdkri"]
 data = PackedVector3Array(-25, 0.5, 25, 25, 0.5, 25, -25, -0.5, 25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, 0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, 25, 25, 0.5, -25, 25, -0.5, -25, 25, -0.5, 25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, -25, 25, 0.5, 25, -25, 0.5, 25, 25, 0.5, -25, -25, 0.5, 25, -25, 0.5, -25, 25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, -25, -0.5, -25, 25, -0.5, 25, 25, -0.5, -25, -25, -0.5, -25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m18g8"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_y8nly"]
+size = Vector3(3, 1, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_1ksmu"]
+font_names = PackedStringArray("Academy Engraved LET")
+subpixel_positioning = 0
 
 [sub_resource type="GDScript" id="GDScript_m18g8"]
 script/source = "extends Node3D
@@ -358,16 +369,6 @@ _data = {
 &"mouse_entered": SubResource("Animation_6686o")
 }
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_m18g8"]
-size = Vector3(3, 1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_y8nly"]
-size = Vector3(3, 1, 1)
-
-[sub_resource type="SystemFont" id="SystemFont_1ksmu"]
-font_names = PackedStringArray("Academy Engraved LET")
-subpixel_positioning = 0
-
 [node name="Character_Selection" type="Node3D" groups=["Selector"]]
 script = ExtResource("1_m18g8")
 characters = Array[PackedScene]([ExtResource("3_e5ees"), ExtResource("3_y8nly"), ExtResource("4_1ksmu")])
@@ -392,6 +393,25 @@ shape = SubResource("ConcavePolygonShape3D_mdkri")
 [node name="Camera3D" type="Camera3D" parent="." groups=["camera"]]
 transform = Transform3D(1, 0, 0, 0, 0.99341685, 0.11455571, 0, -0.11455571, 0.99341685, 0, 1.1, 2.129)
 current = true
+
+[node name="player_1_text2" type="Area3D" parent="Camera3D"]
+transform = Transform3D(0.645127, -0.02910015, -0.21298923, -0.024625806, 0.65930116, -0.16466822, 0.21355277, 0.16393661, 0.6244359, 2.4289594, 1.7488402, -3.7237587)
+script = ExtResource("6_1ksmu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/player_1_text2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00341797, 0, 0)
+shape = SubResource("BoxShape3D_m18g8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/player_1_text2"]
+mesh = SubResource("BoxMesh_y8nly")
+skeleton = NodePath("../../../..")
+
+[node name="Label3D" type="Label3D" parent="Camera3D/player_1_text2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00961715, -0.0182345, 0.536203)
+modulate = Color(0.905882, 0.25098, 0.231373, 1)
+text = "Main Menu"
+font = SubResource("SystemFont_1ksmu")
+font_size = 63
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
@@ -568,6 +588,7 @@ text = "Select Player 2
 font = SubResource("SystemFont_1ksmu")
 font_size = 63
 
+[connection signal="input_event" from="Camera3D/player_1_text2" to="Camera3D/player_1_text2" method="_on_input_event"]
 [connection signal="input_event" from="arrows_container/arrows3/Area3D" to="arrows_container/arrows3" method="_on_area_3d_input_event"]
 [connection signal="mouse_entered" from="arrows_container/arrows3/Area3D" to="arrows_container/arrows3" method="_on_area_3d_mouse_entered"]
 [connection signal="mouse_exited" from="arrows_container/arrows3/Area3D" to="arrows_container/arrows3" method="_on_area_3d_mouse_exited"]

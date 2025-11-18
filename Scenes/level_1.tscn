@@ -40,7 +40,7 @@ height = 5.0
 radius = 10.508301
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_oovug"]
-radius = 2.043457
+radius = 0.8413086
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8i23i"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -201,23 +201,25 @@ move_direction = Vector3(7, 1.5, 0)
 [node name="Enemy2" parent="Enemies" instance=ExtResource("7_lsmp6")]
 transform = Transform3D(0.995629, 0, -0.0933959, 0, 1, 0, 0.0933959, 0, 0.995629, 0.319145, 2.07795, -16.27)
 
-[node name="Shark" parent="Enemies" instance=ExtResource("6_uy8f0")]
-transform = Transform3D(-0.99867576, 0, 0.051447123, 0, 1, 0, -0.051447123, 0, -0.99867576, -2.411614, 3.2227674, -8.89399)
-patrol_speed = 1.0
-rotation_speed = 1.0
-attack_cooldown = 5.0
+[node name="Shark" parent="Enemies" node_paths=PackedStringArray("detection_area", "petrol_area") instance=ExtResource("6_uy8f0")]
+transform = Transform3D(-0.99867576, 0, 0.051447123, 0, 1, 0, -0.051447123, 0, -0.99867576, -2.411614, 6.891676, -22.971552)
+detection_area = NodePath("../attack_area")
+petrol_area = NodePath("../patrol_area")
+chase_speed = 5.0
+num_patrol_points = 50
 
 [node name="patrol_area" type="Area3D" parent="Enemies"]
-transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 1.9733999, -5.9712)
+transform = Transform3D(0.672793, 0, -0.739831, 0, 1, 0, 0.739831, 0, 0.672793, 2.73138, 5.1153507, -20.048763)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/patrol_area"]
 transform = Transform3D(0.7221467, 0, -0.69174, 0, 1, 0, 0.69174, 0, 0.7221467, -0.9580128, 1.7485392, 2.9197617)
 shape = SubResource("CylinderShape3D_6ioyp")
 
 [node name="attack_area" type="Area3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3654099, -17.609974)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/attack_area"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.442513, -3.7612815)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.86447644, 1.3370922, -1.1202259)
 shape = SubResource("CylinderShape3D_oovug")
 debug_color = Color(0.88251704, 0.28736204, 0.4558378, 0.41960785)
 

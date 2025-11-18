@@ -275,7 +275,6 @@ func get_lobby_members() -> void:
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, this_member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		
-		print("  Member %s: %s (ID: %s)" % [this_member, member_steam_name, member_steam_id])
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	

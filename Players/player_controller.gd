@@ -55,6 +55,7 @@ var in_selection: bool = false
 @export var my_id : int
 var sync_manager : Node
 func _ready() -> void:
+	use_gamepad = Multiplayer.use_gamepad
 	sync_manager = get_tree().get_first_node_in_group("Players_sync_manager")
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())

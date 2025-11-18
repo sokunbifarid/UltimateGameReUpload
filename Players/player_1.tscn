@@ -30,7 +30,7 @@ properties/5/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("charater_mesh") groups=["Player"]]
 script = ExtResource("1_gb4c0")
-charater_mesh = NodePath("")
+charater_mesh = NodePath("Mesh")
 
 [node name="Mesh" parent="." instance=ExtResource("2_cl7sp")]
 transform = Transform3D(0.485, 0, 0, 0, 0.485, 0, 0, 0, 0.485, 0, -0.01010792, 0)
