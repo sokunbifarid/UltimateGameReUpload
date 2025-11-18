@@ -8,7 +8,7 @@ signal notification(mesg : String)
 var use_gamepad: bool = false
 var lobby_id: int = 0
 var lobby_members: Array = []
-var lobby_members_max: int = 10
+var lobby_members_max: int = 4
 var steam_id: int = 0
 var steam_username: String = ""
 var is_host: bool = false

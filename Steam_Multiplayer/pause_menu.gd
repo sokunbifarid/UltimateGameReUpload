@@ -11,7 +11,6 @@ const B = preload("uid://crvqtlm3r5fbc")
 var paused: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
 	if Multiplayer.use_gamepad:
 		if Multiplayer._is_contoller_PS():
 			back_to_game.icon = CIRCLE
@@ -22,7 +21,9 @@ func _ready() -> void:
 
 
 	back_to_game.pressed.connect(func():
-		self.hide())
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		self.hide()
+		)
 	main_menu.pressed.connect(func():
 		get_tree().change_scene_to_file("res://Scenes/3dmain_menu.tscn"))
 
@@ -34,3 +35,11 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("enter_game") and self.visible: 
 			get_tree().change_scene_to_file("res://Scenes/3dmain_menu.tscn")
 		
+	else:
+		if event.is_action_pressed("pause"):
+			self.visible = !self.visible
+			
+		if self.visible:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

@@ -328,8 +328,7 @@ offset_right = -30.0
 offset_bottom = -35.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Start Game
-[press Enter["
+text = "Start Game"
 
 [node name="Timer" type="Timer" parent="waiting_room"]
 wait_time = 5.0

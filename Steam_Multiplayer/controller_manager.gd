@@ -11,6 +11,7 @@ func _ready():
 	
 	print("IS PS : ",is_controller_PS())
 func is_controller_PS():
+	if connected_controllers.is_empty(): return false
 	return connected_controllers[0] == "playstation"
 
 func _scan_existing_controllers():
