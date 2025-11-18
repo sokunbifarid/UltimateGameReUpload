@@ -4,6 +4,8 @@ extends Node
 @onready var spawn_path: Node3D = $"../playerSpwanPoint"
 @onready var start_game: Button = $start_game
 @onready var timer: Timer = $Timer
+const R2 = preload("uid://ra2ia7ghbs2d")
+const RT = preload("uid://c17ckp65kqo0s")
 
 func _ready() -> void:
 	_randomize_spawn_pos()
@@ -58,11 +60,6 @@ func _input(event: InputEvent) -> void:
 	
 	if Multiplayer.is_host:
 		update_start_button()
-		if event.is_action_pressed("enter_game"):
-			print("pressed Enter game")
-			_start_game()
-	else:
-		return
 
 func update_start_button():
 	"""Enable start button when lobby is full (optional auto-start logic)"""
@@ -75,10 +72,21 @@ func update_start_button():
 	#print("player count : ",player_count, " max players allowed : ", max_players)
 	# Enable button when at least 2 players, or customize this logic
 	if player_count >= 2:
-		if start_game.disabled:
-			start_game.disabled = false
+		
 		start_game.text = "Start Game (%d/%d)" % [player_count, max_players]
-		start_game.text += "\n[Press Enter]"
+		start_game.disabled = false
+		if Multiplayer.use_gamepad:
+			if  Multiplayer._is_contoller_PS():
+				start_game.icon = R2
+			else:
+				start_game.icon = RT
+
+		else:
+			start_game.text += "\n[Press Enter]"
+		
+		if Input.is_action_pressed("enter_game"):
+			print("pressed Enter game")
+			_start_game()
 	else:
 		start_game.disabled = true
 		start_game.text = "Waiting for Players... (%d/%d)" % [player_count, max_players]

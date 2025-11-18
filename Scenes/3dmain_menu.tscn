@@ -515,7 +515,7 @@ font = SubResource("SystemFont_cwrni")
 font_size = 63
 
 [node name="Timer" type="Timer" parent="OnlineMenu/refresh_Lobbies"]
-wait_time = 3.0
+wait_time = 2.0
 autostart = true
 
 [node name="Main_Menu" type="Area3D" parent="OnlineMenu"]

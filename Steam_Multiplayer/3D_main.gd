@@ -313,3 +313,7 @@ func get_current_players():
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
 	
 	return lobby_members
+
+func _is_contoller_PS():
+	if !use_gamepad: return false
+	return $controller_manager.is_controller_PS()
