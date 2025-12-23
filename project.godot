@@ -10,9 +10,9 @@ config_version=5
 
 [application]
 
-config/name="3DPlatformerCourse"
+config/name="UltimatumGame"
 run/main_scene="uid://b0flbcapsm0ca"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
