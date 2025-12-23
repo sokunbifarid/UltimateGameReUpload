@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d1n3slt2234do"]
 
 [ext_resource type="Script" uid="uid://rffodh3icq8t" path="res://Scripts/enemy.gd" id="1_1f0kj"]
-[ext_resource type="ArrayMesh" uid="uid://uroxn2ydllk0" path="res://Models/Platformer/saw.obj" id="2_afpow"]
+[ext_resource type="ArrayMesh" uid="uid://uroxn2ydllk0" path="res://Models/Platform/saw.obj" id="2_afpow"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_chwpn"]
 size = Vector3(0.556885, 0.566406, 0.171875)

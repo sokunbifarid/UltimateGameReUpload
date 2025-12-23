@@ -15,11 +15,10 @@ size = Vector3(0.991699, 0.582825, 1.00055)
 
 [node name="Level_3" type="Node3D"]
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path")]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 spawn_path = NodePath("../playerSpwanPoint")
 script = ExtResource("1_l4wr6")
 player_Scene = ExtResource("2_5rvg2")
-_spawn_path = NodePath("")
 
 [node name="Block-snow-large" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0336499, -1.19209e-07, -0.434437)
