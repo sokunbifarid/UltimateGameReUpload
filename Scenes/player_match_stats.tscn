@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2f4p3tv4nq8q"]
+
+[ext_resource type="Texture2D" uid="uid://dj0jvwa25owq1" path="res://Sprites/hud_heartFull.png" id="1_6bmb0"]
+[ext_resource type="Script" uid="uid://171iqekl2qyx" path="res://Scripts/player_match_stats.gd" id="1_uwccm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w5yk8"]
+bg_color = Color(0.941176, 0.286275, 0.286275, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fhuy1"]
+bg_color = Color(0.216655, 0.664454, 0.756028, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="PlayerMatchStats" type="VBoxContainer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -77.0
+offset_right = 155.0
+offset_bottom = -19.0
+grow_vertical = 0
+script = ExtResource("1_uwccm")
+
+[node name="HeartHBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="heart1" type="TextureRect" parent="HeartHBoxContainer"]
+custom_minimum_size = Vector2(27, 22)
+layout_mode = 2
+texture = ExtResource("1_6bmb0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="healthProgressBar" type="ProgressBar" parent="HeartHBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_w5yk8")
+
+[node name="PowerupProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_fhuy1")

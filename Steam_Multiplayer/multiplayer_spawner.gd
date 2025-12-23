@@ -2,6 +2,9 @@ extends MultiplayerSpawner
 
 @export var player_Scene : PackedScene
 @export var _spawn_path : Node3D
+@export var player_stats_holder: Control
+
+const PLAYER_MATCH_STATS = preload("res://Scenes/player_match_stats.tscn")
 #@onready var label: Label = $"../Label"
 #@onready var player_spawn_point: Node3D = $"../Node3D"
 
@@ -47,6 +50,7 @@ func spawnPlayer(peer_id):
 	var p = player_Scene.instantiate()
 	p.name = str(peer_id)
 	p.set_multiplayer_authority(peer_id)
+	set_player_match_stats_node(p, peer_id)
 	
 	var character_num = MultiplayerGlobal.player_character_selections.get(peer_id, 1)
 	print("Player %s spawning with character %s" % [peer_id, character_num])
@@ -65,6 +69,17 @@ func remove_player(peer_id):
 	if players.has(peer_id):
 		players[peer_id].queue_free()
 		players.erase(peer_id)
+		remove_player_match_stats_node(peer_id)
 
 func make_local():
 	_spawn_path.queue_free()
+
+func set_player_match_stats_node(player: CharacterBody3D, peer_id: int):
+	if peer_id == multiplayer.get_unique_id():
+		var player_data: VBoxContainer = PLAYER_MATCH_STATS.instantiate()
+		player_stats_holder.add_child(player_data)
+		player_data.set_monitor(player)
+
+func remove_player_match_stats_node(peer_id: int):
+	if peer_id == multiplayer.get_unique_id():
+		player_stats_holder.get_child(0).queue_free()

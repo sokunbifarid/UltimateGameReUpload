@@ -2,7 +2,9 @@ extends CharacterBody3D
 
 signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
-
+#developer added code
+signal UpdatePlayerStats(health: int, powerup_exp: int)
+##
 
 @export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
@@ -37,6 +39,9 @@ var move_direction
 
 # Smoothing and polish variables
 var health :int = 100
+#developer added code
+var powerup_exp:int = 0
+###
 # State tracking for enhanced feel
 var movement_vector: Vector3 = Vector3.ZERO
 var target_velocity: Vector3 = Vector3.ZERO
@@ -414,7 +419,9 @@ func is_airborne() -> bool:
 
 func fall_damage():
 	if global_position.y < -10:
-		position = get_tree().get_first_node_in_group("respwan_point").position
+		#developer commented code
+		#position = get_tree().get_first_node_in_group("respwan_point").position
+		take_damage(10)
 
 func check_fall():
 	if global_position.y < -10:
@@ -425,6 +432,13 @@ func increase_score(value):
 
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
+	#developer added code
+	if health > 0:
+		health -= value
+		update_player_stats()
+
+func update_player_stats():
+	UpdatePlayerStats.emit(health, powerup_exp)
 
 func go_to_level():
 	print("moving to new spawn point")
