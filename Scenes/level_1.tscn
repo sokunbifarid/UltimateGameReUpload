@@ -134,7 +134,7 @@ script = ExtResource("1_6r07y")
 enviroment = ExtResource("2_6ioyp")
 level_spawn_point = NodePath("playerSpwanPoint")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path", "player_stats_holder")]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("_spawn_path", "player_stats_holder") groups=["multiplayer_spawner"]]
 spawn_path = NodePath("../playerSpwanPoint")
 script = ExtResource("13_6ioyp")
 player_Scene = ExtResource("6_evi0p")
