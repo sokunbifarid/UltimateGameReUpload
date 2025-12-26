@@ -34,51 +34,23 @@ func _ready() -> void:
 	players["1"]["player"].make_it_use_gamepad(false)
 	players["2"]["player"].make_it_use_gamepad(true)
 	
-	#players["1"]["player"].ready.connect(player_1_ready)
-	#players["2"]["player"].ready.connect(player_2_ready)
-	
 	get_tree().get_first_node_in_group("multiplayer_spawner").make_local()
 	var spawn_pos = get_tree().get_first_node_in_group("respwan_point").position
 	players["1"]["player"].position = spawn_pos
 	players["2"]["player"].position = spawn_pos + Vector3(1,0,0)
 
-	#set_player_match_data_properties()
-#
-#func set_player_match_data_properties():
-	#print("happening")
-	#if ScenesGlobal.current_match_type == ScenesGlobal.MATCH_TYPE.LOCAL:
-		#print("got here")
-		#if players["1"]["player"]:
-			#print("player 1 set")
-			#player_match_stats_player_1.set_monitor(players["1"]["player"])
-		#else:
-			#print("player 1 not set")
-			#player_match_stats_player_1.hide()
-		#if players["2"]["player"]:
-			#print("player 2 set")
-			#player_match_stats_player_2.set_monitor(players["2"]["player"])
-		#else:
-			#print("player 2 not set")
-			#player_match_stats_player_2.hide()
-
 func player_1_ready():
-	print("subatu")
 	if ScenesGlobal.current_match_type == ScenesGlobal.MATCH_TYPE.LOCAL:
-		print("got here for 1")
 		if players["1"]["viewport"]:
-			print("player 1 set")
-			player_match_stats_player_1.set_monitor(players["1"]["viewport"].get_child(0))
+			players["1"]["viewport"].get_child(0).set_player_stats_ui(player_match_stats_player_1)
+			#player_match_stats_player_1.set_monitor(players["1"]["viewport"].get_child(0))
 		else:
-			print("player 1 not set")
 			player_match_stats_player_1.hide()
 
 func player_2_ready():
-	print("sbatasdsa")
 	if ScenesGlobal.current_match_type == ScenesGlobal.MATCH_TYPE.LOCAL:
-		print("got here for 2")
 		if players["2"]["viewport"]:
-			print("player 2 set")
-			player_match_stats_player_2.set_monitor(players["2"]["viewport"].get_child(0))
+			players["2"]["viewport"].get_child(0).set_player_stats_ui(player_match_stats_player_2)
+			#player_match_stats_player_2.set_monitor(players["2"]["viewport"].get_child(0))
 		else:
-			print("player 2 not set")
 			player_match_stats_player_2.hide()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2f4p3tv4nq8q"]
+[gd_scene load_steps=6 format=3 uid="uid://b2f4p3tv4nq8q"]
 
 [ext_resource type="Texture2D" uid="uid://dj0jvwa25owq1" path="res://Sprites/hud_heartFull.png" id="1_6bmb0"]
 [ext_resource type="Script" uid="uid://171iqekl2qyx" path="res://Scripts/player_match_stats.gd" id="1_uwccm"]
@@ -12,6 +12,13 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fhuy1"]
 bg_color = Color(0.216655, 0.664454, 0.756028, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwccm"]
+bg_color = Color(0.899258, 0.899258, 0.899258, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -46,3 +53,11 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_w5yk8")
 [node name="PowerupProgressBar" type="ProgressBar" parent="."]
 layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_fhuy1")
+
+[node name="PowerupCountDownProgressBar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_uwccm")
+value = 70.0
+rounded = true
+show_percentage = false

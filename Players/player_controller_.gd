@@ -2,9 +2,6 @@ extends CharacterBody3D
 
 signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
-#developer added code
-signal UpdatePlayerStats(health, powerup_exp)
-##
 
 @export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
@@ -46,9 +43,19 @@ signal UpdatePlayerStats(health, powerup_exp)
 #======================   PowerupArea3D  ===================================
 @onready var dw_powerup_area_3d: Area3D = $PowerupsArea3DHolder/DwPowerupArea3D
 #=========================================================
+
+#======================   PowerupType  ===================================
+enum AllPowerups{DW, ANON, MEDAL}
+@export var character_1_powerup: AllPowerups = AllPowerups.MEDAL
+@export var character_2_powerup: AllPowerups = AllPowerups.DW
+@export var character_3_powerup: AllPowerups = AllPowerups.ANON
+#=========================================================
 ####
 
 @export var charater_mesh: Node3D
+enum AllCharacter{Character1, Character2, Character3}
+@export var current_character: AllCharacter = AllCharacter.Character1
+var player_stats_ui: VBoxContainer
 
 ''' ======================= Movement Code =================================='''
 # Enhanced movement constants for smoother feel
@@ -108,6 +115,10 @@ func _physics_process(delta: float) -> void:
 		
 		# Animate based on local state
 		animate(delta)
+
+func set_player_stats_ui(the_node: VBoxContainer):
+	player_stats_ui = the_node
+	update_player_stats_in_ui()
 
 func animate(delta):
 	"""Animation for local player"""
@@ -266,19 +277,60 @@ func increase_score(value):
 
 func handle_powerups():
 	if !use_gamepad:
-		if Input.is_action_just_pressed("use_powerup_1"):
-			enable_dw_powerup()
-		elif Input.is_action_just_pressed("user_powerup_2"):
-			enable_anon_powerup()
-		elif Input.is_action_just_pressed("use_powerup_3"):
-			enable_medal_powerup()
+		if Input.is_action_just_pressed("use_powerup"):
+			if current_character == AllCharacter.Character1:
+				if character_1_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_1_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_1_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
+			elif current_character == AllCharacter.Character2:
+				if character_2_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_2_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_2_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
+			elif current_character == AllCharacter.Character3:
+				if character_3_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_3_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_3_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
 	else:
-		if Input.is_action_just_pressed("make_use_powerup_1"):
-			enable_dw_powerup()
-		elif Input.is_action_just_pressed("make_use_powerup_2"):
-			enable_anon_powerup()
-		elif Input.is_action_just_pressed("make_use_powerup_3"):
-			enable_medal_powerup()
+		if Input.is_action_just_pressed("make_use_powerup"):
+			if current_character == AllCharacter.Character1:
+				if character_1_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_1_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_1_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
+			elif current_character == AllCharacter.Character2:
+				if character_2_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_2_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_2_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
+			elif current_character == AllCharacter.Character3:
+				if character_3_powerup == AllPowerups.DW:
+					enable_dw_powerup()
+				elif character_3_powerup == AllPowerups.ANON:
+					enable_anon_powerup()
+				elif character_3_powerup == AllPowerups.MEDAL:
+					enable_medal_powerup()
+
+	if player_stats_ui:
+		if dw_timer.time_left != 0:
+			player_stats_ui.set_powerup_use_count_down(dw_timer.time_left, dw_timer.wait_time)
+		elif anon_timer.time_left != 0:
+			player_stats_ui.set_powerup_use_count_down(anon_timer.time_left, anon_timer.wait_time)
+		elif medal_timer.time_left != 0:
+			player_stats_ui.set_powerup_use_count_down(medal_timer.time_left, medal_timer.wait_time)
+
 
 #this function is being called in the blue orb scene, it is triggered anytime the player collides with it
 func increase_powerup_exp(collection_value: int):
@@ -297,6 +349,8 @@ func disable_all_powerups():
 	disable_dw_powerup()
 	disable_anon_powerup()
 	disable_medal_powerup()
+	if player_stats_ui:
+		player_stats_ui.set_powerup_use_count_down(0,0)
 
 #this function is called in enable_dw,anon,medal_powerup, it is triggered anytime the player activates the powerup
 func use_powerup_exp(cost: int):
@@ -365,8 +419,7 @@ func knock_back(direction, power):
 	knock_back_force = knock_force
 
 func update_player_stats_in_ui():
-	UpdatePlayerStats.emit(health, powerup_exp)
-	print("sending signals")
+	player_stats_ui.set_player_stats(health, powerup_exp)
 
 func take_damage(value):
 	var respawn = get_tree().get_first_node_in_group("respwan_point")

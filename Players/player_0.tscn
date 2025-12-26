@@ -60,6 +60,7 @@ height = 1.08012
 collision_mask = 3
 script = ExtResource("1_j211o")
 charater_mesh = NodePath("Mesh")
+current_character = 2
 
 [node name="Mesh" parent="." instance=ExtResource("2_j211o")]
 
