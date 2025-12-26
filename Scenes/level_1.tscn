@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://fipqc70kew4o"]
+[gd_scene load_steps=52 format=3 uid="uid://fipqc70kew4o"]
 
 [ext_resource type="Script" uid="uid://dt6pk1wono6xv" path="res://Scenes/level_1.gd" id="1_6r07y"]
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_vk57k"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://cqya6yernpv6k" path="res://Steam_Multiplayer/playersin_lobby_controller.gd" id="16_8i23i"]
 [ext_resource type="PackedScene" uid="uid://c5ysdcm11n1f" path="res://Steam_Multiplayer/pause_menu.tscn" id="17_8yhm2"]
 [ext_resource type="PackedScene" uid="uid://b2f4p3tv4nq8q" path="res://Scenes/player_match_stats.tscn" id="17_sda17"]
+[ext_resource type="PackedScene" uid="uid://djv1kvgblfhh3" path="res://Scenes/blue_orb.tscn" id="20_imks0"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_af3po"]
 points = PackedVector3Array(0.82963, 0.0192098, 0.957173, -0.797097, 1.8687, -1.02044, -0.958157, 1.90216, 0.926339, 0.991869, 2, 0.735884, -0.738243, 0.0133192, -0.99505, 0.929211, 0.0151226, -0.897093, -0.99505, 0.0133192, 0.738243, 0.89585, 2, -0.927923, -0.991869, 2, -0.735884, 0.767589, 1.90326, 1.02345, -0.738243, 0.0133192, 0.99505, -0.99505, 0.0133192, -0.738243, 0.99505, 0.0133192, 0.738243, 1.02345, 1.90326, -0.767589, 0.767592, 1.90326, -1.02346, -0.735884, 2, 0.991869, -1.02345, 1.90326, 0.767589, 0.738243, 0.0133192, -0.99505, 0.99505, 0.0133192, -0.738243, 1.02044, 1.8687, 0.797094, -1.02044, 1.8687, -0.797094, -0.767429, 1.90331, 1.02351, 0.738243, 0.0133192, 0.99505, -0.929154, 0.0149693, -0.897232, -0.735884, 2, -0.991869, 0.958157, 1.90216, 0.926339, -0.897093, 0.0151226, 0.929211, 0.735884, 2, 0.991869, -0.991869, 2, 0.735884, 0.926343, 1.90216, -0.958161, -0.926184, 1.9022, -0.958204, 0.929211, 0.0151226, 0.897093)
@@ -149,6 +150,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../../Enemies")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall4"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall4/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -160,6 +163,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../../Enemies/attack_area")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall3"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall3/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -167,6 +172,8 @@ shape = SubResource("ConvexPolygonShape3D_af3po")
 
 [node name="PlatformLowLarge" type="StaticBody3D" parent="Platforms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00781965, 4.76837e-07, 0.0173602)
+collision_layer = 2
+collision_mask = 3
 
 [node name="Block-grass-low-large" type="MeshInstance3D" parent="Platforms/PlatformLowLarge"]
 mesh = ExtResource("1_vk57k")
@@ -181,6 +188,8 @@ mesh = ExtResource("2_6444e")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_chwpn")
@@ -192,6 +201,8 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0.0606323, 0.0442321, 6.25346)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow3/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0360022, 0, -6.20565)
@@ -203,6 +214,8 @@ mesh = ExtResource("2_6444e")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow2/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00506246)
@@ -213,6 +226,8 @@ transform = Transform3D(3.9523, 0, 0, 0, 1, 0, 0, 0, 3.65563, 7.34026, -1.37856,
 mesh = ExtResource("3_evi0p")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall2/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -224,6 +239,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -235,6 +252,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall/Block-grass-large-tall2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall/Block-grass-large-tall2/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -246,6 +265,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall/Block-grass-large-tall2/Block-grass-large-tall"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall/Block-grass-large-tall2/Block-grass-large-tall/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)
@@ -257,6 +278,8 @@ mesh = ExtResource("4_lsmp6")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_uy8f0")
@@ -267,6 +290,8 @@ mesh = ExtResource("5_xrdnt")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-overhang-low"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-overhang-low/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00739372, 0.00401145, 0)
@@ -278,6 +303,8 @@ mesh = ExtResource("5_xrdnt")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-overhang-low2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-overhang-low2/StaticBody3D"]
 transform = Transform3D(0.998128, 0, -0.0611531, 0, 1, 0, 0.061153, 0, 0.998128, -0.00680995, 0, 0)
@@ -303,6 +330,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.20451, 1.7496, -2.22214)
 [node name="EndFlag" parent="Collectibles" instance=ExtResource("9_wrinw")]
 transform = Transform3D(0.96076, 0, 0.277382, 0, 1, 0, -0.277382, 0, 0.96076, -1.16695, 3.27, -33.5235)
 scene_to_load = SubResource("PackedScene_1fal7")
+
+[node name="BlueOrb" parent="Collectibles" instance=ExtResource("20_imks0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05024, 1.97868, -4.33843)
+collection_value = 100
 
 [node name="Enemies" type="Node" parent="."]
 
@@ -469,6 +500,8 @@ mesh = ExtResource("3_evi0p")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Block-grass-large-tall"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Block-grass-large-tall/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0172644)

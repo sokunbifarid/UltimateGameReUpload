@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmp5h1qas33b0"]
+[gd_scene load_steps=13 format=3 uid="uid://bmp5h1qas33b0"]
 
 [ext_resource type="Script" uid="uid://cn67ol5p4gy7c" path="res://Players/player_controller_.gd" id="1_gb4c0"]
 [ext_resource type="PackedScene" uid="uid://53riigr01eqc" path="res://Players/blue_player.tscn" id="2_cl7sp"]
 [ext_resource type="Script" uid="uid://cqq4suxgli1rd" path="res://camera/camera.gd" id="3_x8lt4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lsmp6"]
-radius = 0.10986328
-height = 0.8028281
+radius = 0.109863
+height = 0.802828
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gb4c0"]
 properties/0/path = NodePath(".:scale")
@@ -28,23 +28,52 @@ properties/5/path = NodePath("Mesh:scale")
 properties/5/spawn = true
 properties/5/replication_mode = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cl7sp"]
+shading_mode = 0
+albedo_color = Color(0.796432, 0.618876, 0.0934793, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cl7sp"]
+material = SubResource("StandardMaterial3D_cl7sp")
+size = Vector3(0.02, 0.7, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kqk1r"]
+shading_mode = 0
+albedo_color = Color(0.506441, 0.583612, 0.973676, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kqk1r"]
+material = SubResource("StandardMaterial3D_kqk1r")
+size = Vector3(0.02, 0.7, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8lt4"]
+shading_mode = 0
+albedo_color = Color(1, 0.308257, 0.866145, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_x8lt4"]
+material = SubResource("StandardMaterial3D_x8lt4")
+size = Vector3(0.02, 0.7, 0.02)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q57ha"]
+radius = 0.26258
+height = 1.08012
+
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("charater_mesh") groups=["Player"]]
+collision_mask = 3
 script = ExtResource("1_gb4c0")
 charater_mesh = NodePath("Mesh")
 
 [node name="Mesh" parent="." instance=ExtResource("2_cl7sp")]
-transform = Transform3D(0.485, 0, 0, 0, 0.485, 0, 0, 0, 0.485, 0, -0.01010792, 0)
+transform = Transform3D(0.485, 0, 0, 0, 0.485, 0, 0, 0, 0.485, 0, -0.0101079, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, -5.82077e-11, 0, -5.82077e-11, 1, -1.86265e-09, 0, 0, 1, 0.0052205, 0.39344952, -0.0278564)
+transform = Transform3D(1, -5.82077e-11, 0, -5.82077e-11, 1, -1.86265e-09, 0, 0, 1, 0.0052205, 0.39345, -0.0278564)
 shape = SubResource("CapsuleShape3D_lsmp6")
 
 [node name="third_person_controller" type="Node3D" parent="."]
-transform = Transform3D(-0.9999539, 0, 0.009599213, 0, 1, 0, -0.009599213, 0, -0.9999539, 0, 0, 0)
+transform = Transform3D(-0.999954, 0, 0.00959921, 0, 1, 0, -0.00959921, 0, -0.999954, 0, 0, 0)
 script = ExtResource("3_x8lt4")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="third_person_controller"]
-transform = Transform3D(-1, 0, -8.754432e-08, 0, 1, 0, 8.754432e-08, 0, -1, 0, 0.72524166, -0.08124511)
+transform = Transform3D(-1, 0, -8.75443e-08, 0, 1, 0, 8.75443e-08, 0, -1, 0, 0.725242, -0.0812451)
 spring_length = 2.0
 
 [node name="Camera3D" type="Camera3D" parent="third_person_controller/SpringArm3D"]
@@ -52,3 +81,71 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.62268e-07, 0, 3)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_gb4c0")
+
+[node name="Particles" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.381778, 0)
+
+[node name="DWCPUParticles3D" type="CPUParticles3D" parent="Particles"]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("BoxMesh_cl7sp")
+particle_flag_align_y = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[node name="AnonCPUParticles3D" type="CPUParticles3D" parent="Particles"]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("BoxMesh_kqk1r")
+particle_flag_align_y = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[node name="MedalCPUParticles3D" type="CPUParticles3D" parent="Particles"]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("BoxMesh_x8lt4")
+particle_flag_align_y = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[node name="PowerupsArea3DHolder" type="Node3D" parent="."]
+
+[node name="DwPowerupArea3D" type="Area3D" parent="PowerupsArea3DHolder"]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PowerupsArea3DHolder/DwPowerupArea3D"]
+transform = Transform3D(1, 5.82077e-11, 0, -5.82077e-11, 1, 0, 0, 0, 1, 0.0052205, 0.340762, -0.0278564)
+shape = SubResource("CapsuleShape3D_q57ha")
+
+[node name="PowerupTimer" type="Node" parent="."]
+
+[node name="DWTimer" type="Timer" parent="PowerupTimer"]
+one_shot = true
+
+[node name="AnonTimer" type="Timer" parent="PowerupTimer"]
+one_shot = true
+
+[node name="MedalTimer" type="Timer" parent="PowerupTimer"]
+one_shot = true
+
+[connection signal="body_entered" from="PowerupsArea3DHolder/DwPowerupArea3D" to="." method="_on_dw_powerup_area_3d_body_entered"]
+[connection signal="timeout" from="PowerupTimer/DWTimer" to="." method="_on_dw_timer_timeout"]
+[connection signal="timeout" from="PowerupTimer/AnonTimer" to="." method="_on_anon_timer_timeout"]
+[connection signal="timeout" from="PowerupTimer/MedalTimer" to="." method="_on_medal_timer_timeout"]

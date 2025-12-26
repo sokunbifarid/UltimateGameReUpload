@@ -75,11 +75,14 @@ func make_local():
 	_spawn_path.queue_free()
 
 func set_player_match_stats_node(player: CharacterBody3D, peer_id: int):
-	if peer_id == multiplayer.get_unique_id():
-		var player_data: VBoxContainer = PLAYER_MATCH_STATS.instantiate()
-		player_stats_holder.add_child(player_data)
-		player_data.set_monitor(player)
+	if ScenesGlobal.current_match_type == ScenesGlobal.MATCH_TYPE.ONLINE:
+		if is_multiplayer_authority():
+			var player_data: VBoxContainer = PLAYER_MATCH_STATS.instantiate()
+			player_stats_holder.add_child(player_data)
+			print("assigned, player_health: " + str(player.health))
+			player_data.set_monitor(player)
 
 func remove_player_match_stats_node(peer_id: int):
-	if peer_id == multiplayer.get_unique_id():
-		player_stats_holder.get_child(0).queue_free()
+	if ScenesGlobal.current_match_type == ScenesGlobal.MATCH_TYPE.ONLINE:
+		if is_multiplayer_authority():
+			player_stats_holder.get_child(0).queue_free()

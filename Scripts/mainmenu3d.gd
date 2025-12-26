@@ -62,11 +62,13 @@ func connect_signals():
 
 func _on_local_button_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		ScenesGlobal.current_match_type = ScenesGlobal.MATCH_TYPE.LOCAL
 		get_tree().change_scene_to_packed(ScenesGlobal.local_character_selection)
-		
+
 @warning_ignore("unused_parameter")
 func _on_online_button_input_event(_camera: Node, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed:
+		ScenesGlobal.current_match_type = ScenesGlobal.MATCH_TYPE.ONLINE
 		move_camera_to_online_menu()
 
 @warning_ignore("unused_parameter")
@@ -76,7 +78,6 @@ func _on_character_selection_input_event(_camera: Node, event: InputEvent, event
 
 func move_camera_to_online_menu():
 	animate_camera_to_position(camera_online_menu_pos)
-
 
 func move_camera_to_character_selection():
 	animate_camera_to_position(camera_character_selection_pos)

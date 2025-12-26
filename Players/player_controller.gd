@@ -3,12 +3,26 @@ extends CharacterBody3D
 signal OnTakeDamage(damage)
 signal OnUpdateScore(score)
 #developer added code
-signal UpdatePlayerStats(health: int, powerup_exp: int)
+signal UpdatePlayerStats(health, powerup_exp)
 ##
 
 @export var use_gamepad: bool = false
 @export var movement_smoothing: float = 12.0
 @export var rotation_smoothing: float = 10.0
+
+#developer added code
+#======================   Powerups Cost  ===================================
+@export var powerup_cost: int = 100
+#=========================================================
+
+#======================   Powerups Delay  ===================================
+@export var dw_powerup_lasting_time: int = 10
+@export var anon_powerup_lasting_time_lowest: int = 5
+@export var anon_powerup_lasting_time_highest: int = 10
+
+@export var medal_powerup_lasting_time: int = 5
+#=========================================================
+###
 
 #======================   Camera  ===================================
 @onready var camera: Camera3D = $third_person_controller/SpringArm3D/Camera3D
@@ -19,6 +33,24 @@ signal UpdatePlayerStats(health: int, powerup_exp: int)
 @onready var multir_spawner: MultiplayerSpawner = $MultiplayerSpawner
 @onready var anim_sync: MultiplayerSynchronizer = $anim_sync
 
+#developer added code
+#======================   Particles  ===================================
+@onready var dwcpu_particles_3d: CPUParticles3D = $Particles/DWCPUParticles3D
+@onready var anon_cpu_particles_3d: CPUParticles3D = $Particles/AnonCPUParticles3D
+@onready var medal_cpu_particles_3d: CPUParticles3D = $Particles/MedalCPUParticles3D
+#=========================================================
+
+#======================   PowerupTimers  ===================================
+@onready var dw_timer: Timer = $PowerupTimer/DWTimer
+@onready var anon_timer: Timer = $PowerupTimer/AnonTimer
+@onready var medal_timer: Timer = $PowerupTimer/MedalTimer
+#=========================================================
+
+#======================   PowerupArea3D  ===================================
+@onready var dw_powerup_area_3d: Area3D = $PowerupsArea3DHolder/DwPowerupArea3D
+
+#=========================================================
+####
 
 var mesh 
 var animator : AnimationTree
@@ -36,12 +68,15 @@ var can_move: bool = true
 var is_moving: bool = false
 var cur_speed: float = 2
 var move_direction
+var knock_back_force: Vector3 = Vector3.ZERO
 
 # Smoothing and polish variables
 var health :int = 100
 #developer added code
 var powerup_exp:int = 0
+const MAX_POWERUP_EXP: int = 100
 ###
+
 # State tracking for enhanced feel
 var movement_vector: Vector3 = Vector3.ZERO
 var target_velocity: Vector3 = Vector3.ZERO
@@ -59,12 +94,14 @@ var in_selection: bool = false
 @export var synced_grounded: bool = true
 @export var my_id : int
 var sync_manager : Node
+
 func _ready() -> void:
 	use_gamepad = Multiplayer.use_gamepad
 	sync_manager = get_tree().get_first_node_in_group("Players_sync_manager")
 	# Set authority using the node name (which is the peer_id)
 	player_sync.set_multiplayer_authority(str(name).to_int())
 	multir_spawner.set_multiplayer_authority(str(name).to_int())
+	
 	await get_tree().process_frame
 	
 	# Apply character model based on mesh_num (already set by spawner)
@@ -74,8 +111,7 @@ func _ready() -> void:
 		
 		# Change locally first
 		apply_character_mesh(mesh_num)
-		
-	
+
 	if camera:
 		if is_multiplayer_authority():
 			camera.current = true
@@ -87,6 +123,8 @@ func _ready() -> void:
 		# Register with manager (this handles all syncing)
 		if sync_manager and sync_manager.has_method("register_player"):
 			sync_manager.register_player(self, int(name), mesh_num)
+
+
 
 # Request all existing players to send their mesh data
 func request_all_player_meshes():
@@ -198,6 +236,7 @@ func _physics_process(delta: float) -> void:
 	# Enhanced movement with polish
 	handle_movement(delta)
 	handle_jump()
+	handle_powerups()
 	move_and_slide()
 	update_movement_state_tracking(delta)
 	check_landing()
@@ -344,7 +383,6 @@ func handle_third_person_movement(delta: float):
 
 		# X inverted by default for correct third-person feel
 		input_dir.x *= -1.0
-
 		# Apply deadzone
 		if input_dir.length() < 0.15:
 			input_dir = Vector2.ZERO
@@ -367,7 +405,7 @@ func handle_third_person_movement(delta: float):
 
 	# Movement with smoothing
 	if move_direction != Vector3.ZERO:
-		target_velocity = Vector3(move_direction.x * cur_speed, velocity.y, move_direction.z * cur_speed)
+		target_velocity = Vector3(move_direction.x * cur_speed + knock_back_force.x, velocity.y, move_direction.z * cur_speed + knock_back_force.z)
 		velocity.x = lerp(velocity.x, target_velocity.x, movement_smoothing * delta)
 		velocity.z = lerp(velocity.z, target_velocity.z, movement_smoothing * delta)
 		
@@ -376,11 +414,15 @@ func handle_third_person_movement(delta: float):
 		if not is_moving:
 			is_moving = true
 	else:
-		velocity.x = move_toward(velocity.x, 0, cur_speed * 8 * delta)
-		velocity.z = move_toward(velocity.z, 0, cur_speed * 8 * delta)
+		velocity.x = move_toward(velocity.x, 0 + knock_back_force.x, cur_speed * 8 * delta)
+		velocity.z = move_toward(velocity.z, 0 + knock_back_force.z, cur_speed * 8 * delta)
 		
 		if is_moving and velocity.length() < 0.1:
 			is_moving = false
+
+	if knock_back_force.length() > 0:
+		knock_back_force.x = lerpf(knock_back_force.x, 0, 10 * delta)
+		knock_back_force.z = lerpf(knock_back_force.z, 0, 10 * delta)
 
 # PRESERVED: Original rotation function
 func face_direction(direction: Vector3, delta: float):
@@ -422,6 +464,7 @@ func fall_damage():
 		#developer commented code
 		#position = get_tree().get_first_node_in_group("respwan_point").position
 		take_damage(10)
+		knock_back_force = Vector3.ZERO
 
 func check_fall():
 	if global_position.y < -10:
@@ -430,18 +473,136 @@ func check_fall():
 func increase_score(value):
 	pass
 
+func handle_powerups():
+	if !use_gamepad:
+		if Input.is_action_just_pressed("use_powerup_1"):
+			enable_dw_powerup()
+		elif Input.is_action_just_pressed("user_powerup_2"):
+			enable_anon_powerup()
+		elif Input.is_action_just_pressed("use_powerup_3"):
+			enable_medal_powerup()
+	else:
+		if Input.is_action_just_pressed("make_use_powerup_1"):
+			enable_dw_powerup()
+		elif Input.is_action_just_pressed("make_use_powerup_2"):
+			enable_anon_powerup()
+		elif Input.is_action_just_pressed("make_use_powerup_3"):
+			enable_medal_powerup()
+
+#this function is being called in the blue orb scene, it is triggered anytime the player collides with it
+func increase_powerup_exp(collection_value: int):
+	if powerup_exp < MAX_POWERUP_EXP:
+		powerup_exp += collection_value
+		powerup_exp = clampi(powerup_exp, 0, MAX_POWERUP_EXP)
+		print("player colelcting experience")
+		update_player_stats_in_ui()
+
+#this function is called in enable_dw,anon_medal_powerup, it is triggered anytime the player enables a powerup
+## this function is created to prevent powerup stacking
+func disable_all_powerups():
+	dw_timer.stop()
+	anon_timer.stop()
+	medal_timer.stop()
+	disable_dw_powerup()
+	disable_anon_powerup()
+	disable_medal_powerup()
+
+#this function is called in enable_dw,anon,medal_powerup, it is triggered anytime the player activates the powerup
+func use_powerup_exp(cost: int):
+	if powerup_exp >= cost:
+		powerup_exp -= cost
+		powerup_exp = clampi(powerup_exp, 0, MAX_POWERUP_EXP)
+		update_player_stats_in_ui()
+
+#this function is called in the _input function, it is triggered when the user presses a key
+func enable_dw_powerup():
+	if powerup_exp >= powerup_cost:
+		disable_all_powerups()
+		use_powerup_exp(powerup_cost)
+		cur_speed = RUN_SPEED
+		dw_powerup_area_3d.monitorable = true
+		dw_powerup_area_3d.monitoring = true
+		dwcpu_particles_3d.emitting = true
+		dw_timer.wait_time = dw_powerup_lasting_time
+		dw_timer.start()
+		print("dw powerup activated")
+
+func disable_dw_powerup():
+	cur_speed = WALK_SPEED
+	dw_powerup_area_3d.monitorable = false
+	dw_powerup_area_3d.monitoring = false
+	print("dw powerup deactivated")
+
+#this function is called in the _input function, it is triggered when the user presses a key
+func enable_anon_powerup():
+	if powerup_exp >= powerup_cost:
+		disable_all_powerups()
+		use_powerup_exp(powerup_cost)
+		anon_cpu_particles_3d.emitting = true
+		anon_timer.wait_time = randf_range(anon_powerup_lasting_time_lowest, anon_powerup_lasting_time_highest)
+		anon_timer.start()
+		if mesh:
+			mesh.hide()
+		print("anon powerup activated")
+
+func disable_anon_powerup():
+	if not mesh.visible:
+		mesh.show()
+		print("anon powerup deactivated")
+
+#this function is called in the _input function, it is triggered when the user presses a key
+func enable_medal_powerup():
+	if powerup_exp >= powerup_cost:
+		disable_all_powerups()
+		use_powerup_exp(powerup_cost)
+		self.set_collision_layer_value(1, false)
+		self.set_collision_mask_value(1, false)
+		medal_cpu_particles_3d.emitting = true
+		medal_timer.wait_time = medal_powerup_lasting_time
+		medal_timer.start()
+		print("medal powerup activated")
+
+func disable_medal_powerup():
+	self.set_collision_layer_value(1, true)
+	self.set_collision_mask_value(1, true)
+	print("medal powerup deactivated")
+
+func knock_back(direction, power):
+	var knock_force: Vector3 = direction * power
+	knock_back_force = knock_force
+
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position
 	#developer added code
 	if health > 0:
 		health -= value
-		update_player_stats()
+		update_player_stats_in_ui()
 
-func update_player_stats():
+func update_player_stats_in_ui():
 	UpdatePlayerStats.emit(health, powerup_exp)
+	print("sending signals")
 
 func go_to_level():
 	print("moving to new spawn point")
 	var spwan_point = get_tree().get_first_node_in_group("respwan_point")
 	self.global_position = spwan_point.position + Vector3(randf_range(-1, 1), 0, randf_range(-1, 1))
 	print(spwan_point," ", spwan_point.position)
+
+func _on_dw_timer_timeout() -> void:
+	disable_dw_powerup()
+
+
+func _on_anon_timer_timeout() -> void:
+	disable_anon_powerup()
+
+
+func _on_medal_timer_timeout() -> void:
+	disable_medal_powerup()
+
+
+func _on_dw_powerup_area_3d_body_entered(body: Node3D) -> void:
+	if body.is_in_group("Player") and body != self and is_on_floor():
+		var look_direction: Vector3 = self.transform.basis.z.normalized()
+		look_direction.y = 0
+		var knock_back_power: int = 1000
+		body.knock_back((body.global_position - self.global_position).normalized(), knock_back_power)

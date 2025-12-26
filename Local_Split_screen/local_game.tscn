@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhm3l3rjk8q14"]
+[gd_scene load_steps=3 format=3 uid="uid://bhm3l3rjk8q14"]
 
 [ext_resource type="Script" uid="uid://bi01qyui531ic" path="res://Local_Split_screen/local_game.gd" id="1_43uvr"]
+[ext_resource type="PackedScene" uid="uid://b2f4p3tv4nq8q" path="res://Scenes/player_match_stats.tscn" id="2_qha28"]
 
 [node name="local_game" type="Node"]
 script = ExtResource("1_43uvr")
@@ -29,6 +30,9 @@ handle_input_locally = false
 size = Vector2i(576, 648)
 render_target_update_mode = 4
 
+[node name="PlayerMatchStats" parent="HBoxContainer/SubViewportContainer" instance=ExtResource("2_qha28")]
+layout_mode = 2
+
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -37,3 +41,6 @@ size_flags_horizontal = 3
 handle_input_locally = false
 size = Vector2i(578, 648)
 render_target_update_mode = 4
+
+[node name="PlayerMatchStats" parent="HBoxContainer/SubViewportContainer2" instance=ExtResource("2_qha28")]
+layout_mode = 2

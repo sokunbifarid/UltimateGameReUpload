@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bflyfci56jh67"]
+[gd_scene load_steps=31 format=3 uid="uid://bflyfci56jh67"]
 
 [ext_resource type="Script" uid="uid://dt6pk1wono6xv" path="res://Scenes/level_1.gd" id="1_bl0du"]
 [ext_resource type="ArrayMesh" uid="uid://vixy2b6dprsd" path="res://Models/Platform/block-grass-low-large.obj" id="1_uhnj4"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://ynj416avw04q" path="res://Scenes/end_flag.tscn" id="9_yvrk7"]
 [ext_resource type="Script" uid="uid://c1ofvucsi1s8r" path="res://Steam_Multiplayer/multiplayer_spawner.gd" id="10_t7v2y"]
 [ext_resource type="Script" uid="uid://6kp8gixwjrk2" path="res://Steam_Multiplayer/waiiting_room.gd" id="13_bl0du"]
+[ext_resource type="PackedScene" uid="uid://djv1kvgblfhh3" path="res://Scenes/blue_orb.tscn" id="13_yvrk7"]
 [ext_resource type="Script" uid="uid://cqya6yernpv6k" path="res://Steam_Multiplayer/playersin_lobby_controller.gd" id="15_q0ycs"]
 [ext_resource type="PackedScene" uid="uid://c5ysdcm11n1f" path="res://Steam_Multiplayer/pause_menu.tscn" id="16_hj5x7"]
 
@@ -74,6 +75,8 @@ player_stats_holder = NodePath("../Control/PlayerStatsHolder")
 [node name="Platforms" type="Node" parent="."]
 
 [node name="PlatformLowLarge" type="StaticBody3D" parent="Platforms"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="Block-grass-low-large" type="MeshInstance3D" parent="Platforms/PlatformLowLarge"]
 mesh = ExtResource("1_uhnj4")
@@ -88,6 +91,8 @@ mesh = ExtResource("2_42uki")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_ijtdf")
@@ -98,6 +103,8 @@ mesh = ExtResource("2_42uki")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow2/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_ijtdf")
@@ -108,6 +115,8 @@ mesh = ExtResource("2_42uki")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-narrow3"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-narrow3/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_ijtdf")
@@ -118,6 +127,8 @@ mesh = ExtResource("3_t7v2y")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large-tall"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large-tall/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_c5xoi")
@@ -128,6 +139,8 @@ mesh = ExtResource("4_ait6c")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_sfey3")
@@ -138,6 +151,8 @@ mesh = ExtResource("5_uhnj4")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-corner-low"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-corner-low/StaticBody3D"]
 shape = SubResource("ConcavePolygonShape3D_42uki")
@@ -148,6 +163,8 @@ mesh = ExtResource("4_ait6c")
 skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Platforms/Block-grass-large2"]
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Platforms/Block-grass-large2/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_sfey3")
@@ -181,6 +198,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.32782, 1.64847, -6.1875)
 [node name="EndFlag" parent="Coins" instance=ExtResource("9_yvrk7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.631845, 1.98478, -6.9018)
 scene_to_load = ExtResource("8_t7v2y")
+
+[node name="BlueOrb" parent="Coins" instance=ExtResource("13_yvrk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.664817, 1.25013, -0.458453)
+collection_value = 100
 
 [node name="Enemies" type="Node" parent="."]
 

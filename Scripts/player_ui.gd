@@ -5,6 +5,8 @@ var hearts : Array = []
 
 @onready var score_text : Label = $ScoreText
 
+##this node is hidden by the developer
+
 func _ready ():
 	if get_parent().in_selection:
 		$HealthContainer.hide()
