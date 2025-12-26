@@ -50,13 +50,8 @@ signal OnUpdateScore(score)
 
 #======================   PowerupType  ===================================
 enum AllPowerups{DW, ANON, MEDAL}
-@export var character_1_powerup: AllPowerups = AllPowerups.MEDAL
-@export var character_2_powerup: AllPowerups = AllPowerups.DW
-@export var character_3_powerup: AllPowerups = AllPowerups.ANON
+@export var character_powerup: AllPowerups = AllPowerups.MEDAL
 #=========================================================
-
-enum AllCharacter{Character1, Character2, Character3}
-@export var current_character: AllCharacter = AllCharacter.Character1
 
 ####
 
@@ -74,10 +69,12 @@ const RUN_SPEED: float = 7
 const WALK_SPEED: float = 2
 const JUMP_VELOCITY = 4.5
 
+
 # Enhanced movement variables
 var can_move: bool = true
 var is_moving: bool = false
 var cur_speed: float = 2
+
 var move_direction
 var knock_back_force: Vector3 = Vector3.ZERO
 
@@ -99,6 +96,7 @@ var was_on_floor: bool = true
 
 var in_selection: bool = false
 @export var mesh_num: int = 1
+@export var dw_powerup_movement_speed: float = 4
 
 # Synced properties
 @export var synced_blend: float = -1.0
@@ -490,50 +488,20 @@ func increase_score(value):
 func handle_powerups():
 	if !use_gamepad:
 		if Input.is_action_just_pressed("use_powerup"):
-			if current_character == AllCharacter.Character1:
-				if character_1_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_1_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_1_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character2:
-				if character_2_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_2_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_2_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character3:
-				if character_3_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_3_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_3_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
+			if character_powerup == AllPowerups.DW:
+				enable_dw_powerup()
+			elif character_powerup == AllPowerups.ANON:
+				enable_anon_powerup()
+			elif character_powerup == AllPowerups.MEDAL:
+				enable_medal_powerup()
 	else:
 		if Input.is_action_just_pressed("make_use_powerup"):
-			if current_character == AllCharacter.Character1:
-				if character_1_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_1_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_1_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character2:
-				if character_2_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_2_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_2_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character3:
-				if character_3_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_3_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_3_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
+			if character_powerup == AllPowerups.DW:
+				enable_dw_powerup()
+			elif character_powerup == AllPowerups.ANON:
+				enable_anon_powerup()
+			elif character_powerup == AllPowerups.MEDAL:
+				enable_medal_powerup()
 
 	if player_stats_ui:
 		if dw_timer.time_left != 0:
@@ -575,7 +543,7 @@ func enable_dw_powerup():
 	if powerup_exp >= powerup_cost:
 		disable_all_powerups()
 		use_powerup_exp(powerup_cost)
-		cur_speed = RUN_SPEED
+		cur_speed = dw_powerup_movement_speed
 		dw_powerup_area_3d.monitorable = true
 		dw_powerup_area_3d.monitoring = true
 		dwcpu_particles_3d.emitting = true
@@ -624,8 +592,9 @@ func disable_medal_powerup():
 	print("medal powerup deactivated")
 
 func knock_back(direction, power):
-	var knock_force: Vector3 = direction * power
-	knock_back_force = knock_force
+	if is_on_floor():
+		var knock_force: Vector3 = direction * power
+		knock_back_force = knock_force
 
 func take_damage(value):
 	position = get_tree().get_first_node_in_group("respwan_point").position

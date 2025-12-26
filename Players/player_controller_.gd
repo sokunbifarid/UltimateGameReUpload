@@ -46,15 +46,13 @@ signal OnUpdateScore(score)
 
 #======================   PowerupType  ===================================
 enum AllPowerups{DW, ANON, MEDAL}
-@export var character_1_powerup: AllPowerups = AllPowerups.MEDAL
-@export var character_2_powerup: AllPowerups = AllPowerups.DW
-@export var character_3_powerup: AllPowerups = AllPowerups.ANON
+@export var character_powerup: AllPowerups = AllPowerups.MEDAL
+#@export var character_2_powerup: AllPowerups = AllPowerups.DW
+#@export var character_3_powerup: AllPowerups = AllPowerups.ANON
 #=========================================================
 ####
 
 @export var charater_mesh: Node3D
-enum AllCharacter{Character1, Character2, Character3}
-@export var current_character: AllCharacter = AllCharacter.Character1
 var player_stats_ui: VBoxContainer
 
 ''' ======================= Movement Code =================================='''
@@ -68,7 +66,7 @@ const JUMP_VELOCITY = 4.5
 var can_move: bool = true
 var is_moving: bool = false
 var cur_speed: float = 2
-var is_running: bool = false
+var is_powerup_forced_running: bool = false
 var move_direction
 var knock_back_force: Vector3 = Vector3.ZERO
 
@@ -95,13 +93,14 @@ var sync_velocity: Vector3 = Vector3.ZERO
 var sync_is_on_floor: bool = true
 var sync_blend_amount: float = -1.0
 
+@export var dw_powerup_movement_speed: float = 4
+
 func _ready() -> void:
 	if third_person_controller:
 		third_person_controller.use_gamepad = use_gamepad
 
 func _physics_process(delta: float) -> void:
 
-	
 	if not in_selection:
 		handle_movement(delta)
 		handle_jump()
@@ -128,7 +127,7 @@ func animate(delta):
 		var horizontal_speed = Vector2(velocity.x, velocity.z).length()
 		
 		if horizontal_speed > 0.1:
-			if cur_speed == RUN_SPEED:
+			if cur_speed == RUN_SPEED or cur_speed == dw_powerup_movement_speed:
 				sync_blend_amount = lerp(sync_blend_amount, 1.0, delta * 7.0)
 			else:
 				sync_blend_amount = lerp(sync_blend_amount, 0.0, delta * 7.0)
@@ -194,16 +193,19 @@ func handle_third_person_movement(delta: float):
 
 	# Check if running
 	if !use_gamepad:
-		if Input.is_action_pressed("run") or is_running:
-			cur_speed = RUN_SPEED
+		if not is_powerup_forced_running:
+			if Input.is_action_pressed("run"):
+				cur_speed = RUN_SPEED
+			else:
+				cur_speed = WALK_SPEED
 		else:
-			cur_speed = WALK_SPEED
+			cur_speed = dw_powerup_movement_speed
 	else:
 		# For gamepad, you might want to use analog stick magnitude or a button
-		if not is_running:
+		if not is_powerup_forced_running:
 			cur_speed = WALK_SPEED
 		else:
-			cur_speed = RUN_SPEED
+			cur_speed = is_powerup_forced_running
 
 	# Convert to 3D movement
 	if third_person_controller:
@@ -278,50 +280,20 @@ func increase_score(value):
 func handle_powerups():
 	if !use_gamepad:
 		if Input.is_action_just_pressed("use_powerup"):
-			if current_character == AllCharacter.Character1:
-				if character_1_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_1_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_1_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character2:
-				if character_2_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_2_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_2_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character3:
-				if character_3_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_3_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_3_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
+			if character_powerup == AllPowerups.DW:
+				enable_dw_powerup()
+			elif character_powerup == AllPowerups.ANON:
+				enable_anon_powerup()
+			elif character_powerup == AllPowerups.MEDAL:
+				enable_medal_powerup()
 	else:
 		if Input.is_action_just_pressed("make_use_powerup"):
-			if current_character == AllCharacter.Character1:
-				if character_1_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_1_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_1_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character2:
-				if character_2_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_2_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_2_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
-			elif current_character == AllCharacter.Character3:
-				if character_3_powerup == AllPowerups.DW:
-					enable_dw_powerup()
-				elif character_3_powerup == AllPowerups.ANON:
-					enable_anon_powerup()
-				elif character_3_powerup == AllPowerups.MEDAL:
-					enable_medal_powerup()
+			if character_powerup == AllPowerups.DW:
+				enable_dw_powerup()
+			elif character_powerup == AllPowerups.ANON:
+				enable_anon_powerup()
+			elif character_powerup == AllPowerups.MEDAL:
+				enable_medal_powerup()
 
 	if player_stats_ui:
 		if dw_timer.time_left != 0:
@@ -364,8 +336,8 @@ func enable_dw_powerup():
 	if powerup_exp >= powerup_cost:
 		disable_all_powerups()
 		use_powerup_exp(powerup_cost)
-		is_running = true
-		cur_speed = RUN_SPEED 
+		is_powerup_forced_running = true
+		cur_speed = dw_powerup_movement_speed
 		dw_powerup_area_3d.monitorable = true
 		dw_powerup_area_3d.monitoring = true
 		dwcpu_particles_3d.emitting = true
@@ -375,7 +347,7 @@ func enable_dw_powerup():
 
 func disable_dw_powerup():
 	cur_speed = WALK_SPEED
-	is_running = false
+	is_powerup_forced_running = false
 	dw_powerup_area_3d.monitorable = false
 	dw_powerup_area_3d.monitoring = false
 	print("dw powerup deactivated")
@@ -415,8 +387,9 @@ func disable_medal_powerup():
 	print("medal powerup deactivated")
 
 func knock_back(direction, power):
-	var knock_force: Vector3 = direction * power
-	knock_back_force = knock_force
+	if is_on_floor():
+		var knock_force: Vector3 = direction * power
+		knock_back_force = knock_force
 
 func update_player_stats_in_ui():
 	player_stats_ui.set_player_stats(health, powerup_exp)
@@ -441,9 +414,7 @@ func _on_medal_timer_timeout() -> void:
 	disable_medal_powerup()
 
 func _on_dw_powerup_area_3d_body_entered(body: Node3D) -> void:
-	print("jammed")
 	if body.is_in_group("Player") and body != self and is_on_floor():
-		print("jammed xx2")
 		var look_direction: Vector3 = self.transform.basis.z.normalized()
 		look_direction.y = 0
 		var knock_power: int = 1000

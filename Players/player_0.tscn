@@ -54,13 +54,13 @@ size = Vector3(0.02, 0.7, 0.02)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8m0k5"]
 radius = 0.26258
-height = 1.08012
+height = 0.716465
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("charater_mesh") groups=["Player"]]
 collision_mask = 3
 script = ExtResource("1_j211o")
+character_powerup = 1
 charater_mesh = NodePath("Mesh")
-current_character = 2
 
 [node name="Mesh" parent="." instance=ExtResource("2_j211o")]
 

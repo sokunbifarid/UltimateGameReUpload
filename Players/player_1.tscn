@@ -54,7 +54,7 @@ size = Vector3(0.02, 0.7, 0.02)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q57ha"]
 radius = 0.26258
-height = 1.08012
+height = 0.671338
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("charater_mesh") groups=["Player"]]
 collision_mask = 3
